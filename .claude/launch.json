@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Flux AI - Live Server",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["live-server", "--port=8080", "--no-browser", "--open=index.html"],
+      "port": 8080
+    }
+  ]
+}
