@@ -54,7 +54,7 @@ const CTRL = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
 const clean = (v, max) => (typeof v === 'string' ? v.replace(CTRL, '').trim().slice(0, max) : '');
 
 // Volutamente permissiva: la validazione "vera" è il fatto che l'email riceva.
-const EMAIL_RE = /^[^\s@,;<>()[\]\\]+@[^\s@.,;<>()[\]\\]+\.[A-Za-z]{2,63}$/;
+const EMAIL_RE = /^[^\s@,;<>()[\]\\]+@([^\s@.,;<>()[\]\\]+\.)+[A-Za-z]{2,63}$/;
 const TEL_RE = /^[+0-9][0-9\s.\-/()]{5,24}$/;
 
 function clientIp(req) {
@@ -70,35 +70,58 @@ function hashIp(ip) {
     .slice(0, 32);
 }
 
-function rateLimited(ipHash) {
+// Il controllo e la registrazione sono separati: si contano solo gli invii
+// che superano honeypot e validazione. Altrimenti tre errori di battitura
+// chiudono il form per 15 minuti, e 60 POST spazzatura lo chiudono a tutti.
+function isRateLimited(ipHash) {
   const now = Date.now();
   globalHits = globalHits.filter((t) => now - t < WINDOW_MS);
   if (globalHits.length >= MAX_GLOBAL) return true;
-
   const list = (hits.get(ipHash) || []).filter((t) => now - t < WINDOW_MS);
-  if (list.length >= MAX_PER_IP) {
-    hits.set(ipHash, list);
-    return true;
-  }
+  hits.set(ipHash, list);
+  return list.length >= MAX_PER_IP;
+}
+
+function recordHit(ipHash) {
+  const now = Date.now();
+  const list = (hits.get(ipHash) || []).filter((t) => now - t < WINDOW_MS);
   list.push(now);
   hits.set(ipHash, list);
   globalHits.push(now);
-
   if (hits.size > 5000) hits.clear(); // guard-rail memoria
-  return false;
 }
 
-async function readJson(req) {
-  if (req.body && typeof req.body === 'object') return req.body; // Vercel pre-parsa application/json
-  const chunks = [];
-  let size = 0;
-  for await (const c of req) {
-    size += c.length;
-    if (size > 32 * 1024) throw new Error('payload_too_large');
-    chunks.push(c);
+// Accetta sia application/json (fetch) sia x-www-form-urlencoded (submit
+// nativo del form senza JavaScript). Vercel puo pre-parsare il body in
+// entrambi i casi, oppure lasciarlo come stringa o come stream.
+async function readBody(req) {
+  const ctype = String(req.headers['content-type'] || '');
+  const isForm = ctype.includes('application/x-www-form-urlencoded');
+
+  if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) return req.body;
+
+  let raw = '';
+  if (typeof req.body === 'string') raw = req.body;
+  else if (Buffer.isBuffer(req.body)) raw = req.body.toString('utf8');
+  else {
+    const chunks = [];
+    let size = 0;
+    for await (const c of req) {
+      size += c.length;
+      if (size > 32 * 1024) throw new Error('payload_too_large');
+      chunks.push(c);
+    }
+    raw = Buffer.concat(chunks).toString('utf8');
   }
-  if (!chunks.length) return {};
-  return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  if (!raw) return {};
+  if (isForm) return Object.fromEntries(new URLSearchParams(raw));
+  return JSON.parse(raw);
+}
+
+// Un submit nativo si aspetta una pagina, non JSON.
+function wantsJson(req) {
+  return String(req.headers['accept'] || '').includes('application/json') ||
+         String(req.headers['content-type'] || '').includes('application/json');
 }
 
 function esc(s) {
@@ -115,11 +138,11 @@ function validate(body) {
   const errors = {};
   const d = {
     nome: clean(body.nome, 80),
-    azienda: clean(body.azienda, 120),
+    azienda: clean(body.azienda, 120) || null,
     email: clean(body.email, 160).toLowerCase(),
-    telefono: clean(body.telefono, 25),
+    telefono: clean(body.telefono, 25) || null,
     interesse: clean(body.interesse, 32),
-    budget: clean(body.budget, 16),
+    budget: clean(body.budget, 16) || null,
     messaggio: clean(body.messaggio, 2000),
     consenso_privacy: body.consenso_privacy === true || body.consenso_privacy === 'on',
     consenso_marketing: body.consenso_marketing === true || body.consenso_marketing === 'on',
@@ -127,9 +150,9 @@ function validate(body) {
 
   if (d.nome.length < 2) errors.nome = 'Inserisci nome e cognome.';
   if (!EMAIL_RE.test(d.email)) errors.email = 'Inserisci un indirizzo email valido.';
-  if (d.telefono && !TEL_RE.test(d.telefono)) errors.telefono = 'Numero di telefono non valido.';
+  if (d.telefono !== null && !TEL_RE.test(d.telefono)) errors.telefono = 'Numero di telefono non valido.';
   if (!INTERESSI.includes(d.interesse)) errors.interesse = 'Seleziona di cosa hai bisogno.';
-  if (d.budget && !BUDGET.includes(d.budget)) errors.budget = 'Valore non valido.';
+  if (d.budget !== null && !BUDGET.includes(d.budget)) errors.budget = 'Valore non valido.';
   if (d.messaggio.length < 20) errors.messaggio = 'Descrivi la richiesta in almeno 20 caratteri.';
   if (!d.consenso_privacy) errors.consenso_privacy = 'Devi accettare l’informativa privacy per inviare.';
 
@@ -181,7 +204,10 @@ async function insertLead(d, meta) {
 /* ------------------------------------------------------------------ */
 
 async function notify(d, id) {
-  if (!process.env.RESEND_API_KEY) return;
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('[lead] RESEND_API_KEY non impostata: nessuna notifica inviata per', id);
+    return;
+  }
   const to = (process.env.LEAD_TO_EMAIL || 'ergest@flux-ai.it').split(',').map((s) => s.trim());
   const html = `
     <h2 style="font-family:system-ui">Nuovo lead — ${esc(d.interesse)}</h2>
@@ -222,6 +248,18 @@ module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Content-Type-Options', 'nosniff');
 
+  const json = wantsJson(req);
+  // Il submit nativo (senza JS) si aspetta una navigazione, non un JSON.
+  const reply = (status, payload) => {
+    if (json) return res.status(status).json(payload);
+    if (status >= 200 && status < 300) {
+      res.setHeader('Location', '/grazie.html');
+      return res.status(303).end();
+    }
+    res.setHeader('Location', '/grazie.html?errore=' + encodeURIComponent(payload.error || 'errore'));
+    return res.status(303).end();
+  };
+
   const origin = req.headers.origin || '';
   const originOk = ALLOWED_ORIGINS.includes(origin);
   if (originOk) {
@@ -238,53 +276,60 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST, OPTIONS');
-    return res.status(405).json({ ok: false, error: 'method_not_allowed' });
+    return reply(405, { ok: false, error: 'method_not_allowed' });
   }
 
   // Same-origin: il browser invia Origin sui POST. Se c'è ed è estraneo → stop.
   if (origin && !originOk) {
-    return res.status(403).json({ ok: false, error: 'origin_not_allowed' });
+    return reply(403, { ok: false, error: 'origin_not_allowed' });
   }
 
   const ipHash = hashIp(clientIp(req));
 
-  if (rateLimited(ipHash)) {
+  if (isRateLimited(ipHash)) {
     res.setHeader('Retry-After', '900');
-    return res.status(429).json({
+    return reply(429, {
       ok: false,
       error: 'rate_limited',
-      message: 'Hai già inviato una richiesta di recente. Riprova tra qualche minuto o scrivi a ergest@flux-ai.it.',
+      message: 'Avete già inviato una richiesta di recente. Riprovate fra qualche minuto, oppure scriveteci a ergest@flux-ai.it.',
     });
   }
 
   let body;
   try {
-    body = await readJson(req);
+    body = await readBody(req);
   } catch {
-    return res.status(400).json({ ok: false, error: 'bad_request' });
+    return reply(400, { ok: false, error: 'bad_request' });
   }
 
   // --- Antispam silenzioso: honeypot + time-trap ---------------------
   // Rispondiamo 200 al bot così non capisce di essere stato scartato.
+  // `elapsed` e un delta monotono misurato dal client con performance.now():
+  // niente confronto fra orologi diversi, quindi niente lead persi per skew
+  // o per una scheda lasciata aperta a lungo.
+  const hasElapsed = body.elapsed !== undefined && body.elapsed !== '';
+  const elapsed = Number(body.elapsed);
   const trapped =
-    clean(body.website, 200) !== '' || // honeypot
-    !Number.isFinite(Number(body.ts)) ||
-    Date.now() - Number(body.ts) < 3000 || // compilato in <3s
-    Date.now() - Number(body.ts) > 6 * 60 * 60 * 1000; // form vecchio di 6h
-  if (trapped) return res.status(200).json({ ok: true, id: null });
+    clean(body.website, 200) !== '' ||                        // honeypot
+    (hasElapsed && (!Number.isFinite(elapsed) || elapsed < 2500));
+  // Senza JS `elapsed` non esiste: restano honeypot e rate limit. Meglio un
+  // lead in piu da filtrare a mano che un lead vero scartato in silenzio.
+  if (trapped) return reply(200, { ok: true, id: null });
 
   const { data, errors } = validate(body);
   if (Object.keys(errors).length) {
-    return res.status(422).json({ ok: false, error: 'validation_failed', fields: errors });
+    return reply(422, { ok: false, error: 'validation_failed', fields: errors });
   }
+
+  recordHit(ipHash);   // solo ora: l'invio e legittimo
 
   try {
     if ((await recentFromIp(ipHash)) >= MAX_PER_IP) {
       res.setHeader('Retry-After', '900');
-      return res.status(429).json({
+      return reply(429, {
         ok: false,
         error: 'rate_limited',
-        message: 'Hai già inviato una richiesta di recente. Riprova tra qualche minuto.',
+        message: 'Avete già inviato una richiesta di recente. Riprovate fra qualche minuto.',
       });
     }
 
@@ -295,15 +340,22 @@ module.exports = async function handler(req, res) {
       utm: typeof body.utm === 'object' && body.utm ? body.utm : null,
     });
 
-    await notify(data, id);
-    return res.status(201).json({ ok: true, id });
+    // Il lead e salvato: da qui in poi la richiesta e riuscita comunque.
+    // Un fallimento dell'email non deve far credere all'utente che sia andata
+    // persa, altrimenti reinvia e finiamo con dei duplicati.
+    try {
+      await notify(data, id);
+    } catch (mailErr) {
+      console.error('[lead] notifica email fallita, lead salvato:', id, mailErr && mailErr.message);
+    }
+    return reply(201, { ok: true, id });
   } catch (err) {
     console.error('[lead] ', err && err.message);
     // Ultima spiaggia: il lead non deve andare perso in silenzio.
-    return res.status(502).json({
+    return reply(502, {
       ok: false,
       error: 'delivery_failed',
-      message: 'Non siamo riusciti a registrare la richiesta. Scrivici a ergest@flux-ai.it — ti rispondiamo subito.',
+      message: 'Non siamo riusciti a registrare la richiesta. Scriveteci a ergest@flux-ai.it — rispondiamo subito.',
     });
   }
 };

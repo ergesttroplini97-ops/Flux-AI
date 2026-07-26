@@ -114,6 +114,56 @@
     els.forEach(function (el) { io.observe(el); });
   }
 
+  /* ======================================================  SCROLL ANCORE */
+  /* Il bersaglio viene riletto a ogni frame: se il documento si rilancia
+     mentre l'animazione e in corso (content-visibility che materializza le
+     sezioni attraversate), lo scroll si autocorregge invece di sbagliare. */
+  function initAnchors() {
+    var offset = function () { return (document.querySelector('.nav') || {}).offsetHeight || 64; };
+    var raf = 0;
+
+    function scrollToEl(el) {
+      cancelAnimationFrame(raf);
+      if (CAP.reduce) {
+        window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - offset() - 24);
+        return;
+      }
+      var t0 = 0, DUR = 720;
+      var from = window.scrollY;
+      function step(now) {
+        if (!t0) t0 = now;
+        var u = Math.min(1, (now - t0) / DUR);
+        var e = 1 - Math.pow(1 - u, 3);
+        var target = el.getBoundingClientRect().top + window.scrollY - offset() - 24;
+        window.scrollTo(0, from + (target - from) * e);
+        if (u < 1) raf = requestAnimationFrame(step);
+        else window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - offset() - 24);
+      }
+      raf = requestAnimationFrame(step);
+    }
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      var id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      e.preventDefault();
+      scrollToEl(el);
+      history.pushState(null, '', '#' + id);
+      /* il focus deve seguire lo scroll, altrimenti la tastiera resta indietro */
+      el.setAttribute('tabindex', '-1');
+      el.focus({ preventScroll: true });
+    });
+
+    /* atterraggio corretto anche arrivando da un link esterno con hash */
+    if (location.hash.length > 1) {
+      var t = document.getElementById(location.hash.slice(1));
+      if (t) setTimeout(function () { scrollToEl(t); }, 60);
+    }
+  }
+
   /* =============================================================  NAVBAR */
   function initNav() {
     var nav = $('#nav'), prog = $('#navProgress'), burger = $('#burger'), drawer = $('#drawer');
@@ -153,8 +203,11 @@
       sections.forEach(function (s) { spy.observe(s); });
     }
 
+    var main = $('#main'), foot = $('.foot');
     function setDrawer(open) {
       drawer.hidden = !open;
+      /* inert toglie dal tab order tutto cio che sta sotto l'overlay */
+      [main, foot].forEach(function (el) { if (el) el.inert = open; });
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
       burger.innerHTML = '<svg aria-hidden="true"><use href="#i-' + (open ? 'close' : 'menu') + '"/></svg>';
@@ -184,7 +237,9 @@
       if (!queued) { queued = true; requestAnimationFrame(apply); }
     }, { passive: true });
     /* il rect e valido solo finche la pagina non scorre */
-    addEventListener('scroll', function () { if (current) rect = current.getBoundingClientRect(); }, { passive: true });
+    var refresh = function () { if (current) rect = current.getBoundingClientRect(); };
+    addEventListener('scroll', refresh, { passive: true });
+    addEventListener('resize', refresh, { passive: true });
   }
 
   /* ===============================================================  IRIS  */
@@ -316,6 +371,12 @@
         new ResizeObserver(function () { if (!running && ok) drawOnce(); }).observe(canvas);
       }
 
+      /* B11: il cambio a runtime va onorato in entrambe le direzioni. */
+      mqReduce.addEventListener('change', function () {
+        if (CAP.reduce) { stop(); intensity = 1; drawOnce(); }
+        else start();
+      });
+
       if (CAP.reduce) { intensity = 1; drawOnce(); return true; }  /* un frame statico */
       start();
       return true;
@@ -337,7 +398,7 @@
 
     function resize() {
       var r = canvas.getBoundingClientRect();
-      if (r.width < 1 || r.height < 1) { ready = false; return; }
+      if (r.width < 1 || r.height < 1) { ready = false; pause(); return; }
       st.dpr = Math.min(devicePixelRatio || 1, opts.maxDpr || CAP.dprCap);
       st.w = r.width; st.h = r.height;
       canvas.width  = Math.round(r.width  * st.dpr);
@@ -350,7 +411,7 @@
 
     function loop(now) {
       raf = requestAnimationFrame(loop);
-      if (!ready) return;
+      if (!ready) { pause(); return; }
       /* Primo frame: fissa l'origine dei tempi e disegna. Senza questo ramo,
          con il cap a 30fps il dt di ripiego (16.7) resta sempre sotto la
          soglia e "last" non viene mai valorizzato: il loop gira a vuoto. */
@@ -366,13 +427,14 @@
     function play()  { if (raf) return; last = 0; raf = requestAnimationFrame(loop); }
     function pause() { cancelAnimationFrame(raf); raf = 0; }
     function sync() {
-      var on = inView && !document.hidden && !CAP.reduce && api.gate();
+      var on = inView && !document.hidden && api.gate() && (!CAP.reduce || api.userDriven);
       if (on) play();
       else { pause(); if (ready && started) scene.draw(ctx, st, 0); }
     }
 
     api = {
       gate: function () { return true; },
+      userDriven: false,   /* true = riproduzione avviata esplicitamente dall'utente */
       state: st, play: play, pause: pause, sync: sync, resize: resize,
       renderFrame: function () { if (ready) scene.draw(ctx, st, 0); }
     };
@@ -455,16 +517,28 @@
 
     var stage = mountStage(chart, chartScene, { fps: 30 });
     var timer = null;
+
+    if (CAP.reduce || !('IntersectionObserver' in window)) {
+      chartScene.p = 1; stage.renderFrame();
+      for (var j = 0; j < 4; j++) push();
+      return;
+    }
+
+    /* B15: il timer va fermato anche a scheda nascosta, non solo fuori viewport */
+    var inView = false;
+    function syncTimer() {
+      var on = inView && !document.hidden;
+      if (on && !timer) timer = setInterval(push, 2600);
+      else if (!on && timer) { clearInterval(timer); timer = null; }
+    }
+    document.addEventListener('visibilitychange', syncTimer);
+
     var io = new IntersectionObserver(function (e) {
-      if (e[0].isIntersecting && !timer) {
-        push();
-        if (!CAP.reduce) timer = setInterval(push, 2600);
-      } else if (!e[0].isIntersecting && timer) {
-        clearInterval(timer); timer = null;
-      }
+      if (e[0].isIntersecting && !inView) push();
+      inView = e[0].isIntersecting;
+      syncTimer();
     }, { threshold: 0.25 });
     io.observe(root);
-    if (CAP.reduce) { chartScene.p = 1; stage.renderFrame(); for (var j = 0; j < 4; j++) push(); }
   }
 
   /* ==========================================  RITRATTI GENERATIVI FOUNDER */
@@ -710,7 +784,7 @@
     /* 1.2s: dentro la prima clip, oltre la dissolvenza d'apertura.
    A tempo 0 il fade-in dipinge il frame di nero e il poster sparisce. */
     var reel = { time: 1.2, playing: false };
-    var lastChap = -1;
+    var lastChap = -1, lastSec = -1;
 
     function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + Math.floor(s % 60)).slice(-2); }
     function ui(idx) {
@@ -718,8 +792,14 @@
       fill.style.width = (p * 100) + '%';
       knob.style.left = (p * 100) + '%';
       timeEl.textContent = fmt(reel.time) + ' / ' + fmt(TOTAL);
-      track.setAttribute('aria-valuenow', Math.round(p * 100));
-      track.setAttribute('aria-valuetext', fmt(reel.time) + ' di ' + fmt(TOTAL) + ', ' + CLIPS[idx].name);
+      /* ARIA aggiornata solo al cambio di secondo: a ogni frame sarebbe un
+         annuncio continuo per chi usa uno screen reader. */
+      var sec = Math.floor(reel.time);
+      if (sec !== lastSec) {
+        lastSec = sec;
+        track.setAttribute('aria-valuenow', Math.round(p * 100));
+        track.setAttribute('aria-valuetext', fmt(reel.time) + ' di ' + fmt(TOTAL) + ', ' + CLIPS[idx].name);
+      }
       if (idx !== lastChap) {
         lastChap = idx;
         cap.textContent = (idx + 1) + '. ' + CLIPS[idx].name;
@@ -751,6 +831,7 @@
 
     /* in pausa il rAF e completamente fermo: 0% CPU */
     stage.gate = function () { return reel.playing; };
+    stage.userDriven = true;   /* lo showreel parte solo su click: reduced-motion non lo vieta */
 
     function play()  { reel.playing = true;  root.classList.add('is-playing');    btn.setAttribute('aria-label', 'Metti in pausa'); stage.sync(); }
     function pause() { reel.playing = false; root.classList.remove('is-playing'); btn.setAttribute('aria-label', 'Riproduci'); stage.sync(); stage.renderFrame(); }
@@ -770,10 +851,16 @@
       dragging = true; track.setPointerCapture(e.pointerId); seekFrom(e);
     });
     track.addEventListener('pointermove', function (e) { if (dragging) seekFrom(e); });
-    track.addEventListener('pointerup', function (e) {
+    function endDrag(e) {
       dragging = false;
-      try { track.releasePointerCapture(e.pointerId); } catch (x) { /* gia rilasciato */ }
-    });
+      try { if (e && e.pointerId != null) track.releasePointerCapture(e.pointerId); }
+      catch (x) { /* gia rilasciato */ }
+    }
+    /* pointercancel e lostpointercapture sono obbligatori: senza, dopo un
+       gesto interrotto il semplice passaggio del puntatore faceva seek. */
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('lostpointercapture', endDrag);
     track.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') { e.preventDefault(); seek(reel.time + 2); }
       else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(reel.time - 2); }
@@ -799,6 +886,7 @@
     });
 
     stage.renderFrame();
+    lastChap = -1;
     ui(0);
   }
 
@@ -807,7 +895,9 @@
     var form = $('#leadForm');
     if (!form) return;
     var status = $('#formStatus'), submit = $('#formSubmit');
-    var renderedAt = Date.now();
+    /* performance.now() e monotono: niente scarto d'orologio, niente scadenza
+       a 6 ore su una scheda lasciata aperta. */
+    var renderedAt = performance.now();
 
     /* Le CTA di servizio/prodotto/corso preselezionano il campo interesse. */
     document.addEventListener('click', function (e) {
@@ -819,7 +909,7 @@
 
     var RULES = {
       nome:      function (v) { return v.trim().length >= 2 || 'Inserite nome e cognome.'; },
-      email:     function (v) { return /^[^\s@,;<>()[\]\\]+@[^\s@.,;<>()[\]\\]+\.[A-Za-z]{2,63}$/.test(v.trim()) || 'Inserite un indirizzo email valido.'; },
+      email:     function (v) { return /^[^\s@,;<>()[\]\\]+@([^\s@.,;<>()[\]\\]+\.)+[A-Za-z]{2,63}$/.test(v.trim()) || 'Inserite un indirizzo email valido.'; },
       telefono:  function (v) { return !v.trim() || /^[+0-9][0-9\s.\-/()]{5,24}$/.test(v.trim()) || 'Numero di telefono non valido.'; },
       interesse: function (v) { return !!v || 'Selezionate di cosa avete bisogno.'; },
       messaggio: function (v) { return v.trim().length >= 20 || 'Descrivete la richiesta in almeno 20 caratteri.'; },
@@ -881,8 +971,10 @@
         : 'Richiedi l’analisi gratuita<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg>';
     }
 
+    var sending = false;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (sending) return;
       var names = Object.keys(RULES);
       var bad = names.filter(function (n) { return !validate(n); });
       if (bad.length) {
@@ -901,13 +993,14 @@
       var mk = form.elements.consenso_marketing;
       payload.consenso_marketing = mk ? mk.checked : false;
       payload.website = (form.elements.website || {}).value || '';
-      payload.ts = renderedAt;
+      payload.elapsed = Math.round(performance.now() - renderedAt);
       payload.source_page = location.pathname + location.hash;
 
       var utm = {};
       new URLSearchParams(location.search).forEach(function (v, k) { if (/^utm_/.test(k)) utm[k] = v; });
       payload.utm = Object.keys(utm).length ? utm : null;
 
+      sending = true;
       busy(true);
       status.hidden = true;
       var ctrl = new AbortController();
@@ -922,6 +1015,7 @@
         return res.json().catch(function () { return {}; }).then(function (data) { return { res: res, data: data }; });
       }).then(function (r) {
         clearTimeout(to);
+        sending = false;
         busy(false);
         if (r.res.ok && r.data.ok) {
           form.innerHTML = '<div class="form-done" role="status" tabindex="-1">' +
@@ -933,6 +1027,7 @@
           return;
         }
         if (r.res.status === 422 && r.data.fields) {
+          names.forEach(function (k) { setError(k, null); });   /* ripulisci prima */
           Object.keys(r.data.fields).forEach(function (k) { setError(k, r.data.fields[k]); });
           say('Alcuni campi non sono validi. Controllate le indicazioni qui sopra.', false);
           return;
@@ -940,6 +1035,7 @@
         say(r.data.message || 'Non siamo riusciti a inviare la richiesta. Scriveteci a ergest@flux-ai.it — rispondiamo subito.', false);
       }).catch(function (err) {
         clearTimeout(to);
+        sending = false;
         busy(false);
         say(err && err.name === 'AbortError'
           ? 'La richiesta ha impiegato troppo tempo. Riprovate, oppure scriveteci a ergest@flux-ai.it.'
@@ -953,15 +1049,13 @@
     var y = $('#year'); if (y) y.textContent = new Date().getFullYear();
     var frag = $('#iris-frag');
     if (frag) Iris.init($('#diaphragm'), frag.textContent.trim());
-    initNav();
-    initReveal();
-    initCounters();
-    initLit();
-    initRail();
-    initConsole();
-    initPortraits();
-    initShowreel();
-    initForm();
+    /* Ogni modulo e isolato: se uno fallisce (API mancante, DOM inatteso)
+       gli altri devono comunque partire. Prima un'eccezione in initConsole
+       impediva l'inizializzazione del FORM, cioe dell'unica conversione. */
+    [initAnchors, initNav, initReveal, initCounters, initLit, initRail,
+     initConsole, initPortraits, initShowreel, initForm].forEach(function (fn) {
+      try { fn(); } catch (err) { console.error('[flux] ' + fn.name + ':', err); }
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

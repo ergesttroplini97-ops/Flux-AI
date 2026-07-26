@@ -58,6 +58,68 @@ ${js}
 
 writeFileSync(new URL('./index.html', import.meta.url), html);
 
+/* ---------------------------------------------------------------- PAGINE
+   Documenti legali e ringraziamento. Stesso design system, chrome minimo:
+   la checkbox di consenso del form puntava a /privacy, che restituiva 404 —
+   far accettare un'informativa inesistente e un problema, non un link rotto. */
+const PAGES = [
+  ['privacy',       'Informativa privacy'],
+  ['cookie-policy', 'Cookie policy'],
+  ['termini',       'Termini e avvertenze'],
+  ['grazie',        'Richiesta ricevuta'],
+];
+const navLogo = logo();
+for (const [slug, title] of PAGES) {
+  const body = read(`./src/pages/${slug}.html`);
+  const noindex = slug === 'grazie' ? '<meta name="robots" content="noindex, follow">' : '';
+  const page = `<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0C12">
+<meta name="color-scheme" content="dark">
+<title>${title} — Flux AI</title>
+<meta name="description" content="${title} di Flux AI.">
+<link rel="canonical" href="https://www.flux-ai.it/${slug}">
+${noindex}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+${CSS}
+${read('./src/06-doc.css')}
+</style>
+</head>
+<body class="doc">
+<a class="skip-link" href="#doc">Vai al contenuto</a>
+<header class="nav">
+  <div class="nav__inner wrap-wide">
+    <a class="nav__brand" href="/" aria-label="Flux AI — torna alla home">
+      <span class="nav__mark" aria-hidden="true">${navLogo}</span>
+      <span class="nav__name">Flux<span class="nav__name-ai">AI</span></span>
+    </a>
+    <div class="nav__actions"><a class="btn btn--secondary" href="/">Torna al sito</a></div>
+  </div>
+</header>
+<main class="doc__main wrap" id="doc">
+${body.trim()}
+</main>
+<footer class="foot">
+  <div class="wrap-wide foot__bottom">
+    <p class="meta">© ${new Date().getFullYear()} Flux AI. Tutti i diritti riservati.</p>
+    <nav class="foot__legal" aria-label="Note legali">
+      <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
+`;
+  writeFileSync(new URL(`./${slug}.html`, import.meta.url), page);
+}
+console.log('pagine: ' + PAGES.map(p => p[0] + '.html').join(', '));
+
 const kb = (s) => (Buffer.byteLength(s, 'utf8') / 1024).toFixed(1).padStart(7) + ' KB';
 let gz = '';
 try {

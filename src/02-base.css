@@ -7,10 +7,16 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + var(--sp-5));
   color-scheme: dark;
 }
+/* Lo scroll morbido nativo litiga con content-visibility: mentre l'animazione
+   e in corso le sezioni attraversate vengono materializzate, l'altezza del
+   documento cambia sotto i piedi e l'ancora atterra fuori bersaglio (fino a
+   500px di errore, misurato). Con JS lo gestiamo noi ricalcolando il bersaglio
+   a ogni frame; senza JS torna il comportamento nativo. */
+@media (scripting: none) { html { scroll-behavior: smooth; } }
+html.no-js { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
@@ -109,7 +115,7 @@ table { border-collapse: collapse; width: 100%; }
 }
 
 /* Numeri in slot tabellari — leggono come la lettura di uno strumento. */
-.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining-nums; }
 
 .muted  { color: var(--text-secondary); }
 .meta   { color: var(--text-tertiary); }
@@ -173,6 +179,12 @@ table { border-collapse: collapse; width: 100%; }
   will-change: opacity, filter, transform;
 }
 .reveal.is-revealed { opacity: 1; filter: blur(0); transform: none; will-change: auto; }
+
+/* Senza JS nessuno aggiunge .is-revealed: meta pagina resterebbe invisibile.
+   `scripting: none` copre i browser moderni; il <noscript> copre gli altri. */
+@media (scripting: none) {
+  .reveal { opacity: 1; filter: none; transform: none; }
+}
 
 /* --------------------------------------------------- PREFERS-REDUCED-MOTION */
 @media (prefers-reduced-motion: reduce) {

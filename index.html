@@ -34,8 +34,7 @@
 <!-- I font sono auto-ospitati: nessuna richiesta a terze parti, quindi
      nessun trasferimento di IP fuori dal sito e nessun banner cookie dovuto
      per questo motivo. Precarico i due pesi che servono al primo paint. -->
-<link rel="preload" href="fonts/geist-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/geist-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
 
 <script type="application/ld+json">
 {
@@ -215,19 +214,17 @@
 
 /* ============================================================================
    FONT AUTO-OSPITATI
-   Geist / Geist Mono / Instrument Serif — SIL Open Font License 1.1 (vedi
-   fonts/OFL.txt). Subset ai caratteri realmente usati (latino + accenti
-   italiani + simboli tipografici e valuta): 287 KB -> 128 KB.
-   Nessuna richiesta a terze parti: la CSP resta 'self', niente round-trip DNS
-   verso fonts.googleapis.com, niente FOUT da terzo dominio.
+   Geist / Geist Mono / Instrument Serif — SIL Open Font License 1.1 (fonts/OFL.txt).
+   Subset ai caratteri realmente usati: latino, accenti italiani, simboli
+   tipografici e valuta.
+   Geist e Geist Mono sono VARIABILI: un solo file copre tutti i pesi. Dichiararli
+   quattro volte faceva scaricare lo stesso file quattro volte (~80 KB sprecati).
+   Nessuna richiesta a terze parti: CSP 'self', niente DNS aggiuntivo, niente
+   trasferimento di IP fuori dal sito.
    ========================================================================= */
-@font-face{font-family:'Geist';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/geist-400.woff2) format('woff2')}
-@font-face{font-family:'Geist';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/geist-500.woff2) format('woff2')}
-@font-face{font-family:'Geist';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/geist-700.woff2) format('woff2')}
-@font-face{font-family:'Geist';font-style:normal;font-weight:900;font-display:swap;src:url(fonts/geist-900.woff2) format('woff2')}
-@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/geist-mono-400.woff2) format('woff2')}
-@font-face{font-family:'Geist Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/geist-mono-500.woff2) format('woff2')}
-@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/instrument-serif-400-italic.woff2) format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/geist.woff2) format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/geist-mono.woff2) format('woff2')}
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url(fonts/instrument-serif-italic.woff2) format('woff2')}
 
 /* ============================================================================
    RESET + BASE + TIPOGRAFIA
@@ -238,10 +235,16 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + var(--sp-5));
   color-scheme: dark;
 }
+/* Lo scroll morbido nativo litiga con content-visibility: mentre l'animazione
+   e in corso le sezioni attraversate vengono materializzate, l'altezza del
+   documento cambia sotto i piedi e l'ancora atterra fuori bersaglio (fino a
+   500px di errore, misurato). Con JS lo gestiamo noi ricalcolando il bersaglio
+   a ogni frame; senza JS torna il comportamento nativo. */
+@media (scripting: none) { html { scroll-behavior: smooth; } }
+html.no-js { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
@@ -340,7 +343,7 @@ table { border-collapse: collapse; width: 100%; }
 }
 
 /* Numeri in slot tabellari — leggono come la lettura di uno strumento. */
-.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining-nums; }
 
 .muted  { color: var(--text-secondary); }
 .meta   { color: var(--text-tertiary); }
@@ -404,6 +407,12 @@ table { border-collapse: collapse; width: 100%; }
   will-change: opacity, filter, transform;
 }
 .reveal.is-revealed { opacity: 1; filter: blur(0); transform: none; will-change: auto; }
+
+/* Senza JS nessuno aggiunge .is-revealed: meta pagina resterebbe invisibile.
+   `scripting: none` copre i browser moderni; il <noscript> copre gli altri. */
+@media (scripting: none) {
+  .reveal { opacity: 1; filter: none; transform: none; }
+}
 
 /* --------------------------------------------------- PREFERS-REDUCED-MOTION */
 @media (prefers-reduced-motion: reduce) {
@@ -589,8 +598,22 @@ table { border-collapse: collapse; width: 100%; }
   color: var(--text-tertiary); max-width: 68ch; line-height: 1.55;
 }
 
-/* Il browser salta rendering e layout di cio che non e visibile. */
-.section:not(.hero) { content-visibility: auto; contain-intrinsic-size: auto 800px; }
+/* Il browser salta rendering e layout di cio che non e visibile.
+   La stima va data per sezione: con un valore unico di 800px l'altezza del
+   documento cresceva di ~2200px durante uno scroll animato e le ancore
+   atterravano fuori bersaglio. `auto` memorizza poi l'altezza reale. */
+.section:not(.hero) { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+#problema       { contain-intrinsic-size: auto 1127px; }
+#servizi        { contain-intrinsic-size: auto 2524px; }
+#metodo         { contain-intrinsic-size: auto 1826px; }
+#risultati      { contain-intrinsic-size: auto 1328px; }
+#showreel-sec   { contain-intrinsic-size: auto 1726px; }
+#prodotti       { contain-intrinsic-size: auto 1726px; }
+#corsi          { contain-intrinsic-size: auto 1628px; }
+#studio         { contain-intrinsic-size: auto 1826px; }
+#faq            { contain-intrinsic-size: auto 1428px; }
+#contatti       { contain-intrinsic-size: auto 1726px; }
+#rischio        { contain-intrinsic-size: auto 388px; }
 
 /* ------------------------------------------------------------------ NAVBAR */
 .nav {
@@ -842,7 +865,7 @@ table { border-collapse: collapse; width: 100%; }
 .console__stats span { display: block; font-family: var(--font-mono); font-size: var(--fs-micro);
                        letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
 .console__stats b { display: block; margin-top: var(--sp-2); font-size: 1.5rem; font-weight: 500;
-                    letter-spacing: -.02em; font-variant-numeric: tabular-nums lining; }
+                    letter-spacing: -.02em; font-variant-numeric: tabular-nums lining-nums; }
 .console__chart { width: 100%; height: 132px; }
 .console__log { display: grid; gap: 4px; min-height: 150px; align-content: start; }
 .console__log li {
@@ -1252,6 +1275,7 @@ table { border-collapse: collapse; width: 100%; }
 
 <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 4.5v15M15.5 4.5v15"/></symbol>
 </svg>
+<noscript><style>.reveal{opacity:1!important;filter:none!important;transform:none!important}.panel[hidden]{display:block!important}.rail{display:none}</style></noscript>
 <a class="skip-link" href="#main">Vai al contenuto</a>
 
 <!-- ══════════════════════════════════════════════════════════════ NAVBAR ══ -->
@@ -1273,7 +1297,7 @@ table { border-collapse: collapse; width: 100%; }
 
     <div class="nav__actions">
       <a class="btn btn--primary nav__cta" href="#contatti">Parliamone</a>
-      <button class="nav__burger" id="burger" aria-label="Apri il menu" aria-expanded="false" aria-controls="drawer">
+      <button class="nav__burger" id="burger" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="drawer">
         <svg aria-hidden="true"><use href="#i-menu"/></svg>
       </button>
     </div>
@@ -1689,11 +1713,11 @@ table { border-collapse: collapse; width: 100%; }
         <span>Idea</span><span>Sviluppo</span><span>Beta</span><span>Disponibile</span>
       </div>
       <div class="rail__nodes" role="tablist" aria-label="Prodotti Flux AI">
-        <button class="rail__node" role="tab" id="tab-pouff-a" aria-controls="p-pouff-a" aria-selected="true"  style="--pos:93%"><span class="rail__pin"></span><span class="rail__label">POUFF Adaptive</span></button>
-        <button class="rail__node" role="tab" id="tab-pouff-c" aria-controls="p-pouff-c" aria-selected="false" style="--pos:74%"><span class="rail__pin"></span><span class="rail__label">POUFF Continuous</span></button>
-        <button class="rail__node" role="tab" id="tab-pips"    aria-controls="p-pips"    aria-selected="false" style="--pos:56%"><span class="rail__pin"></span><span class="rail__label">Pips.AI</span></button>
-        <button class="rail__node" role="tab" id="tab-nexa"    aria-controls="p-nexa"    aria-selected="false" style="--pos:33%"><span class="rail__pin"></span><span class="rail__label">Nexa</span></button>
-        <button class="rail__node" role="tab" id="tab-clip"    aria-controls="p-clip"    aria-selected="false" style="--pos:9%"><span class="rail__pin"></span><span class="rail__label">ProntoClip</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-pouff-a" aria-controls="p-pouff-a" aria-selected="true"  style="--pos:93%"><span class="rail__pin"></span><span class="rail__label">POUFF Adaptive</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-pouff-c" aria-controls="p-pouff-c" aria-selected="false" style="--pos:74%"><span class="rail__pin"></span><span class="rail__label">POUFF Continuous</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-pips"    aria-controls="p-pips"    aria-selected="false" style="--pos:56%"><span class="rail__pin"></span><span class="rail__label">Pips.AI</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-nexa"    aria-controls="p-nexa"    aria-selected="false" style="--pos:33%"><span class="rail__pin"></span><span class="rail__label">Nexa</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-clip"    aria-controls="p-clip"    aria-selected="false" style="--pos:9%"><span class="rail__pin"></span><span class="rail__label">ProntoClip</span></button>
       </div>
     </div>
 
@@ -1975,7 +1999,17 @@ table { border-collapse: collapse; width: 100%; }
       </ul>
     </div>
 
-    <div class="contact__form-wrap reveal"><form class="card card--pad lead-form" id="leadForm" novalidate>
+    <div class="contact__form-wrap reveal"><!-- action/method reali: senza JS il browser fa un POST vero all'endpoint,
+     che risponde con un redirect a /grazie.html. Prima faceva GET su se stesso
+     e i dati personali finivano nella URL. -->
+<form class="card card--pad lead-form" id="leadForm" method="post" action="/api/lead"
+      enctype="application/x-www-form-urlencoded" novalidate>
+  <noscript>
+    <p class="lead-form__status" data-state="ok" style="display:flex">
+      Il modulo funziona anche senza JavaScript. Se preferite, scriveteci
+      direttamente a <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>.
+    </p>
+  </noscript>
   <p class="eyebrow lead-form__title">Richiesta di analisi</p>
 
   <div class="lead-form__grid">
@@ -1988,7 +2022,9 @@ table { border-collapse: collapse; width: 100%; }
 
     <div class="field" data-field="azienda">
       <label for="f-azienda">Studio o azienda</label>
-      <input class="input" id="f-azienda" name="azienda" type="text" autocomplete="organization" maxlength="120">
+      <input class="input" id="f-azienda" name="azienda" type="text" autocomplete="organization"
+             aria-describedby="e-azienda" maxlength="120">
+      <p class="field-error" id="e-azienda"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
     </div>
 
     <div class="field" data-field="email">
@@ -2023,7 +2059,7 @@ table { border-collapse: collapse; width: 100%; }
 
     <div class="field" data-field="budget">
       <label for="f-budget">Budget indicativo <span class="meta">(facoltativo)</span></label>
-      <select class="select" id="f-budget" name="budget">
+      <select class="select" id="f-budget" name="budget" aria-describedby="e-budget">
         <option value="">Preferisco non indicarlo</option>
         <option value="&lt;2k">Sotto 2.000 €</option>
         <option value="2k-5k">2.000 – 5.000 €</option>
@@ -2031,6 +2067,7 @@ table { border-collapse: collapse; width: 100%; }
         <option value="&gt;15k">Oltre 15.000 €</option>
         <option value="da-definire">Da definire insieme</option>
       </select>
+      <p class="field-error" id="e-budget"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
     </div>
   </div>
 
@@ -2439,6 +2476,56 @@ void main(){
     els.forEach(function (el) { io.observe(el); });
   }
 
+  /* ======================================================  SCROLL ANCORE */
+  /* Il bersaglio viene riletto a ogni frame: se il documento si rilancia
+     mentre l'animazione e in corso (content-visibility che materializza le
+     sezioni attraversate), lo scroll si autocorregge invece di sbagliare. */
+  function initAnchors() {
+    var offset = function () { return (document.querySelector('.nav') || {}).offsetHeight || 64; };
+    var raf = 0;
+
+    function scrollToEl(el) {
+      cancelAnimationFrame(raf);
+      if (CAP.reduce) {
+        window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - offset() - 24);
+        return;
+      }
+      var t0 = 0, DUR = 720;
+      var from = window.scrollY;
+      function step(now) {
+        if (!t0) t0 = now;
+        var u = Math.min(1, (now - t0) / DUR);
+        var e = 1 - Math.pow(1 - u, 3);
+        var target = el.getBoundingClientRect().top + window.scrollY - offset() - 24;
+        window.scrollTo(0, from + (target - from) * e);
+        if (u < 1) raf = requestAnimationFrame(step);
+        else window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - offset() - 24);
+      }
+      raf = requestAnimationFrame(step);
+    }
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      var id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      e.preventDefault();
+      scrollToEl(el);
+      history.pushState(null, '', '#' + id);
+      /* il focus deve seguire lo scroll, altrimenti la tastiera resta indietro */
+      el.setAttribute('tabindex', '-1');
+      el.focus({ preventScroll: true });
+    });
+
+    /* atterraggio corretto anche arrivando da un link esterno con hash */
+    if (location.hash.length > 1) {
+      var t = document.getElementById(location.hash.slice(1));
+      if (t) setTimeout(function () { scrollToEl(t); }, 60);
+    }
+  }
+
   /* =============================================================  NAVBAR */
   function initNav() {
     var nav = $('#nav'), prog = $('#navProgress'), burger = $('#burger'), drawer = $('#drawer');
@@ -2478,8 +2565,11 @@ void main(){
       sections.forEach(function (s) { spy.observe(s); });
     }
 
+    var main = $('#main'), foot = $('.foot');
     function setDrawer(open) {
       drawer.hidden = !open;
+      /* inert toglie dal tab order tutto cio che sta sotto l'overlay */
+      [main, foot].forEach(function (el) { if (el) el.inert = open; });
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
       burger.innerHTML = '<svg aria-hidden="true"><use href="#i-' + (open ? 'close' : 'menu') + '"/></svg>';
@@ -2509,7 +2599,9 @@ void main(){
       if (!queued) { queued = true; requestAnimationFrame(apply); }
     }, { passive: true });
     /* il rect e valido solo finche la pagina non scorre */
-    addEventListener('scroll', function () { if (current) rect = current.getBoundingClientRect(); }, { passive: true });
+    var refresh = function () { if (current) rect = current.getBoundingClientRect(); };
+    addEventListener('scroll', refresh, { passive: true });
+    addEventListener('resize', refresh, { passive: true });
   }
 
   /* ===============================================================  IRIS  */
@@ -2641,6 +2733,12 @@ void main(){
         new ResizeObserver(function () { if (!running && ok) drawOnce(); }).observe(canvas);
       }
 
+      /* B11: il cambio a runtime va onorato in entrambe le direzioni. */
+      mqReduce.addEventListener('change', function () {
+        if (CAP.reduce) { stop(); intensity = 1; drawOnce(); }
+        else start();
+      });
+
       if (CAP.reduce) { intensity = 1; drawOnce(); return true; }  /* un frame statico */
       start();
       return true;
@@ -2662,7 +2760,7 @@ void main(){
 
     function resize() {
       var r = canvas.getBoundingClientRect();
-      if (r.width < 1 || r.height < 1) { ready = false; return; }
+      if (r.width < 1 || r.height < 1) { ready = false; pause(); return; }
       st.dpr = Math.min(devicePixelRatio || 1, opts.maxDpr || CAP.dprCap);
       st.w = r.width; st.h = r.height;
       canvas.width  = Math.round(r.width  * st.dpr);
@@ -2675,7 +2773,7 @@ void main(){
 
     function loop(now) {
       raf = requestAnimationFrame(loop);
-      if (!ready) return;
+      if (!ready) { pause(); return; }
       /* Primo frame: fissa l'origine dei tempi e disegna. Senza questo ramo,
          con il cap a 30fps il dt di ripiego (16.7) resta sempre sotto la
          soglia e "last" non viene mai valorizzato: il loop gira a vuoto. */
@@ -2691,13 +2789,14 @@ void main(){
     function play()  { if (raf) return; last = 0; raf = requestAnimationFrame(loop); }
     function pause() { cancelAnimationFrame(raf); raf = 0; }
     function sync() {
-      var on = inView && !document.hidden && !CAP.reduce && api.gate();
+      var on = inView && !document.hidden && api.gate() && (!CAP.reduce || api.userDriven);
       if (on) play();
       else { pause(); if (ready && started) scene.draw(ctx, st, 0); }
     }
 
     api = {
       gate: function () { return true; },
+      userDriven: false,   /* true = riproduzione avviata esplicitamente dall'utente */
       state: st, play: play, pause: pause, sync: sync, resize: resize,
       renderFrame: function () { if (ready) scene.draw(ctx, st, 0); }
     };
@@ -2780,16 +2879,28 @@ void main(){
 
     var stage = mountStage(chart, chartScene, { fps: 30 });
     var timer = null;
+
+    if (CAP.reduce || !('IntersectionObserver' in window)) {
+      chartScene.p = 1; stage.renderFrame();
+      for (var j = 0; j < 4; j++) push();
+      return;
+    }
+
+    /* B15: il timer va fermato anche a scheda nascosta, non solo fuori viewport */
+    var inView = false;
+    function syncTimer() {
+      var on = inView && !document.hidden;
+      if (on && !timer) timer = setInterval(push, 2600);
+      else if (!on && timer) { clearInterval(timer); timer = null; }
+    }
+    document.addEventListener('visibilitychange', syncTimer);
+
     var io = new IntersectionObserver(function (e) {
-      if (e[0].isIntersecting && !timer) {
-        push();
-        if (!CAP.reduce) timer = setInterval(push, 2600);
-      } else if (!e[0].isIntersecting && timer) {
-        clearInterval(timer); timer = null;
-      }
+      if (e[0].isIntersecting && !inView) push();
+      inView = e[0].isIntersecting;
+      syncTimer();
     }, { threshold: 0.25 });
     io.observe(root);
-    if (CAP.reduce) { chartScene.p = 1; stage.renderFrame(); for (var j = 0; j < 4; j++) push(); }
   }
 
   /* ==========================================  RITRATTI GENERATIVI FOUNDER */
@@ -3035,7 +3146,7 @@ void main(){
     /* 1.2s: dentro la prima clip, oltre la dissolvenza d'apertura.
    A tempo 0 il fade-in dipinge il frame di nero e il poster sparisce. */
     var reel = { time: 1.2, playing: false };
-    var lastChap = -1;
+    var lastChap = -1, lastSec = -1;
 
     function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + Math.floor(s % 60)).slice(-2); }
     function ui(idx) {
@@ -3043,8 +3154,14 @@ void main(){
       fill.style.width = (p * 100) + '%';
       knob.style.left = (p * 100) + '%';
       timeEl.textContent = fmt(reel.time) + ' / ' + fmt(TOTAL);
-      track.setAttribute('aria-valuenow', Math.round(p * 100));
-      track.setAttribute('aria-valuetext', fmt(reel.time) + ' di ' + fmt(TOTAL) + ', ' + CLIPS[idx].name);
+      /* ARIA aggiornata solo al cambio di secondo: a ogni frame sarebbe un
+         annuncio continuo per chi usa uno screen reader. */
+      var sec = Math.floor(reel.time);
+      if (sec !== lastSec) {
+        lastSec = sec;
+        track.setAttribute('aria-valuenow', Math.round(p * 100));
+        track.setAttribute('aria-valuetext', fmt(reel.time) + ' di ' + fmt(TOTAL) + ', ' + CLIPS[idx].name);
+      }
       if (idx !== lastChap) {
         lastChap = idx;
         cap.textContent = (idx + 1) + '. ' + CLIPS[idx].name;
@@ -3076,6 +3193,7 @@ void main(){
 
     /* in pausa il rAF e completamente fermo: 0% CPU */
     stage.gate = function () { return reel.playing; };
+    stage.userDriven = true;   /* lo showreel parte solo su click: reduced-motion non lo vieta */
 
     function play()  { reel.playing = true;  root.classList.add('is-playing');    btn.setAttribute('aria-label', 'Metti in pausa'); stage.sync(); }
     function pause() { reel.playing = false; root.classList.remove('is-playing'); btn.setAttribute('aria-label', 'Riproduci'); stage.sync(); stage.renderFrame(); }
@@ -3095,10 +3213,16 @@ void main(){
       dragging = true; track.setPointerCapture(e.pointerId); seekFrom(e);
     });
     track.addEventListener('pointermove', function (e) { if (dragging) seekFrom(e); });
-    track.addEventListener('pointerup', function (e) {
+    function endDrag(e) {
       dragging = false;
-      try { track.releasePointerCapture(e.pointerId); } catch (x) { /* gia rilasciato */ }
-    });
+      try { if (e && e.pointerId != null) track.releasePointerCapture(e.pointerId); }
+      catch (x) { /* gia rilasciato */ }
+    }
+    /* pointercancel e lostpointercapture sono obbligatori: senza, dopo un
+       gesto interrotto il semplice passaggio del puntatore faceva seek. */
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('lostpointercapture', endDrag);
     track.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') { e.preventDefault(); seek(reel.time + 2); }
       else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(reel.time - 2); }
@@ -3124,6 +3248,7 @@ void main(){
     });
 
     stage.renderFrame();
+    lastChap = -1;
     ui(0);
   }
 
@@ -3132,7 +3257,9 @@ void main(){
     var form = $('#leadForm');
     if (!form) return;
     var status = $('#formStatus'), submit = $('#formSubmit');
-    var renderedAt = Date.now();
+    /* performance.now() e monotono: niente scarto d'orologio, niente scadenza
+       a 6 ore su una scheda lasciata aperta. */
+    var renderedAt = performance.now();
 
     /* Le CTA di servizio/prodotto/corso preselezionano il campo interesse. */
     document.addEventListener('click', function (e) {
@@ -3144,7 +3271,7 @@ void main(){
 
     var RULES = {
       nome:      function (v) { return v.trim().length >= 2 || 'Inserite nome e cognome.'; },
-      email:     function (v) { return /^[^\s@,;<>()[\]\\]+@[^\s@.,;<>()[\]\\]+\.[A-Za-z]{2,63}$/.test(v.trim()) || 'Inserite un indirizzo email valido.'; },
+      email:     function (v) { return /^[^\s@,;<>()[\]\\]+@([^\s@.,;<>()[\]\\]+\.)+[A-Za-z]{2,63}$/.test(v.trim()) || 'Inserite un indirizzo email valido.'; },
       telefono:  function (v) { return !v.trim() || /^[+0-9][0-9\s.\-/()]{5,24}$/.test(v.trim()) || 'Numero di telefono non valido.'; },
       interesse: function (v) { return !!v || 'Selezionate di cosa avete bisogno.'; },
       messaggio: function (v) { return v.trim().length >= 20 || 'Descrivete la richiesta in almeno 20 caratteri.'; },
@@ -3206,8 +3333,10 @@ void main(){
         : 'Richiedi l’analisi gratuita<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg>';
     }
 
+    var sending = false;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (sending) return;
       var names = Object.keys(RULES);
       var bad = names.filter(function (n) { return !validate(n); });
       if (bad.length) {
@@ -3226,13 +3355,14 @@ void main(){
       var mk = form.elements.consenso_marketing;
       payload.consenso_marketing = mk ? mk.checked : false;
       payload.website = (form.elements.website || {}).value || '';
-      payload.ts = renderedAt;
+      payload.elapsed = Math.round(performance.now() - renderedAt);
       payload.source_page = location.pathname + location.hash;
 
       var utm = {};
       new URLSearchParams(location.search).forEach(function (v, k) { if (/^utm_/.test(k)) utm[k] = v; });
       payload.utm = Object.keys(utm).length ? utm : null;
 
+      sending = true;
       busy(true);
       status.hidden = true;
       var ctrl = new AbortController();
@@ -3247,6 +3377,7 @@ void main(){
         return res.json().catch(function () { return {}; }).then(function (data) { return { res: res, data: data }; });
       }).then(function (r) {
         clearTimeout(to);
+        sending = false;
         busy(false);
         if (r.res.ok && r.data.ok) {
           form.innerHTML = '<div class="form-done" role="status" tabindex="-1">' +
@@ -3258,6 +3389,7 @@ void main(){
           return;
         }
         if (r.res.status === 422 && r.data.fields) {
+          names.forEach(function (k) { setError(k, null); });   /* ripulisci prima */
           Object.keys(r.data.fields).forEach(function (k) { setError(k, r.data.fields[k]); });
           say('Alcuni campi non sono validi. Controllate le indicazioni qui sopra.', false);
           return;
@@ -3265,6 +3397,7 @@ void main(){
         say(r.data.message || 'Non siamo riusciti a inviare la richiesta. Scriveteci a ergest@flux-ai.it — rispondiamo subito.', false);
       }).catch(function (err) {
         clearTimeout(to);
+        sending = false;
         busy(false);
         say(err && err.name === 'AbortError'
           ? 'La richiesta ha impiegato troppo tempo. Riprovate, oppure scriveteci a ergest@flux-ai.it.'
@@ -3278,15 +3411,13 @@ void main(){
     var y = $('#year'); if (y) y.textContent = new Date().getFullYear();
     var frag = $('#iris-frag');
     if (frag) Iris.init($('#diaphragm'), frag.textContent.trim());
-    initNav();
-    initReveal();
-    initCounters();
-    initLit();
-    initRail();
-    initConsole();
-    initPortraits();
-    initShowreel();
-    initForm();
+    /* Ogni modulo e isolato: se uno fallisce (API mancante, DOM inatteso)
+       gli altri devono comunque partire. Prima un'eccezione in initConsole
+       impediva l'inizializzazione del FORM, cioe dell'unica conversione. */
+    [initAnchors, initNav, initReveal, initCounters, initLit, initRail,
+     initConsole, initPortraits, initShowreel, initForm].forEach(function (fn) {
+      try { fn(); } catch (err) { console.error('[flux] ' + fn.name + ':', err); }
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

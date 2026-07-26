@@ -1,4 +1,14 @@
-<form class="card card--pad lead-form" id="leadForm" novalidate>
+<!-- action/method reali: senza JS il browser fa un POST vero all'endpoint,
+     che risponde con un redirect a /grazie.html. Prima faceva GET su se stesso
+     e i dati personali finivano nella URL. -->
+<form class="card card--pad lead-form" id="leadForm" method="post" action="/api/lead"
+      enctype="application/x-www-form-urlencoded" novalidate>
+  <noscript>
+    <p class="lead-form__status" data-state="ok" style="display:flex">
+      Il modulo funziona anche senza JavaScript. Se preferite, scriveteci
+      direttamente a <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>.
+    </p>
+  </noscript>
   <p class="eyebrow lead-form__title">Richiesta di analisi</p>
 
   <div class="lead-form__grid">
@@ -11,7 +21,9 @@
 
     <div class="field" data-field="azienda">
       <label for="f-azienda">Studio o azienda</label>
-      <input class="input" id="f-azienda" name="azienda" type="text" autocomplete="organization" maxlength="120">
+      <input class="input" id="f-azienda" name="azienda" type="text" autocomplete="organization"
+             aria-describedby="e-azienda" maxlength="120">
+      <p class="field-error" id="e-azienda"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
     </div>
 
     <div class="field" data-field="email">
@@ -46,7 +58,7 @@
 
     <div class="field" data-field="budget">
       <label for="f-budget">Budget indicativo <span class="meta">(facoltativo)</span></label>
-      <select class="select" id="f-budget" name="budget">
+      <select class="select" id="f-budget" name="budget" aria-describedby="e-budget">
         <option value="">Preferisco non indicarlo</option>
         <option value="&lt;2k">Sotto 2.000 €</option>
         <option value="2k-5k">2.000 – 5.000 €</option>
@@ -54,6 +66,7 @@
         <option value="&gt;15k">Oltre 15.000 €</option>
         <option value="da-definire">Da definire insieme</option>
       </select>
+      <p class="field-error" id="e-budget"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
     </div>
   </div>
 
