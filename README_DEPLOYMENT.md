@@ -1,131 +1,76 @@
-# 🚀 Flux AI - Deployment & Credentials Management
+# Flux AI — build e deploy
 
-## 📋 Quick Setup
+## Struttura
 
-Questo file documenta come Claude può aggiornare automaticamente il repository GitHub.
+```
+src/            i sorgenti: si modifica SOLO qui
+  00-fonts.css  @font-face dei font auto-ospitati
+  01-tokens.css palette, tipografia, spaziatura, movimento — la fonte di verita
+  02-base.css   reset, tipografia, focus, reveal, reduced-motion
+  03-components.css  bottoni, chip, card, form, contatore
+  04-sections.css    una sezione per blocco, nell'ordine della pagina
+  05-form.css   form lead
+  06-doc.css    pagine legali
+  page.html     markup del corpo
+  form.html     markup del form
+  head.html     meta, Open Graph, JSON-LD
+  icons.svg     sprite di 24 icone
+  iris.frag     fragment shader della hero
+  app.js        tutto il comportamento, zero dipendenze
+  pages/        privacy, cookie-policy, termini, grazie
 
----
+index.html      GENERATO — non modificare a mano
+privacy.html    GENERATO
+cookie-policy.html · termini.html · grazie.html   GENERATI
 
-## 🔐 Credenziali e Chiavi API
-
-### File: `.env.local` (NON tracciato da git)
-
-Il file `.env.local` contiene tutte le credenziali necessarie:
-
-```env
-# GitHub Credentials (salvati in .env.local locale)
-GITHUB_USERNAME=ergesttroplini97-ops
-GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-GITHUB_REPO=Flux-AI
-
-# API Keys (aggiungi le tue chiavi qui)
-# OPENAI_API_KEY=sk-...
-# CLAUDE_API_KEY=...
-# VERCEL_TOKEN=...
-# NETLIFY_TOKEN=...
+fonts/          woff2 auto-ospitati (SIL OFL 1.1, vedi fonts/OFL.txt)
+icons/          icone PWA generate da logo-flux.svg
+api/lead.js     Vercel Function per la raccolta contatti
+supabase/       migration della tabella leads
 ```
 
-**⚠️ Nota:** I token veri sono salvati solo nel file `.env.local` locale, non su GitHub
-
-**⚠️ IMPORTANTE:** Questo file non è tracciato da git (vedi `.gitignore`)
-
----
-
-## 🤖 Come Claude Fa il Deploy Automatico
-
-### Comando per l'Update automatico:
+## Build
 
 ```bash
-cd "C:/Users/erges/Desktop/Flux AI"
-
-# Carica le credenziali
-source .env.local
-
-# Commit e Push automatico
-git add .
-git commit -m "Update: [descrizione modifica]"
-git push https://${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/${GITHUB_REPO}.git main
+node build.mjs
 ```
 
-### Cosa Chiedi a Claude:
+Nessuna dipendenza npm. Rigenera `index.html` e le quattro pagine, e stampa i pesi.
+**L'output e committato nel repo**, quindi chi pubblica il sito non deve eseguire nulla.
 
-Basta dire:
-> "Aggiorna il sito Flux AI su GitHub con [descrizione modifica]"
-
-E Claude farà automaticamente:
-1. ✅ Legge le credenziali da `.env.local`
-2. ✅ Fa il commit con messaggio descrittivo
-3. ✅ Pusha su GitHub
-4. ✅ GitHub Pages si aggiorna automaticamente
-
----
-
-## 📱 GitHub Pages Deployment
-
-**URL Live:** `https://ergesttroplini97-ops.github.io/Flux-AI`
-
-Configurazione:
-- Source: `main` branch, root `/`
-- Auto-deploys on push
-
----
-
-## 🔧 Aggiungere Altre Credenziali
-
-Aggiungi nel file `.env.local`:
-
-```env
-# Vercel (deploy alternativo)
-VERCEL_TOKEN=vercel_xxxxxxxxxxxxxxxx
-VERCEL_PROJECT_ID=prj_xxxxxxxxxxxxxxxx
-
-# Netlify
-NETLIFY_TOKEN=nf_xxxxxxxxxxxxxxxx
-NETLIFY_SITE_ID=site-xxxxxxxxxxxxxxxx
-
-# OpenAI (per integrazioni AI future)
-OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx
-
-# Stripe (se usi pagamenti)
-STRIPE_API_KEY=sk_live_xxxxxxxxxxxxxxxx
-STRIPE_PUBLISHABLE_KEY=pk_live_xxxxxxxxxxxxxxxx
-```
-
----
-
-## 🛡️ Sicurezza
-
-- `.env.local` è in `.gitignore` → non va su GitHub
-- Solo tu e Claude avete accesso alle credenziali locali
-- Nessun token è esposto pubblicamente
-
----
-
-## 📊 Ultimo Deploy
-
-- **Repo:** https://github.com/ergesttroplini97-ops/Flux-AI
-- **Branch:** main
-- **Status:** ✅ Online
-- **URL:** https://ergesttroplini97-ops.github.io/Flux-AI
-
----
-
-## 📝 Comandi Utili
+## Sviluppo in locale
 
 ```bash
-# Check status
-git status
-
-# View recent commits
-git log --oneline -5
-
-# Manual push (se necessario)
-git push origin main
-
-# Pull updates from GitHub
-git pull origin main
+npx http-server -p 8099
 ```
 
----
+Serve via HTTP, non aprire `index.html` con `file://`: i font auto-ospitati vengono
+bloccati da CORS con quel protocollo.
 
-Generated: 29 Marzo 2026
+## Deploy
+
+Il sito e statico, ma **il modulo di contatto richiede Vercel**: `/api/lead` e una
+funzione serverless, e GitHub Pages non ne esegue. Finche il dominio resta su Pages,
+il form non puo funzionare.
+
+1. Collegare il repository a Vercel (build command: nessuno, output: la radice).
+2. Impostare le variabili d'ambiente elencate in `.env.example`.
+3. Creare il progetto Supabase in regione **`eu-central-1`** e applicare
+   `supabase/migrations/0001_leads.sql`. Fuori dall'UE i dati escono dallo SEE.
+4. Puntare il DNS di `flux-ai.it` su Vercel.
+
+`vercel.json` contiene gia header di sicurezza (HSTS, CSP `default-src 'self'`,
+Permissions-Policy), regole di cache e la configurazione della funzione.
+
+## Credenziali
+
+Stanno in `.env.local`, che **non e tracciato da git** (vedi `.gitignore`).
+Il modello dei nomi e in `.env.example`. Non inserire mai token, chiavi o password
+nei file tracciati, nei commenti o nei messaggi di commit.
+
+## Prima di pubblicare
+
+Vedi la sezione "Cosa resta da fare" di `PIANO_RESTYLING.md`. In sintesi:
+dati societari (cercare `data-fill` e `###` nei sorgenti), le tre pagine legali da
+far validare, le foto dei fondatori, l'immagine Open Graph, e le autorizzazioni
+scritte per i due casi studio citati con numeri.

@@ -395,3 +395,52 @@ Make every pixel intentional. The design should whisper "we built AI before it w
 ---
 
 *Ultimo aggiornamento: 29 Marzo 2026 — Prompt #5*
+
+---
+
+### Prompt #6 — 26 Luglio 2026
+**Contenuto:** rifacimento completo del sito. Pianificazione con piu agenti
+specializzati, tre giri di revisione in loop, e consegna del piano di restyling.
+
+**Metodo:** quattro agenti in parallelo per la pianificazione (direzione artistica,
+ingegneria del movimento e WebGL, media generativi, contenuti e backend), poi tre
+giri di revisione con agenti dedicati a design, correttezza del codice,
+accessibilita/prestazioni e conformita.
+
+**RIFATTO DA ZERO.** Il documento di riferimento e ora `PIANO_RESTYLING.md`, che
+contiene il confronto prima/dopo, le decisioni con il loro perche, e la lista di
+cosa resta da fare. `docs/media-ai.md` contiene la pipeline per i veri video AI.
+
+**Cambi che invalidano quanto scritto sopra in questo file:**
+
+| Voce | Prima (prompt #1-#5) | Adesso |
+|---|---|---|
+| Palette | Emerald Tailwind `#10B981 / #059669 / #34D399` | Blu `#2F6BFF`, ciano `#19D6D0`, lime `#C8F04A` — estratti dal logo, dove l'emerald non esiste |
+| Font | Space Grotesk + Inter da Google Fonts | Geist + Geist Mono + Instrument Serif, auto-ospitati e sottoinsiemizzati |
+| Navigazione | SPA a 5 tab con `display:none` | Long-scroll a 13 sezioni con ancore vere |
+| Sfondo hero | Vanta.js NET + Three.js (~600 KB) | Fragment shader WebGL2 scritto a mano (4,7 KB), ricostruisce l'occhio del logo |
+| Cursore custom | Presente | Rimosso: rompeva il touch e costava due layout per evento |
+| Metriche home | 2,4 M / 1.240 h / 9.847 / 48k (dati demo) | Impegni verificabili: 3 settimane, ~4 ore, fino al 70%, 30 giorni |
+| Contatti | Due `mailto:` nel footer | Form completo + endpoint serverless + notifica email |
+| Emoji come icone | Ovunque | Sostituite da uno sprite di 24 icone SVG |
+| Logo in pagina | PNG 1,8 MB in base64 | SVG 4,7 KB |
+| Peso | 57 KB + 600 KB di CDN | ~180 KB totali, ~48 KB gzip, zero terze parti |
+
+**Regole di brand ora vincolanti:**
+- Il lime e il fuoco: **un solo elemento lime per pagina** (la CTA della hero).
+- Il ciano e l'unico colore interattivo.
+- Il blu e strutturale: mai fill di bottone, mai testo piccolo.
+- Il gradiente del logo esiste in **una sola istanza**: l'occhio della hero.
+- Raggio massimo 12px. Niente emoji. Niente cursore custom. Niente `transition: all`.
+
+**Come si lavora adesso:** si modifica solo `src/`, poi `node build.mjs` rigenera
+`index.html` e le pagine legali. L'output e committato: il deploy resta statico.
+
+**Da completare prima di pubblicare:** dati societari (cercare `data-fill` e `###`),
+spostamento del dominio da GitHub Pages a Vercel (le funzioni serverless non girano
+su Pages), progetto Supabase in `eu-central-1`, foto dei fondatori, immagine Open
+Graph, autorizzazioni scritte per i due casi studio citati con numeri.
+
+---
+
+*Ultimo aggiornamento: 26 Luglio 2026 — Prompt #6*
