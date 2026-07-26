@@ -1,4 +1,4 @@
-<noscript><style>.reveal{opacity:1!important;filter:none!important;transform:none!important}.panel[hidden]{display:block!important}.rail{display:none}</style></noscript>
+<noscript><style>.reveal{opacity:1!important;filter:none!important;transform:none!important}[data-needs-js]{display:none}</style></noscript>
 <a class="skip-link" href="#main">Vai al contenuto</a>
 
 <!-- ══════════════════════════════════════════════════════════════ NAVBAR ══ -->
@@ -29,7 +29,8 @@
   <div class="nav__progress" id="navProgress" aria-hidden="true"></div>
 </header>
 
-<div class="drawer" id="drawer" hidden>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true"
+     aria-label="Menu di navigazione" hidden>
   <nav class="drawer__nav" aria-label="Navigazione mobile">
     <a href="#servizi"><span class="num">01</span> Servizi</a>
     <a href="#metodo"><span class="num">02</span> Metodo</a>
@@ -408,12 +409,14 @@
           <svg class="fr-ico-play" aria-hidden="true"><use href="#i-play"/></svg>
           <svg class="fr-ico-pause" aria-hidden="true"><use href="#i-pause"/></svg>
         </button>
-        <div class="fr-track" id="frTrack" role="slider" tabindex="0"
-             aria-label="Posizione nello showreel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <span class="fr-rail"></span>
-          <span class="fr-fill"></span>
+        <div class="fr-scrub">
+          <div class="fr-track" id="frTrack" role="slider" tabindex="0"
+               aria-label="Posizione nello showreel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="fr-rail"></span>
+            <span class="fr-fill"></span>
+            <span class="fr-knob"></span>
+          </div>
           <span class="fr-chapters"></span>
-          <span class="fr-knob"></span>
         </div>
         <p class="fr-time num">0:00 / 0:00</p>
       </div>
@@ -435,7 +438,7 @@
         senza girarci intorno: sulla linea qui sotto, la posizione è l'informazione.</p>
     </header>
 
-    <div class="rail reveal">
+    <div class="rail reveal" data-needs-js>
       <div class="rail__track" aria-hidden="true"><span class="rail__fill"></span></div>
       <div class="rail__scale" aria-hidden="true">
         <span>Idea</span><span>Sviluppo</span><span>Beta</span><span>Disponibile</span>
@@ -450,7 +453,7 @@
     </div>
 
     <div class="panels" id="panels">
-      <article class="panel card" id="p-pouff-a" role="tabpanel" aria-labelledby="tab-pouff-a">
+      <section class="panel card" id="p-pouff-a" role="tabpanel" aria-labelledby="tab-pouff-a">
         <div class="panel__head">
           <div>
             <span class="chip chip--lime"><span class="dot"></span>Disponibile</span>
@@ -469,9 +472,9 @@
           <a class="btn btn--secondary" href="#contatti" data-interesse="prodotti">Chiedete una demo</a>
         </div>
         <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg><a href="/termini#rischio">Avvertenza sul rischio: il trading può comportare la perdita del capitale.</a></p>
-      </article>
+      </section>
 
-      <article class="panel card" id="p-pouff-c" role="tabpanel" aria-labelledby="tab-pouff-c" hidden>
+      <section class="panel card" id="p-pouff-c" role="tabpanel" aria-labelledby="tab-pouff-c">
         <div class="panel__head">
           <div>
             <span class="chip chip--cyan"><span class="dot"></span>Early bird</span>
@@ -490,9 +493,9 @@
           <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Entrate in early bird</a>
         </div>
         <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg><a href="/termini#rischio">Avvertenza sul rischio: il trading può comportare la perdita del capitale.</a></p>
-      </article>
+      </section>
 
-      <article class="panel card" id="p-pips" role="tabpanel" aria-labelledby="tab-pips" hidden>
+      <section class="panel card" id="p-pips" role="tabpanel" aria-labelledby="tab-pips">
         <div class="panel__head">
           <div>
             <span class="chip chip--cyan"><span class="dot"></span>Beta pubblica</span>
@@ -510,9 +513,9 @@
           <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Entrate nella beta</a>
         </div>
         <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg><a href="/termini#rischio">Strumento informativo. Non costituisce consulenza finanziaria.</a></p>
-      </article>
+      </section>
 
-      <article class="panel card" id="p-nexa" role="tabpanel" aria-labelledby="tab-nexa" hidden>
+      <section class="panel card" id="p-nexa" role="tabpanel" aria-labelledby="tab-nexa">
         <div class="panel__head">
           <div>
             <span class="chip"><span class="dot"></span>In sviluppo · waitlist aperta</span>
@@ -530,9 +533,9 @@
           <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Mettetevi in lista</a>
         </div>
         <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg>Prodotto in sviluppo. Iscriversi alla lista non costituisce ordine né dà diritto a una data di rilascio.</p>
-      </article>
+      </section>
 
-      <article class="panel card" id="p-clip" role="tabpanel" aria-labelledby="tab-clip" hidden>
+      <section class="panel card" id="p-clip" role="tabpanel" aria-labelledby="tab-clip">
         <div class="panel__head">
           <div>
             <span class="chip"><span class="dot"></span>MVP · preregistrazioni</span>
@@ -550,7 +553,7 @@
           <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Preregistratevi</a>
         </div>
         <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg>Prodotto in sviluppo. La preregistrazione non costituisce ordine né dà diritto a una data di rilascio.</p>
-      </article>
+      </section>
     </div>
   </div>
 </section>
@@ -566,7 +569,7 @@
         gli appunti su come si farebbe.</p>
     </header>
 
-    <div class="scroll-x reveal">
+    <div class="scroll-x reveal" role="region" aria-label="Confronto fra i tre corsi" tabindex="0">
       <table class="ctab">
         <caption class="sr-only">Confronto fra i tre corsi di formazione Flux AI</caption>
         <thead>

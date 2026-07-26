@@ -203,11 +203,11 @@
       sections.forEach(function (s) { spy.observe(s); });
     }
 
-    var main = $('#main'), foot = $('.foot');
+    var main = $('#main'), foot = $('.foot'), skip = $('.skip-link'), brand = $('.nav__brand');
     function setDrawer(open) {
       drawer.hidden = !open;
       /* inert toglie dal tab order tutto cio che sta sotto l'overlay */
-      [main, foot].forEach(function (el) { if (el) el.inert = open; });
+      [main, foot, skip, brand].forEach(function (el) { if (el) el.inert = open; });
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
       burger.innerHTML = '<svg aria-hidden="true"><use href="#i-' + (open ? 'close' : 'menu') + '"/></svg>';
@@ -597,6 +597,9 @@
       panels.forEach(function (p, i) { p.hidden = i !== idx; });
       if (focus) tabs[idx].focus();
     }
+    /* I pannelli sono visibili nell'HTML: senza JS si vedono tutti e cinque.
+       E il JS a nasconderli, non il markup. */
+    panels.forEach(function (p) { p.hidden = true; });
     tabs.forEach(function (t, i) {
       t.tabIndex = i === 0 ? 0 : -1;
       t.addEventListener('click', function () { select(i); });
@@ -862,6 +865,9 @@
     track.addEventListener('pointercancel', endDrag);
     track.addEventListener('lostpointercapture', endDrag);
     track.addEventListener('keydown', function (e) {
+      /* Non intercettare i tasti dei bottoni-capitolo: l'evento risale fin qui
+         e il preventDefault impediva a Invio/Spazio di attivarli. */
+      if (e.target !== track) return;
       if (e.key === 'ArrowRight') { e.preventDefault(); seek(reel.time + 2); }
       else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(reel.time - 2); }
       else if (e.key === 'Home') { e.preventDefault(); seek(0); }

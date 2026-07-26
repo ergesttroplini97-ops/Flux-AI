@@ -100,7 +100,7 @@
   width: 100%; padding: .8125rem var(--sp-4);
   font-size: var(--fs-body); color: var(--text-primary);
   background: var(--bg-inset);
-  border: 1px solid var(--border-default); border-radius: var(--r-sm);
+  border: 1px solid var(--border-control); border-radius: var(--r-sm);
   transition: border-color var(--dur-micro) var(--ease-shutter),
               background var(--dur-micro) var(--ease-shutter);
 }
@@ -110,6 +110,7 @@
 .textarea { resize: vertical; min-height: 7rem; line-height: 1.6; }
 .select {
   appearance: none; cursor: pointer; padding-right: var(--sp-8);
+  min-width: 0; text-overflow: ellipsis;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%2398A1B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right var(--sp-4) center;
 }
@@ -126,7 +127,7 @@
             padding-block: var(--sp-2); min-height: 44px; }
 .checkbox input {
   appearance: none; flex: none; width: 22px; height: 22px; margin-top: 1px;
-  background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-xs);
+  background: var(--bg-inset); border: 1.5px solid var(--border-check); border-radius: var(--r-xs);
   transition: background var(--dur-micro) var(--ease-shutter), border-color var(--dur-micro) var(--ease-shutter);
 }
 .checkbox input:checked {

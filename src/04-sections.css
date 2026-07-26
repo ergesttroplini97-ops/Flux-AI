@@ -181,7 +181,7 @@
 }
 
 /* ------------------------------------------------------------------ PAINS */
-.pains { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.pains { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }
 .pain { padding-top: var(--sp-5); border-top: 1px solid var(--border-default); }
 .pain__idx { display: block; font-size: var(--fs-micro); letter-spacing: .14em; color: var(--flux-cyan); margin-bottom: var(--sp-4); }
 .pain h3 { margin-bottom: var(--sp-3); }
@@ -190,7 +190,10 @@
 .svc { display: flex; flex-direction: column; }
 .svc__row {
   display: grid; gap: var(--sp-4) var(--sp-5);
-  grid-template-columns: auto auto 1fr;
+  /* minmax(0,1fr) e obbligatorio: con `1fr` il minimo intrinseco del bottone
+     (nowrap) gonfiava la colonna oltre il contenitore e il testo in eccesso
+     veniva tagliato senza scroll possibile. */
+  grid-template-columns: auto auto minmax(0, 1fr);
   grid-template-areas: 'idx ico main' '. . side';
   align-items: start;
   padding: var(--sp-7) var(--sp-5);
@@ -209,8 +212,15 @@
              border: 1px solid var(--border-default); border-radius: var(--r-md); color: var(--flux-cyan); }
 .svc__ico svg { width: 22px; height: 22px; }
 .svc__main { grid-area: main; min-width: 0; }
-.svc__side { grid-area: side; display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-3); }
-@media (min-width: 900px) { .svc__side { align-items: flex-end; text-align: right; } }
+.svc__side { grid-area: side; min-width: 0; display: flex; flex-direction: column;
+             align-items: flex-start; gap: var(--sp-3); }
+.svc__side .btn { white-space: normal; text-align: left; max-width: 100%; }
+@media (max-width: 479px) {
+  .svc__row { grid-template-columns: auto minmax(0, 1fr);
+              grid-template-areas: 'idx ico' 'main main' 'side side'; }
+}
+@media (min-width: 900px) { .svc__side { align-items: flex-end; text-align: right; }
+                            .svc__side .btn { text-align: center; } }
 
 .svc__claim  { color: var(--text-primary); font-size: var(--fs-lead); margin: var(--sp-2) 0 var(--sp-4); max-width: 48ch; }
 .svc__points { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-4); }
@@ -277,8 +287,11 @@
   .console__live .dot { animation: pulse 1.8s var(--ease-shutter) infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
 }
-.console__body { padding: var(--sp-5); display: grid; gap: var(--sp-5); }
-.console__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+.console__body { padding: var(--sp-4); display: grid; gap: var(--sp-5); min-width: 0; }
+@media (min-width: 560px) { .console__body { padding: var(--sp-5); } }
+.console__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+.console__stats > div { min-width: 0; }
+@media (max-width: 359px) { .console__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .console__stats span { display: block; font-family: var(--font-mono); font-size: var(--fs-micro);
                        letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
 .console__stats b { display: block; margin-top: var(--sp-2); font-size: 1.5rem; font-weight: 500;
@@ -304,11 +317,13 @@
 .console__log li[data-kind='warn'] { border-left-color: var(--state-warn); }
 
 /* ---------------------------------------------------------------- CASES */
-.cases { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-.case { padding: var(--sp-7); display: flex; flex-direction: column; gap: var(--sp-4); }
+.cases { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+.cases > * { min-width: 0; }
+.case { padding: var(--sp-6); min-width: 0; display: flex; flex-direction: column; gap: var(--sp-4); }
 .case__tag { color: var(--flux-cyan); }
 .case__facts { display: grid; gap: var(--sp-3); margin-top: auto; padding-top: var(--sp-5); border-top: 1px solid var(--border-subtle); }
-.case__facts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-3); align-items: baseline; }
+.case__facts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-2) var(--sp-3); align-items: baseline; }
+.case__facts span, .case__facts b { min-width: 0; overflow-wrap: break-word; }
 .case__facts span { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .08em;
                     text-transform: uppercase; color: var(--text-tertiary); }
 .case__facts b { font-size: var(--fs-body); font-weight: 500; }
@@ -366,7 +381,10 @@
 .showreel.is-playing .fr-ico-play  { display: none; }
 .showreel.is-playing .fr-ico-pause { display: block; }
 
-.fr-track { position: relative; flex: 1; height: 28px; cursor: pointer; touch-action: none; }
+/* I marcatori di capitolo sono fratelli dello slider, non figli: dei bottoni
+   dentro un role=slider sono controlli annidati (axe: nested-interactive). */
+.fr-scrub { position: relative; flex: 1; }
+.fr-track { position: relative; height: 28px; cursor: pointer; touch-action: none; }
 .fr-rail, .fr-fill { position: absolute; top: 50%; translate: 0 -50%; height: 4px; border-radius: 2px; }
 .fr-rail { left: 0; right: 0; background: var(--bg-inset); }
 .fr-fill { left: 0; width: 0; background: var(--flux-cyan); }
@@ -445,7 +463,9 @@
   .rail__node:first-child .rail__label, .rail__node:last-child .rail__label { transform: none; }
 }
 
-.panel { padding: var(--sp-7); display: grid; gap: var(--sp-5); }
+.panel { padding: var(--sp-6); display: grid; gap: var(--sp-5); min-width: 0; }
+.panel > * { min-width: 0; }
+@media (min-width: 560px) { .panel { padding: var(--sp-7); } }
 .panel[hidden] { display: none; }
 .panel__head { display: grid; gap: var(--sp-5); }
 @media (min-width: 760px) { .panel__head { grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: var(--sp-7); } }
@@ -469,8 +489,20 @@
 .panel__warn a:hover { color: var(--flux-cyan); }
 
 /* --------------------------------------------------------- TABELLA CORSI */
-.ctab { min-width: 720px; font-size: var(--fs-small); }
+.ctab { min-width: 700px; font-size: var(--fs-small); }
 .ctab th, .ctab td { scroll-snap-align: start; }
+/* Scorrendo in orizzontale si perdeva di vista la riga che si sta leggendo:
+   la colonna delle etichette resta ancorata. */
+.ctab tbody th, .ctab thead th:first-child {
+  position: sticky; left: 0; z-index: 1;
+  background: var(--bg-surface);
+  box-shadow: 1px 0 0 var(--border-subtle);
+}
+@media (max-width: 700px) {
+  .ctab { min-width: 640px; }
+  .ctab thead th:first-child { width: 34%; }
+  .ctab th, .ctab td { padding: var(--sp-3); }
+}
 .ctab th, .ctab td { padding: var(--sp-4) var(--sp-4); text-align: left; vertical-align: top;
                      border-bottom: 1px solid var(--border-subtle); }
 .ctab thead th { vertical-align: bottom; border-bottom-color: var(--border-default); }
@@ -537,6 +569,7 @@
 
 /* --------------------------------------------------------------- CONTATTI */
 .contact { display: grid; gap: var(--sp-8); }
+.contact > * { min-width: 0; }
 @media (min-width: 1000px) { .contact { grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: var(--sp-9); align-items: start; } }
 .contact__intro .eyebrow { color: var(--flux-cyan); display: block; margin-bottom: var(--sp-4); }
 .contact__intro .t-h1 { margin-bottom: var(--sp-5); }

@@ -8,6 +8,9 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--nav-h) + var(--sp-5));
+  /* senza questo, tabulando su mobile il campo a fuoco finisce sotto la
+     CTA fissa: misurato fino al 96% di area coperta */
+  scroll-padding-bottom: var(--sp-5);
   color-scheme: dark;
 }
 /* Lo scroll morbido nativo litiga con content-visibility: mentre l'animazione
@@ -17,6 +20,7 @@ html {
    a ogni frame; senza JS torna il comportamento nativo. */
 @media (scripting: none) { html { scroll-behavior: smooth; } }
 html.no-js { scroll-behavior: smooth; }
+@media (max-width: 759px) { html { scroll-padding-bottom: 6rem; } }
 
 body {
   font-family: var(--font-body);
@@ -78,7 +82,13 @@ table { border-collapse: collapse; width: 100%; }
 .skip-link:focus-visible { transform: translateY(0); }
 
 /* ------------------------------------------------------------- TIPOGRAFIA */
-.t-display, .t-h1, .t-h2, .t-h3 { font-family: var(--font-display); }
+/* Le parole lunghe dell'italiano (automatizzare, professionali) sfondano i
+   viewport stretti ai corpi display: sillabazione come rete di sicurezza. */
+.t-display, .t-h1, .t-h2, .t-h3 {
+  font-family: var(--font-display);
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
 
 .t-display {
   font-size: var(--fs-display); font-weight: 900;

@@ -17,11 +17,19 @@
   --border-subtle:  #1C2130;
   --border-default: #262C3D;
   --border-strong:  #38405A;
+  /* I controlli di modulo devono stare a >=3:1 sul proprio riempimento:
+     il bordo era a 1,44:1 e la checkbox a 1,95:1, cioe invisibili. */
+  --border-control: #5A6480;   /* 3,06:1 su --bg-inset */
+  --border-check:   #6B7591;   /* 3,90:1 su --bg-inset */
 
   /* --- TEXT --- */
   --text-primary:   #EEF1F8;  /* 17.3:1 su --bg-base */
   --text-secondary: #98A1B8;  /*  7.6:1 su --bg-base */
-  --text-tertiary:  #5D6478;  /*  3.3:1 — solo meta/disabled, MAI body */
+  /* Misurato: 2,88-3,43:1 sui cinque ground in uso, sotto il minimo di 4,5:1.
+     Era usato su 76 elementi di contenuto reale (disclaimer legali, intestazioni
+     delle tabelle privacy, prezzi, nomi prodotto), non solo su meta. Rialzato
+     mantenendo la tinta: peggiore 4,85:1 su --bg-elevated. */
+  --text-tertiary:  #828BA5;
 
   /* --- ACCENT: estratti dal logo (blu -> ciano -> lime) --- */
   --flux-blue:      #2F6BFF;  /* STRUTTURALE: bordi, tratti, dati. Mai fill di bottone. */

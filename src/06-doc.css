@@ -18,7 +18,11 @@
 .doc__list li { position: relative; padding-left: var(--sp-5); }
 .doc__list li::before { content: ''; position: absolute; left: 0; top: .68em;
                         width: 8px; height: 1px; background: var(--flux-cyan); opacity: .8; }
-.doc__table { font-size: var(--fs-small); display: block; overflow-x: auto; }
+/* display:block su <table> puo far perdere il ruolo tabella su alcuni motori:
+   lo scroll va sul wrapper, la tabella resta una tabella. */
+.doc__scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.doc__scroll:focus-visible { outline-offset: 2px; }
+.doc__table { font-size: var(--fs-small); }
 .doc__table th, .doc__table td { padding: var(--sp-3) var(--sp-4); text-align: left;
                                  vertical-align: top; border-bottom: 1px solid var(--border-subtle); }
 .doc__table thead th { color: var(--text-tertiary); font-family: var(--font-mono);

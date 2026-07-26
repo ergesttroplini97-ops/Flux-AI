@@ -32,11 +32,19 @@
   --border-subtle:  #1C2130;
   --border-default: #262C3D;
   --border-strong:  #38405A;
+  /* I controlli di modulo devono stare a >=3:1 sul proprio riempimento:
+     il bordo era a 1,44:1 e la checkbox a 1,95:1, cioe invisibili. */
+  --border-control: #5A6480;   /* 3,06:1 su --bg-inset */
+  --border-check:   #6B7591;   /* 3,90:1 su --bg-inset */
 
   /* --- TEXT --- */
   --text-primary:   #EEF1F8;  /* 17.3:1 su --bg-base */
   --text-secondary: #98A1B8;  /*  7.6:1 su --bg-base */
-  --text-tertiary:  #5D6478;  /*  3.3:1 — solo meta/disabled, MAI body */
+  /* Misurato: 2,88-3,43:1 sui cinque ground in uso, sotto il minimo di 4,5:1.
+     Era usato su 76 elementi di contenuto reale (disclaimer legali, intestazioni
+     delle tabelle privacy, prezzi, nomi prodotto), non solo su meta. Rialzato
+     mantenendo la tinta: peggiore 4,85:1 su --bg-elevated. */
+  --text-tertiary:  #828BA5;
 
   /* --- ACCENT: estratti dal logo (blu -> ciano -> lime) --- */
   --flux-blue:      #2F6BFF;  /* STRUTTURALE: bordi, tratti, dati. Mai fill di bottone. */
@@ -145,6 +153,9 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--nav-h) + var(--sp-5));
+  /* senza questo, tabulando su mobile il campo a fuoco finisce sotto la
+     CTA fissa: misurato fino al 96% di area coperta */
+  scroll-padding-bottom: var(--sp-5);
   color-scheme: dark;
 }
 /* Lo scroll morbido nativo litiga con content-visibility: mentre l'animazione
@@ -154,6 +165,7 @@ html {
    a ogni frame; senza JS torna il comportamento nativo. */
 @media (scripting: none) { html { scroll-behavior: smooth; } }
 html.no-js { scroll-behavior: smooth; }
+@media (max-width: 759px) { html { scroll-padding-bottom: 6rem; } }
 
 body {
   font-family: var(--font-body);
@@ -215,7 +227,13 @@ table { border-collapse: collapse; width: 100%; }
 .skip-link:focus-visible { transform: translateY(0); }
 
 /* ------------------------------------------------------------- TIPOGRAFIA */
-.t-display, .t-h1, .t-h2, .t-h3 { font-family: var(--font-display); }
+/* Le parole lunghe dell'italiano (automatizzare, professionali) sfondano i
+   viewport stretti ai corpi display: sillabazione come rete di sicurezza. */
+.t-display, .t-h1, .t-h2, .t-h3 {
+  font-family: var(--font-display);
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
 
 .t-display {
   font-size: var(--fs-display); font-weight: 900;
@@ -437,7 +455,7 @@ table { border-collapse: collapse; width: 100%; }
   width: 100%; padding: .8125rem var(--sp-4);
   font-size: var(--fs-body); color: var(--text-primary);
   background: var(--bg-inset);
-  border: 1px solid var(--border-default); border-radius: var(--r-sm);
+  border: 1px solid var(--border-control); border-radius: var(--r-sm);
   transition: border-color var(--dur-micro) var(--ease-shutter),
               background var(--dur-micro) var(--ease-shutter);
 }
@@ -447,6 +465,7 @@ table { border-collapse: collapse; width: 100%; }
 .textarea { resize: vertical; min-height: 7rem; line-height: 1.6; }
 .select {
   appearance: none; cursor: pointer; padding-right: var(--sp-8);
+  min-width: 0; text-overflow: ellipsis;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%2398A1B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right var(--sp-4) center;
 }
@@ -463,7 +482,7 @@ table { border-collapse: collapse; width: 100%; }
             padding-block: var(--sp-2); min-height: 44px; }
 .checkbox input {
   appearance: none; flex: none; width: 22px; height: 22px; margin-top: 1px;
-  background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-xs);
+  background: var(--bg-inset); border: 1.5px solid var(--border-check); border-radius: var(--r-xs);
   transition: background var(--dur-micro) var(--ease-shutter), border-color var(--dur-micro) var(--ease-shutter);
 }
 .checkbox input:checked {
@@ -676,7 +695,7 @@ table { border-collapse: collapse; width: 100%; }
 }
 
 /* ------------------------------------------------------------------ PAINS */
-.pains { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.pains { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }
 .pain { padding-top: var(--sp-5); border-top: 1px solid var(--border-default); }
 .pain__idx { display: block; font-size: var(--fs-micro); letter-spacing: .14em; color: var(--flux-cyan); margin-bottom: var(--sp-4); }
 .pain h3 { margin-bottom: var(--sp-3); }
@@ -685,7 +704,10 @@ table { border-collapse: collapse; width: 100%; }
 .svc { display: flex; flex-direction: column; }
 .svc__row {
   display: grid; gap: var(--sp-4) var(--sp-5);
-  grid-template-columns: auto auto 1fr;
+  /* minmax(0,1fr) e obbligatorio: con `1fr` il minimo intrinseco del bottone
+     (nowrap) gonfiava la colonna oltre il contenitore e il testo in eccesso
+     veniva tagliato senza scroll possibile. */
+  grid-template-columns: auto auto minmax(0, 1fr);
   grid-template-areas: 'idx ico main' '. . side';
   align-items: start;
   padding: var(--sp-7) var(--sp-5);
@@ -704,8 +726,15 @@ table { border-collapse: collapse; width: 100%; }
              border: 1px solid var(--border-default); border-radius: var(--r-md); color: var(--flux-cyan); }
 .svc__ico svg { width: 22px; height: 22px; }
 .svc__main { grid-area: main; min-width: 0; }
-.svc__side { grid-area: side; display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-3); }
-@media (min-width: 900px) { .svc__side { align-items: flex-end; text-align: right; } }
+.svc__side { grid-area: side; min-width: 0; display: flex; flex-direction: column;
+             align-items: flex-start; gap: var(--sp-3); }
+.svc__side .btn { white-space: normal; text-align: left; max-width: 100%; }
+@media (max-width: 479px) {
+  .svc__row { grid-template-columns: auto minmax(0, 1fr);
+              grid-template-areas: 'idx ico' 'main main' 'side side'; }
+}
+@media (min-width: 900px) { .svc__side { align-items: flex-end; text-align: right; }
+                            .svc__side .btn { text-align: center; } }
 
 .svc__claim  { color: var(--text-primary); font-size: var(--fs-lead); margin: var(--sp-2) 0 var(--sp-4); max-width: 48ch; }
 .svc__points { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-4); }
@@ -772,8 +801,11 @@ table { border-collapse: collapse; width: 100%; }
   .console__live .dot { animation: pulse 1.8s var(--ease-shutter) infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
 }
-.console__body { padding: var(--sp-5); display: grid; gap: var(--sp-5); }
-.console__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+.console__body { padding: var(--sp-4); display: grid; gap: var(--sp-5); min-width: 0; }
+@media (min-width: 560px) { .console__body { padding: var(--sp-5); } }
+.console__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+.console__stats > div { min-width: 0; }
+@media (max-width: 359px) { .console__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .console__stats span { display: block; font-family: var(--font-mono); font-size: var(--fs-micro);
                        letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
 .console__stats b { display: block; margin-top: var(--sp-2); font-size: 1.5rem; font-weight: 500;
@@ -799,11 +831,13 @@ table { border-collapse: collapse; width: 100%; }
 .console__log li[data-kind='warn'] { border-left-color: var(--state-warn); }
 
 /* ---------------------------------------------------------------- CASES */
-.cases { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-.case { padding: var(--sp-7); display: flex; flex-direction: column; gap: var(--sp-4); }
+.cases { display: grid; gap: var(--sp-6); grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+.cases > * { min-width: 0; }
+.case { padding: var(--sp-6); min-width: 0; display: flex; flex-direction: column; gap: var(--sp-4); }
 .case__tag { color: var(--flux-cyan); }
 .case__facts { display: grid; gap: var(--sp-3); margin-top: auto; padding-top: var(--sp-5); border-top: 1px solid var(--border-subtle); }
-.case__facts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-3); align-items: baseline; }
+.case__facts li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-2) var(--sp-3); align-items: baseline; }
+.case__facts span, .case__facts b { min-width: 0; overflow-wrap: break-word; }
 .case__facts span { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .08em;
                     text-transform: uppercase; color: var(--text-tertiary); }
 .case__facts b { font-size: var(--fs-body); font-weight: 500; }
@@ -861,7 +895,10 @@ table { border-collapse: collapse; width: 100%; }
 .showreel.is-playing .fr-ico-play  { display: none; }
 .showreel.is-playing .fr-ico-pause { display: block; }
 
-.fr-track { position: relative; flex: 1; height: 28px; cursor: pointer; touch-action: none; }
+/* I marcatori di capitolo sono fratelli dello slider, non figli: dei bottoni
+   dentro un role=slider sono controlli annidati (axe: nested-interactive). */
+.fr-scrub { position: relative; flex: 1; }
+.fr-track { position: relative; height: 28px; cursor: pointer; touch-action: none; }
 .fr-rail, .fr-fill { position: absolute; top: 50%; translate: 0 -50%; height: 4px; border-radius: 2px; }
 .fr-rail { left: 0; right: 0; background: var(--bg-inset); }
 .fr-fill { left: 0; width: 0; background: var(--flux-cyan); }
@@ -940,7 +977,9 @@ table { border-collapse: collapse; width: 100%; }
   .rail__node:first-child .rail__label, .rail__node:last-child .rail__label { transform: none; }
 }
 
-.panel { padding: var(--sp-7); display: grid; gap: var(--sp-5); }
+.panel { padding: var(--sp-6); display: grid; gap: var(--sp-5); min-width: 0; }
+.panel > * { min-width: 0; }
+@media (min-width: 560px) { .panel { padding: var(--sp-7); } }
 .panel[hidden] { display: none; }
 .panel__head { display: grid; gap: var(--sp-5); }
 @media (min-width: 760px) { .panel__head { grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: var(--sp-7); } }
@@ -964,8 +1003,20 @@ table { border-collapse: collapse; width: 100%; }
 .panel__warn a:hover { color: var(--flux-cyan); }
 
 /* --------------------------------------------------------- TABELLA CORSI */
-.ctab { min-width: 720px; font-size: var(--fs-small); }
+.ctab { min-width: 700px; font-size: var(--fs-small); }
 .ctab th, .ctab td { scroll-snap-align: start; }
+/* Scorrendo in orizzontale si perdeva di vista la riga che si sta leggendo:
+   la colonna delle etichette resta ancorata. */
+.ctab tbody th, .ctab thead th:first-child {
+  position: sticky; left: 0; z-index: 1;
+  background: var(--bg-surface);
+  box-shadow: 1px 0 0 var(--border-subtle);
+}
+@media (max-width: 700px) {
+  .ctab { min-width: 640px; }
+  .ctab thead th:first-child { width: 34%; }
+  .ctab th, .ctab td { padding: var(--sp-3); }
+}
 .ctab th, .ctab td { padding: var(--sp-4) var(--sp-4); text-align: left; vertical-align: top;
                      border-bottom: 1px solid var(--border-subtle); }
 .ctab thead th { vertical-align: bottom; border-bottom-color: var(--border-default); }
@@ -1032,6 +1083,7 @@ table { border-collapse: collapse; width: 100%; }
 
 /* --------------------------------------------------------------- CONTATTI */
 .contact { display: grid; gap: var(--sp-8); }
+.contact > * { min-width: 0; }
 @media (min-width: 1000px) { .contact { grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: var(--sp-9); align-items: start; } }
 .contact__intro .eyebrow { color: var(--flux-cyan); display: block; margin-bottom: var(--sp-4); }
 .contact__intro .t-h1 { margin-bottom: var(--sp-5); }
@@ -1088,7 +1140,8 @@ table { border-collapse: collapse; width: 100%; }
    FORM LEAD
    ========================================================================= */
 
-.lead-form { display: grid; gap: var(--sp-5); padding: var(--sp-6); }
+.lead-form { display: grid; gap: var(--sp-5); padding: var(--sp-5); min-width: 0; }
+.lead-form > *, .lead-form__grid > * { min-width: 0; }
 @media (min-width: 560px) { .lead-form { padding: var(--sp-7); } }
 .lead-form__title { color: var(--flux-cyan); }
 .lead-form__grid { display: grid; gap: var(--sp-5); }
@@ -1147,7 +1200,11 @@ table { border-collapse: collapse; width: 100%; }
 .doc__list li { position: relative; padding-left: var(--sp-5); }
 .doc__list li::before { content: ''; position: absolute; left: 0; top: .68em;
                         width: 8px; height: 1px; background: var(--flux-cyan); opacity: .8; }
-.doc__table { font-size: var(--fs-small); display: block; overflow-x: auto; }
+/* display:block su <table> puo far perdere il ruolo tabella su alcuni motori:
+   lo scroll va sul wrapper, la tabella resta una tabella. */
+.doc__scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.doc__scroll:focus-visible { outline-offset: 2px; }
+.doc__table { font-size: var(--fs-small); }
 .doc__table th, .doc__table td { padding: var(--sp-3) var(--sp-4); text-align: left;
                                  vertical-align: top; border-bottom: 1px solid var(--border-subtle); }
 .doc__table thead th { color: var(--text-tertiary); font-family: var(--font-mono);

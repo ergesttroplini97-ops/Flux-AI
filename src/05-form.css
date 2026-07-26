@@ -2,7 +2,8 @@
    FORM LEAD
    ========================================================================= */
 
-.lead-form { display: grid; gap: var(--sp-5); padding: var(--sp-6); }
+.lead-form { display: grid; gap: var(--sp-5); padding: var(--sp-5); min-width: 0; }
+.lead-form > *, .lead-form__grid > * { min-width: 0; }
 @media (min-width: 560px) { .lead-form { padding: var(--sp-7); } }
 .lead-form__title { color: var(--flux-cyan); }
 .lead-form__grid { display: grid; gap: var(--sp-5); }
