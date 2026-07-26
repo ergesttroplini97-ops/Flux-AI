@@ -351,11 +351,16 @@
     function loop(now) {
       raf = requestAnimationFrame(loop);
       if (!ready) return;
-      var dt = last ? now - last : 16.7;
+      /* Primo frame: fissa l'origine dei tempi e disegna. Senza questo ramo,
+         con il cap a 30fps il dt di ripiego (16.7) resta sempre sotto la
+         soglia e "last" non viene mai valorizzato: il loop gira a vuoto. */
+      if (!last) { last = now; scene.draw(ctx, st, 0); return; }
+      var dt = now - last;
       if (dt < frameMs - 1.5) return;
       last = now;
-      st.t += Math.min(dt, 50);
-      scene.draw(ctx, st, Math.min(dt, 50));
+      var step = Math.min(dt, 50);
+      st.t += step;
+      scene.draw(ctx, st, step);
     }
 
     function play()  { if (raf) return; last = 0; raf = requestAnimationFrame(loop); }
@@ -597,7 +602,7 @@
             ctx.fillText('FLUX AI', cx, h - h * .14);
             ctx.font = '400 ' + Math.round(Math.min(w * .018, 15)) + 'px Geist, sans-serif';
             ctx.fillStyle = 'rgba(' + LIME + ',' + ta * .8 + ')';
-            ctx.fillText('Vediamo cio che gli altri non vedono', cx, h - h * .07);
+            ctx.fillText('Vediamo ci\u00F2 che gli altri non vedono', cx, h - h * .07);
           }
         } },
 
@@ -702,7 +707,9 @@
 
     var TOTAL = CLIPS.reduce(function (s, c) { return s + c.dur; }, 0);
     var STARTS = []; CLIPS.reduce(function (s, c, i) { STARTS[i] = s; return s + c.dur; }, 0);
-    var reel = { time: 0, playing: false };
+    /* 1.2s: dentro la prima clip, oltre la dissolvenza d'apertura.
+   A tempo 0 il fade-in dipinge il frame di nero e il poster sparisce. */
+    var reel = { time: 1.2, playing: false };
     var lastChap = -1;
 
     function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + Math.floor(s % 60)).slice(-2); }

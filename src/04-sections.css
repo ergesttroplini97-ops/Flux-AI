@@ -368,41 +368,53 @@
 .fr-time { flex: none; font-size: var(--fs-micro); color: var(--text-tertiary); }
 
 /* ---------------------------------------------------------------- RAIL */
-.rail { position: relative; margin-bottom: var(--sp-9); padding-top: var(--sp-8); }
+/* La posizione sul rail codifica lo stadio reale del prodotto: e
+   un'informazione, non un badge decorativo. Etichette sopra la traccia,
+   scala sotto: cosi non si scontrano mai. */
+.rail { position: relative; margin-bottom: var(--sp-9); padding: var(--sp-9) 0 var(--sp-6); }
 .rail__track { position: relative; height: 2px; background: var(--bg-elevated); border-radius: 2px; }
-.rail__fill  { position: absolute; inset: 0; background: var(--grad-logo); opacity: .85; border-radius: 2px; }
-.rail__scale { display: flex; justify-content: space-between; margin-top: var(--sp-3);
+.rail__fill  { position: absolute; inset: 0; background: var(--grad-logo); opacity: .8; border-radius: 2px; }
+.rail__scale { display: flex; justify-content: space-between; margin-top: var(--sp-4);
                font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .1em;
                text-transform: uppercase; color: var(--text-tertiary); }
-.rail__nodes { position: relative; height: 0; }
+/* sovrapposto esattamente alla traccia */
+.rail__nodes { position: absolute; left: 0; right: 0; top: var(--sp-9); height: 2px; }
 .rail__node {
-  position: absolute; left: var(--pos); top: -1px; translate: -50% -50%;
-  display: grid; justify-items: center; gap: var(--sp-3); padding: var(--sp-2);
+  position: absolute; left: var(--pos); top: 1px; translate: -50% -50%;
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--r-full);
 }
 .rail__pin {
   width: 13px; height: 13px; border-radius: var(--r-full);
   background: var(--bg-base); border: 2px solid var(--border-strong);
-  transition: border-color var(--dur-ui) var(--ease-shutter), box-shadow var(--dur-ui) var(--ease-shutter),
-              scale var(--dur-ui) var(--ease-snap);
+  transition: border-color var(--dur-ui) var(--ease-shutter),
+              box-shadow var(--dur-ui) var(--ease-shutter), scale var(--dur-ui) var(--ease-snap);
 }
 .rail__node:hover .rail__pin { border-color: var(--flux-cyan); }
-.rail__node[aria-selected='true'] .rail__pin { border-color: var(--flux-lime); background: var(--flux-lime); box-shadow: var(--glow-lime); scale: 1.15; }
+.rail__node[aria-selected='true'] .rail__pin {
+  border-color: var(--flux-lime); background: var(--flux-lime); box-shadow: var(--glow-lime); scale: 1.15;
+}
 .rail__label {
-  position: absolute; top: 22px; white-space: nowrap;
-  font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .06em;
+  position: absolute; bottom: 100%; margin-bottom: var(--sp-2); white-space: nowrap;
+  font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .04em;
   color: var(--text-tertiary); transition: color var(--dur-micro) var(--ease-shutter);
 }
-.rail__node[aria-selected='true'] .rail__label { color: var(--text-primary); }
+.rail__node[aria-selected='true'] .rail__label { color: var(--flux-lime); }
 .rail__node:hover .rail__label { color: var(--text-secondary); }
+/* i due nodi agli estremi devono restare dentro la colonna */
+.rail__node:first-child  .rail__label { transform: translateX(-38%); }
+.rail__node:last-child   .rail__label { transform: translateX(38%); }
+
 /* Sotto i 900px il rail diventa una fila di tab: le etichette si sovrapporrebbero. */
 @media (max-width: 899px) {
-  .rail { padding-top: 0; }
+  .rail { padding: 0; margin-bottom: var(--sp-7); }
   .rail__track, .rail__scale { display: none; }
-  .rail__nodes { height: auto; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
-  .rail__node { position: static; translate: none; flex-direction: row; align-items: center; gap: var(--sp-2);
-                border: 1px solid var(--border-default); border-radius: var(--r-md); padding: var(--sp-2) var(--sp-3); }
+  .rail__nodes { position: static; height: auto; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  .rail__node { position: static; translate: none; width: auto; height: auto;
+                grid-auto-flow: column; gap: var(--sp-2); border-radius: var(--r-md);
+                border: 1px solid var(--border-default); padding: var(--sp-2) var(--sp-3); }
   .rail__node[aria-selected='true'] { border-color: var(--flux-lime); }
-  .rail__label { position: static; }
+  .rail__label { position: static; margin: 0; transform: none !important; }
+  .rail__node:first-child .rail__label, .rail__node:last-child .rail__label { transform: none; }
 }
 
 .panel { padding: var(--sp-7); display: grid; gap: var(--sp-5); }

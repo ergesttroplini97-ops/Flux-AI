@@ -28,6 +28,7 @@
   background: color-mix(in oklab, var(--state-ok) 9%, transparent);
   border: 1px solid color-mix(in oklab, var(--state-ok) 28%, transparent);
 }
+.lead-form__status[hidden] { display: none; }
 .lead-form__legal { font-size: var(--fs-micro); line-height: 1.6; }
 
 .form-done { display: grid; gap: var(--sp-4); justify-items: start; padding: var(--sp-6) 0; }
