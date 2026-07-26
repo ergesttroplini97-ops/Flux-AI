@@ -130,9 +130,35 @@ table { border-collapse: collapse; width: 100%; }
 /* Rapporto 3:1 — lo spazio sopra un titolo e ~3x quello sotto. */
 .section-head { margin-bottom: var(--sp-8); max-width: 62ch; }
 .section-head .eyebrow { color: var(--flux-cyan); display: block; margin-bottom: var(--sp-4); }
-.section-head .t-h1    { margin-bottom: var(--sp-5); }
+/* Rapporto 3:1 reale: sopra il blocco ci sono ~160px, sotto ne servono ~54.
+   Con 24px il titolo restava incollato al contenuto che segue. */
+.section-head .t-h1    { margin-bottom: 3.375rem; }
 
-.scroll-x { overflow-x: auto; overscroll-behavior-x: contain; }
+/* Dieci sezioni con lo stesso header a sinistra e meta destra vuota facevano
+   sembrare la pagina un documento. Tre di esse passano a due colonne. */
+@media (min-width: 1100px) {
+  #problema .section-head, #corsi .section-head {
+    max-width: none; display: grid; align-items: end;
+    grid-template-columns: minmax(0, 620px) minmax(0, 460px); column-gap: var(--sp-9);
+  }
+  #problema .section-head .eyebrow,
+  #corsi    .section-head .eyebrow { grid-column: 1 / -1; }
+  #problema .section-head .t-h1,
+  #corsi    .section-head .t-h1 { margin-bottom: 0; }
+  #problema .section-head .t-lead,
+  #corsi    .section-head .t-lead { margin: 0; padding-bottom: .4rem; }
+}
+
+/* Contenuto largo: scorre nel suo contenitore, mai il body. La sfumatura a
+   destra e l'affordance: senza, meta tabella e invisibile e nessuno lo sa. */
+.scroll-x {
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 90%, transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0 90%, transparent 100%);
+}
+.scroll-x:hover, .scroll-x:focus-within { -webkit-mask-image: none; mask-image: none; }
+@media (min-width: 1100px) { .scroll-x { -webkit-mask-image: none; mask-image: none; } }
 
 /* ---------------------------------------------- REVEAL: "racking focus" */
 /* Arriva sfocato e leggermente piu grande, poi si risolve. Nessun translateY. */

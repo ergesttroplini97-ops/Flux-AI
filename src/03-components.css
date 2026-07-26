@@ -21,10 +21,16 @@
 }
 .btn svg { width: 1em; height: 1em; flex: none; }
 
-/* Primaria: il lime e il fuoco. Una per schermata. */
-.btn--primary { --btn-bg: var(--flux-lime); --btn-fg: var(--on-accent); --btn-bd: var(--flux-lime); font-weight: 700; }
-.btn--primary:hover { --btn-bg: #D6F865; --btn-bd: #D6F865; box-shadow: var(--glow-lime); }
-.btn--primary:active { --btn-bg: var(--flux-lime-deep); --btn-bd: var(--flux-lime-deep); }
+/* Primaria: ciano. Il lime resta il fuoco e vale UNA volta per pagina —
+   con la CTA sticky in navbar, un primario lime lo rendeva onnipresente. */
+.btn--primary { --btn-bg: var(--flux-cyan); --btn-fg: var(--on-accent); --btn-bd: var(--flux-cyan); font-weight: 700; }
+.btn--primary:hover { --btn-bg: #3FE3DD; --btn-bd: #3FE3DD; box-shadow: var(--glow-cyan); }
+.btn--primary:active { --btn-bg: var(--flux-cyan-deep); --btn-bd: var(--flux-cyan-deep); }
+
+/* L'unica eccezione ammessa: la CTA primaria della hero. */
+.btn--focal { --btn-bg: var(--flux-lime); --btn-fg: var(--on-accent); --btn-bd: var(--flux-lime); }
+.btn--focal:hover { --btn-bg: #D6F865; --btn-bd: #D6F865; box-shadow: var(--glow-lime); }
+.btn--focal:active { --btn-bg: var(--flux-lime-deep); --btn-bd: var(--flux-lime-deep); }
 
 /* Secondaria: il ciano e l'unico colore interattivo. */
 .btn--secondary:hover { --btn-bd: var(--flux-cyan); --btn-fg: var(--flux-cyan); background: color-mix(in oklab, var(--flux-cyan) 8%, transparent); }
@@ -116,14 +122,15 @@
 }
 .field[data-invalid='true'] .field-error { display: flex; }
 
-.checkbox { display: flex; gap: var(--sp-3); align-items: flex-start; cursor: pointer; }
+.checkbox { display: flex; gap: var(--sp-3); align-items: flex-start; cursor: pointer;
+            padding-block: var(--sp-2); min-height: 44px; }
 .checkbox input {
-  appearance: none; flex: none; width: 18px; height: 18px; margin-top: 3px;
+  appearance: none; flex: none; width: 22px; height: 22px; margin-top: 1px;
   background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-xs);
   transition: background var(--dur-micro) var(--ease-shutter), border-color var(--dur-micro) var(--ease-shutter);
 }
 .checkbox input:checked {
-  background: var(--flux-cyan) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='10' fill='none'%3E%3Cpath d='M1 5l3.5 3.5L11 1.5' stroke='%2305060A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;
+  background: var(--flux-cyan) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='10' fill='none'%3E%3Cpath d='M1 5l3.5 3.5L11 1.5' stroke='%2305060A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat;
   border-color: var(--flux-cyan);
 }
 .checkbox span { font-size: var(--fs-small); color: var(--text-secondary); line-height: 1.5; }
