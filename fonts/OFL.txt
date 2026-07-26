@@ -1,0 +1,9 @@
+Geist e Geist Mono: Copyright (c) 2023 Vercel, Inc. — SIL Open Font License 1.1
+Instrument Serif: Copyright (c) 2022 Instrument — SIL Open Font License 1.1
+
+Questi file woff2 sono subset (pyftsubset) dei font originali distribuiti da
+Google Fonts, ridotti ai soli caratteri usati dal sito. La SIL OFL 1.1 consente
+esplicitamente modifica e ridistribuzione; il testo integrale della licenza e
+disponibile su https://openfontlicense.org e nei repository originali:
+  https://github.com/vercel/geist-font
+  https://fonts.google.com/specimen/Instrument+Serif

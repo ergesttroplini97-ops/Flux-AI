@@ -1,0 +1,19 @@
+{
+  "name": "Flux AI — Soluzioni AI per professionisti e PMI",
+  "short_name": "Flux AI",
+  "description": "Automazioni, agenti AI, app web e formazione per studi professionali e PMI italiane.",
+  "lang": "it-IT",
+  "dir": "ltr",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0A0A0E",
+  "theme_color": "#0A0A0E",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

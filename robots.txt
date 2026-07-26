@@ -1,0 +1,9 @@
+# Flux AI — https://www.flux-ai.it
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /grazie
+
+# Preview Vercel: non indicizzare (Vercel invia già X-Robots-Tag su *.vercel.app)
+
+Sitemap: https://www.flux-ai.it/sitemap.xml

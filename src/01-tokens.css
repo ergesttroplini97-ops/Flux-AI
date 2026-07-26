@@ -1,0 +1,107 @@
+/* ============================================================================
+   FLUX AI — DESIGN TOKENS
+   Concept: "strumento ottico". Cio che conta entra a fuoco e si scalda verso
+   il lime; tutto il resto resta in un blu freddo, fuori fuoco.
+   La luce non e decorazione: e informazione.
+   ========================================================================= */
+
+:root {
+  /* --- GROUND: layer di profondita. Neutri con bias blu (hue OKLCH ~270) --- */
+  --bg-void:        #05060A;
+  --bg-base:        #0A0C12;
+  --bg-surface:     #11141D;
+  --bg-elevated:    #181C28;
+  --bg-inset:       #070810;
+
+  /* --- BORDER --- */
+  --border-subtle:  #1C2130;
+  --border-default: #262C3D;
+  --border-strong:  #38405A;
+
+  /* --- TEXT --- */
+  --text-primary:   #EEF1F8;  /* 17.3:1 su --bg-base */
+  --text-secondary: #98A1B8;  /*  7.6:1 su --bg-base */
+  --text-tertiary:  #5D6478;  /*  3.3:1 — solo meta/disabled, MAI body */
+
+  /* --- ACCENT: estratti dal logo (blu -> ciano -> lime) --- */
+  --flux-blue:      #2F6BFF;  /* STRUTTURALE: bordi, tratti, dati. Mai fill di bottone. */
+  --flux-cyan:      #19D6D0;  /* PRIMARIO interattivo — 10.8:1 */
+  --flux-lime:      #C8F04A;  /* FOCUS — max 1 per viewport — 14.9:1 */
+  --flux-blue-deep: #0B3FA8;
+  --flux-cyan-deep: #0E8F8B;
+  --flux-lime-deep: #6C8F14;
+
+  /* --- STATI: semantici, deliberatamente fuori dal range di brand --- */
+  --state-ok:       #2FD98A;
+  --state-warn:     #F5A524;
+  --state-error:    #F5455C;
+
+  --on-accent:      #05060A;
+
+  /* --- UNICA istanza del gradiente-logo ammessa per pagina --- */
+  --grad-logo: linear-gradient(100deg, #2F6BFF 0%, #19D6D0 45%, #C8F04A 100%);
+
+  /* ------------------------------------------------------------------ TYPE */
+  --font-display:   'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:      'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-editorial: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-mono:      'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Scala fluida 390px -> 1512px. Il tracking decresce al crescere del corpo. */
+  --fs-display: clamp(2.75rem,  1.19rem + 6.42vw, 7.25rem);   /*  44 -> 116 */
+  --fs-h1:      clamp(2.25rem,  1.38rem + 3.56vw, 4.75rem);   /*  36 ->  76 */
+  --fs-h2:      clamp(1.75rem,  1.40rem + 1.43vw, 2.75rem);   /*  28 ->  44 */
+  --fs-h3:      clamp(1.25rem,  1.12rem + 0.53vw, 1.625rem);  /*  20 ->  26 */
+  --fs-lead:    clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem);  /*  18 ->  22 */
+  --fs-body:    clamp(1rem,     0.98rem + 0.09vw, 1.0625rem); /*  16 ->  17 */
+  --fs-small:   clamp(0.875rem, 0.85rem + 0.09vw, 0.9375rem); /*  14 ->  15 */
+  --fs-micro:   clamp(0.6875rem,0.67rem + 0.09vw, 0.75rem);   /*  11 ->  12 */
+
+  /* --------------------------------------------------------------- SPACING */
+  --sp-1: .25rem;  --sp-2: .5rem;   --sp-3: .75rem;  --sp-4: 1rem;
+  --sp-5: 1.5rem;  --sp-6: 2rem;    --sp-7: 3rem;    --sp-8: 4rem;
+  --sp-9: 6rem;    --sp-10: 8rem;   --sp-11: 12rem;
+
+  --section-y: clamp(5rem, 3rem + 8vw, 11rem);
+  --gutter:    clamp(1.25rem, .5rem + 3vw, 3.5rem);
+
+  --max-content: 1240px;
+  --max-wide:    1440px;
+  --max-prose:   68ch;
+  --max-lead:    58ch;
+
+  /* ---------------------------------------------------------------- RADIUS */
+  /* Il logo e esagonale e a spigolo vivo. Il sito lo e. Massimo 12px. */
+  --r-xs: 2px; --r-sm: 4px; --r-md: 6px; --r-lg: 10px; --r-xl: 12px;
+  --r-full: 999px;  /* riservato: solo status dot e avatar */
+
+  /* ---------------------------------------------------------------- SHADOW */
+  --shadow-1: 0 1px 2px rgb(0 0 0 / .40);
+  --shadow-2: 0 4px 12px rgb(0 0 0 / .45), 0 1px 2px rgb(0 0 0 / .35);
+  --shadow-3: 0 16px 40px rgb(0 0 0 / .55), 0 4px 10px rgb(0 0 0 / .40);
+  --shadow-inset: inset 0 1px 0 rgb(255 255 255 / .045);
+
+  --glow-cyan: 0 0 0 1px color-mix(in oklab, var(--flux-cyan) 40%, transparent),
+               0 0 28px -6px color-mix(in oklab, var(--flux-cyan) 55%, transparent);
+  --glow-lime: 0 0 0 1px color-mix(in oklab, var(--flux-lime) 45%, transparent),
+               0 0 32px -6px color-mix(in oklab, var(--flux-lime) 50%, transparent);
+  --ring-focus: 0 0 0 1px var(--bg-base),
+                0 0 0 4px color-mix(in oklab, var(--flux-cyan) 22%, transparent);
+
+  --blur-sm: 8px; --blur-md: 16px; --blur-lg: 40px; --blur-xl: 96px;
+
+  /* ---------------------------------------------------------------- MOTION */
+  /* La firma non e slide-and-fade: e la messa a fuoco. */
+  --ease-lens:    cubic-bezier(.16, 1, .30, 1);
+  --ease-shutter: cubic-bezier(.65, 0, .35, 1);
+  --ease-snap:    cubic-bezier(.34, 1.40, .64, 1);  /* un solo uso: focus ring + tab */
+  --ease-exit:    cubic-bezier(.40, 0, 1, 1);
+
+  --dur-micro:   120ms;
+  --dur-ui:      220ms;
+  --dur-enter:   640ms;
+  --dur-exit:    280ms;
+  --dur-page:    480ms;
+
+  --nav-h: 64px;
+}
