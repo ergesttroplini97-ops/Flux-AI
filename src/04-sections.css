@@ -270,6 +270,9 @@
   text-transform: uppercase; color: var(--state-ok);
 }
 .console__live .dot { background: var(--state-ok); }
+/* Il badge diceva "live" in verde: si leggeva come telemetria reale. E un esempio. */
+.console__live--demo { color: var(--state-warn); }
+.console__live--demo .dot { background: var(--state-warn); }
 @media (prefers-reduced-motion: no-preference) {
   .console__live .dot { animation: pulse 1.8s var(--ease-shutter) infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }

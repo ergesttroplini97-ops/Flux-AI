@@ -148,13 +148,13 @@ function validate(body) {
     consenso_marketing: body.consenso_marketing === true || body.consenso_marketing === 'on',
   };
 
-  if (d.nome.length < 2) errors.nome = 'Inserisci nome e cognome.';
-  if (!EMAIL_RE.test(d.email)) errors.email = 'Inserisci un indirizzo email valido.';
+  if (d.nome.length < 2) errors.nome = 'Inserite nome e cognome.';
+  if (!EMAIL_RE.test(d.email)) errors.email = 'Inserite un indirizzo email valido.';
   if (d.telefono !== null && !TEL_RE.test(d.telefono)) errors.telefono = 'Numero di telefono non valido.';
-  if (!INTERESSI.includes(d.interesse)) errors.interesse = 'Seleziona di cosa hai bisogno.';
+  if (!INTERESSI.includes(d.interesse)) errors.interesse = 'Selezionate di cosa avete bisogno.';
   if (d.budget !== null && !BUDGET.includes(d.budget)) errors.budget = 'Valore non valido.';
-  if (d.messaggio.length < 20) errors.messaggio = 'Descrivi la richiesta in almeno 20 caratteri.';
-  if (!d.consenso_privacy) errors.consenso_privacy = 'Devi accettare l’informativa privacy per inviare.';
+  if (d.messaggio.length < 10) errors.messaggio = 'Descrivete la richiesta in almeno 10 caratteri.';
+  if (!d.consenso_privacy) errors.consenso_privacy = "Dovete prendere visione dell'informativa privacy per inviare.";
 
   return { data: d, errors };
 }
@@ -256,7 +256,7 @@ module.exports = async function handler(req, res) {
       res.setHeader('Location', '/grazie.html');
       return res.status(303).end();
     }
-    res.setHeader('Location', '/grazie.html?errore=' + encodeURIComponent(payload.error || 'errore'));
+    res.setHeader('Location', '/errore.html?c=' + encodeURIComponent(payload.error || 'errore'));
     return res.status(303).end();
   };
 

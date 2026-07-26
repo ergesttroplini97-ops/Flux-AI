@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0A0C12">
 <meta name="color-scheme" content="dark">
-<title>Informativa privacy — Flux AI</title>
-<meta name="description" content="Informativa privacy di Flux AI.">
-<link rel="canonical" href="https://www.flux-ai.it/privacy">
-
+<title>Invio non riuscito — Flux AI</title>
+<meta name="description" content="Invio non riuscito di Flux AI.">
+<link rel="canonical" href="https://www.flux-ai.it/errore">
+<meta name="robots" content="noindex, follow">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
@@ -1176,105 +1176,13 @@ table { border-collapse: collapse; width: 100%; }
   </div>
 </header>
 <main class="doc__main wrap" id="doc">
-<h1 class="t-h1">Informativa privacy</h1>
-<p class="t-lead">Come trattiamo i dati che ci lasciate su questo sito, ai sensi dell'articolo 13 del Regolamento (UE) 2016/679.</p>
-<p class="meta">Versione <span class="num">privacy-2026-07</span> — in vigore dal 26 luglio 2026.</p>
-
-<div class="doc__alert">
-  <strong>Da completare prima della pubblicazione.</strong> I campi contrassegnati con
-  <code>###</code> richiedono i dati societari di Flux AI. Il resto del documento descrive
-  fedelmente ciò che il sito fa oggi, verificato sul codice.
-</div>
-
-<h2 class="t-h2">1. Titolare del trattamento</h2>
-<p>Flux AI — <code>###RAGIONE SOCIALE###</code>, con sede in <code>###INDIRIZZO###</code>,
-  P.IVA <code>###P.IVA###</code>.<br>
-  Contatti: <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>.</p>
-<p>Non è stato nominato un Responsabile della protezione dei dati (DPO): il trattamento non
-  rientra nei casi in cui l'art. 37 GDPR lo rende obbligatorio.</p>
-
-<h2 class="t-h2">2. Quali dati raccogliamo</h2>
-<p>Solo quelli che inserite voi nel modulo di contatto:</p>
-<ul class="doc__list">
-  <li><strong>Obbligatori:</strong> nome e cognome, email, area di interesse, descrizione della richiesta.</li>
-  <li><strong>Facoltativi:</strong> studio o azienda, telefono, fascia di budget.</li>
-  <li><strong>Tecnici:</strong> data e ora dell'invio, user agent del browser, pagina di provenienza,
-    eventuali parametri di campagna (<span class="num">utm_*</span>) e un
-    <strong>codice derivato dal vostro indirizzo IP</strong>.</li>
-</ul>
-<p>Nei nostri archivi l'indirizzo IP <strong>non viene mai conservato in chiaro</strong>: ne
-  salviamo solo un codice irreversibile (HMAC-SHA256 troncato), che serve unicamente a limitare
-  gli invii automatici. È una misura di pseudonimizzazione ai sensi dell'art. 32 GDPR.</p>
-<p>I log tecnici del fornitore di hosting possono contenere l'indirizzo IP per un tempo
-  limitato, per finalità di sicurezza e diagnostica: è un trattamento inevitabile in qualsiasi
-  servizio web, e si fonda sul nostro legittimo interesse alla sicurezza dell'infrastruttura.</p>
-
-<h2 class="t-h2">3. Cosa NON facciamo</h2>
-<ul class="doc__list">
-  <li>Non usiamo cookie di profilazione, né alcun cookie non strettamente tecnico.</li>
-  <li>Non usiamo strumenti di analytics, pixel pubblicitari o fingerprinting.</li>
-  <li><strong>Il sito non carica alcuna risorsa da terze parti.</strong> Font, immagini, stili e
-    script sono ospitati sul nostro dominio: navigando, il vostro indirizzo IP non viene
-    comunicato a nessun altro soggetto.</li>
-  <li>Non cediamo né vendiamo i vostri dati a terzi.</li>
-  <li>Non prendiamo decisioni automatizzate né effettuiamo profilazione (art. 22 GDPR).</li>
-</ul>
-
-<h2 class="t-h2">4. Perché li trattiamo, e con quale base giuridica</h2>
-<table class="doc__table">
-  <thead><tr><th scope="col">Finalità</th><th scope="col">Base giuridica</th><th scope="col">Conservazione</th></tr></thead>
-  <tbody>
-    <tr><td>Rispondere alla vostra richiesta e formulare un preventivo</td>
-        <td>Misure precontrattuali su vostra richiesta — art. 6.1.b</td>
-        <td>24 mesi dall'ultimo contatto</td></tr>
-    <tr><td>Invio di casi studio e novità, se lo avete spuntato</td>
-        <td>Consenso — art. 6.1.a, revocabile in ogni momento</td>
-        <td>Fino alla revoca</td></tr>
-    <tr><td>Protezione del modulo da invii automatici</td>
-        <td>Legittimo interesse alla sicurezza — art. 6.1.f</td>
-        <td>15 minuti (dato tecnico), poi il solo codice IP fino a 24 mesi</td></tr>
-    <tr><td>Prova del consenso prestato</td>
-        <td>Obbligo di legge — art. 7.1</td>
-        <td>Per tutta la durata del trattamento</td></tr>
-  </tbody>
-</table>
-<p>Il conferimento dei dati obbligatori è necessario per rispondervi: senza, non possiamo
-  ricontattarvi. Quello dei dati facoltativi è libero e non pregiudica la risposta.</p>
-
-<h2 class="t-h2">5. Chi tratta i dati per nostro conto</h2>
-<p>Solo tre fornitori, tutti nominati responsabili del trattamento ai sensi dell'art. 28 GDPR:</p>
-<table class="doc__table">
-  <thead><tr><th scope="col">Fornitore</th><th scope="col">Ruolo</th><th scope="col">Dove</th></tr></thead>
-  <tbody>
-    <tr><td>Vercel Inc.</td><td>Hosting del sito ed esecuzione del modulo</td><td>UE / USA con clausole contrattuali tipo</td></tr>
-    <tr><td>Supabase Inc.</td><td>Archiviazione delle richieste ricevute</td><td>Unione Europea (<span class="num">eu-central-1</span>)</td></tr>
-    <tr><td>Resend Inc.</td><td>Invio della notifica email al nostro indirizzo</td><td>USA con clausole contrattuali tipo</td></tr>
-  </tbody>
-</table>
-<p>Ove i fornitori aderiscano all'EU-US Data Privacy Framework, il trasferimento si fonda
-  sulla decisione di adeguatezza della Commissione europea del 10 luglio 2023; negli altri casi
-  sulle clausole contrattuali tipo approvate con decisione 2021/914, integrate dalle garanzie
-  supplementari previste nei contratti. <strong>Potete richiederne copia</strong> scrivendo a
-  <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>.</p>
-<p>Se avete acconsentito all'invio di comunicazioni, queste vengono spedite tramite lo stesso
-  fornitore indicato in tabella per le notifiche email.</p>
-
-<h2 class="t-h2">6. I vostri diritti</h2>
-<p>Potete in ogni momento chiedere di <strong>accedere</strong> ai vostri dati, di
-  <strong>rettificarli</strong>, di <strong>cancellarli</strong>, di <strong>limitarne</strong>
-  il trattamento, di riceverli in formato leggibile (<strong>portabilità</strong>) e di
-  <strong>opporvi</strong> al trattamento basato sul legittimo interesse — articoli 15-22 GDPR.
-  Se avete dato il consenso al marketing, potete <strong>revocarlo</strong> in qualsiasi momento
-  senza che questo pregiudichi la liceità del trattamento precedente.</p>
-<p>Scrivete a <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>: rispondiamo entro
-  trenta giorni. Se ritenete che il trattamento violi il Regolamento, potete presentare
-  reclamo al <a href="https://www.garanteprivacy.it" rel="noopener">Garante per la protezione
-  dei dati personali</a> o ricorso all'autorità giudiziaria.</p>
-
-<h2 class="t-h2">7. Modifiche</h2>
-<p>Se cambieremo questa informativa aggiorneremo la versione indicata in alto. La versione
-  vigente al momento del vostro invio viene registrata insieme alla richiesta, così è sempre
-  possibile ricostruire a cosa avete acconsentito e quando.</p>
+<h1 class="t-h1">Non siamo riusciti a registrare la richiesta.</h1>
+<p class="t-lead">È un problema nostro, non vostro. Il messaggio non è arrivato, quindi
+  vale la pena riprovare — oppure scriverci direttamente, che è anche più veloce.</p>
+<p><a class="btn btn--primary" href="mailto:ergest@flux-ai.it">Scrivete a ergest@flux-ai.it</a>
+   <a class="btn btn--secondary" href="/#contatti">Torna al modulo</a></p>
+<p class="meta">Se volete segnalarci il problema, indicateci l'ora del tentativo: ci aiuta a
+  trovarlo nei log.</p>
 </main>
 <footer class="foot">
   <div class="wrap-wide">

@@ -2,7 +2,8 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /grazie
+# /grazie e /errore usano <meta robots noindex>: bloccarle qui impedirebbe
+# al crawler di leggerlo, e l'URL comparirebbe comunque in SERP senza descrizione.
 
 # Preview Vercel: non indicizzare (Vercel invia già X-Robots-Tag su *.vercel.app)
 

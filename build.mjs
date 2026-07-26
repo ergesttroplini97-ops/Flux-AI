@@ -67,11 +67,13 @@ const PAGES = [
   ['cookie-policy', 'Cookie policy'],
   ['termini',       'Termini e avvertenze'],
   ['grazie',        'Richiesta ricevuta'],
+  ['errore',        'Invio non riuscito'],
 ];
 const navLogo = logo();
 for (const [slug, title] of PAGES) {
   const body = read(`./src/pages/${slug}.html`);
-  const noindex = slug === 'grazie' ? '<meta name="robots" content="noindex, follow">' : '';
+  const noindex = (slug === 'grazie' || slug === 'errore')
+    ? '<meta name="robots" content="noindex, follow">' : '';
   const page = `<!doctype html>
 <html lang="it">
 <head>
@@ -106,11 +108,19 @@ ${read('./src/06-doc.css')}
 ${body.trim()}
 </main>
 <footer class="foot">
-  <div class="wrap-wide foot__bottom">
-    <p class="meta">© ${new Date().getFullYear()} Flux AI. Tutti i diritti riservati.</p>
-    <nav class="foot__legal" aria-label="Note legali">
-      <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
-    </nav>
+  <div class="wrap-wide">
+    <p class="foot__addr meta">
+      Flux AI — <span data-fill="ragione-sociale">ragione sociale da inserire</span><br>
+      P.IVA <span data-fill="piva">da inserire</span> · <span data-fill="sede">sede da inserire</span> ·
+      <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>
+    </p>
+    <div class="foot__bottom">
+      <p class="meta">© ${new Date().getFullYear()} Flux AI. Tutti i diritti riservati.</p>
+      <nav class="foot__legal" aria-label="Note legali">
+        <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
+        <a href="/termini#rischio">Avvertenza sul rischio</a>
+      </nav>
+    </div>
   </div>
 </footer>
 </body>
@@ -126,6 +136,23 @@ try {
   const { gzipSync } = await import('node:zlib');
   gz = `  (gzip ${(gzipSync(Buffer.from(html)).length / 1024).toFixed(1)} KB)`;
 } catch { /* zlib sempre presente, ma non e critico */ }
+
+/* ------------------------------------------------------- CONTROLLO FINALE
+   I segnaposto non compilati non devono finire online per distrazione: una
+   informativa privacy senza titolare non e incompleta, e inesistente. */
+const OUTS = ['index.html', ...PAGES.map(([s]) => s + '.html')];
+const holes = [];
+for (const f of OUTS) {
+  const t = readFileSync(new URL('./' + f, import.meta.url), 'utf8');
+  const hashes = (t.match(/###[A-Z. ]+###/g) || []).length;
+  const fills  = (t.match(/da inserire/g) || []).length;
+  if (hashes || fills) holes.push(`  ${f}: ${hashes} segnaposto ###, ${fills} "da inserire"`);
+}
+if (holes.length) {
+  console.log('\n\x1b[33mATTENZIONE — dati societari mancanti, non pubblicare cosi:\x1b[0m');
+  console.log(holes.join('\n'));
+  console.log('  Cercare `data-fill` e `###` nei sorgenti. Vedi PIANO_RESTYLING.md.\n');
+}
 
 console.log('index.html generato');
 console.log('  CSS  ' + kb(CSS));

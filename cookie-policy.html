@@ -765,6 +765,9 @@ table { border-collapse: collapse; width: 100%; }
   text-transform: uppercase; color: var(--state-ok);
 }
 .console__live .dot { background: var(--state-ok); }
+/* Il badge diceva "live" in verde: si leggeva come telemetria reale. E un esempio. */
+.console__live--demo { color: var(--state-warn); }
+.console__live--demo .dot { background: var(--state-warn); }
 @media (prefers-reduced-motion: no-preference) {
   .console__live .dot { animation: pulse 1.8s var(--ease-shutter) infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
@@ -1180,8 +1183,10 @@ table { border-collapse: collapse; width: 100%; }
 <h2 class="t-h2">Cosa usiamo</h2>
 <p>Nessun cookie di profilazione, nessun cookie analitico, nessun cookie di terze parti.
   Il sito <strong>non imposta alcun cookie</strong> nella navigazione ordinaria.</p>
-<p>Il modulo di contatto usa la memoria della pagina solo per il tempo della compilazione:
-  quel dato non lascia il browser e sparisce chiudendo la scheda.</p>
+<p>Il modulo di contatto non memorizza nulla sul vostro dispositivo: i dati vengono inviati
+  solo quando premete «Richiedete l'analisi gratuita».</p>
+<p>I log tecnici del fornitore di hosting registrano gli accessi, come avviene per qualsiasi
+  sito web: non sono cookie e non richiedono consenso.</p>
 
 <h2 class="t-h2">Perché non vedete un banner</h2>
 <p>L'art. 122 del Codice Privacy richiede il consenso solo quando si accede a informazioni
@@ -1206,11 +1211,19 @@ table { border-collapse: collapse; width: 100%; }
 <p>Per il trattamento dei dati che ci inviate tramite il modulo, vedete l'<a href="/privacy">informativa privacy</a>.</p>
 </main>
 <footer class="foot">
-  <div class="wrap-wide foot__bottom">
-    <p class="meta">© 2026 Flux AI. Tutti i diritti riservati.</p>
-    <nav class="foot__legal" aria-label="Note legali">
-      <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
-    </nav>
+  <div class="wrap-wide">
+    <p class="foot__addr meta">
+      Flux AI — <span data-fill="ragione-sociale">ragione sociale da inserire</span><br>
+      P.IVA <span data-fill="piva">da inserire</span> · <span data-fill="sede">sede da inserire</span> ·
+      <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>
+    </p>
+    <div class="foot__bottom">
+      <p class="meta">© 2026 Flux AI. Tutti i diritti riservati.</p>
+      <nav class="foot__legal" aria-label="Note legali">
+        <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
+        <a href="/termini#rischio">Avvertenza sul rischio</a>
+      </nav>
+    </div>
   </div>
 </footer>
 </body>

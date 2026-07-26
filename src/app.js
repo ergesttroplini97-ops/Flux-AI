@@ -912,8 +912,8 @@
       email:     function (v) { return /^[^\s@,;<>()[\]\\]+@([^\s@.,;<>()[\]\\]+\.)+[A-Za-z]{2,63}$/.test(v.trim()) || 'Inserite un indirizzo email valido.'; },
       telefono:  function (v) { return !v.trim() || /^[+0-9][0-9\s.\-/()]{5,24}$/.test(v.trim()) || 'Numero di telefono non valido.'; },
       interesse: function (v) { return !!v || 'Selezionate di cosa avete bisogno.'; },
-      messaggio: function (v) { return v.trim().length >= 20 || 'Descrivete la richiesta in almeno 20 caratteri.'; },
-      consenso_privacy: function (v, el) { return el.checked || 'Dovete accettare l’informativa privacy per inviare.'; }
+      messaggio: function (v) { return v.trim().length >= 10 || 'Descrivete la richiesta in almeno 10 caratteri.'; },
+      consenso_privacy: function (v, el) { return el.checked || "Dovete prendere visione dell'informativa privacy per inviare."; }
     };
 
     function fieldOf(name) { return form.querySelector('[data-field="' + name + '"]'); }
@@ -968,7 +968,7 @@
       submit.setAttribute('aria-busy', String(on));
       submit.innerHTML = on
         ? '<span class="spinner" aria-hidden="true"></span>Invio in corso&hellip;'
-        : 'Richiedi l’analisi gratuita<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg>';
+        : 'Richiedete l\'analisi gratuita<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg>';
     }
 
     var sending = false;
@@ -978,7 +978,7 @@
       var names = Object.keys(RULES);
       var bad = names.filter(function (n) { return !validate(n); });
       if (bad.length) {
-        say('Controllate i campi segnalati: ' + bad.length + (bad.length === 1 ? ' campo non e valido.' : ' campi non sono validi.'), false);
+        say('Controllate i campi segnalati: ' + bad.length + (bad.length === 1 ? ' campo non \u00E8 valido.' : ' campi non sono validi.'), false);
         var first = form.elements[bad[0]];
         if (first && first.focus) first.focus();
         return;

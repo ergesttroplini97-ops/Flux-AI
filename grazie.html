@@ -765,6 +765,9 @@ table { border-collapse: collapse; width: 100%; }
   text-transform: uppercase; color: var(--state-ok);
 }
 .console__live .dot { background: var(--state-ok); }
+/* Il badge diceva "live" in verde: si leggeva come telemetria reale. E un esempio. */
+.console__live--demo { color: var(--state-warn); }
+.console__live--demo .dot { background: var(--state-warn); }
 @media (prefers-reduced-motion: no-preference) {
   .console__live .dot { animation: pulse 1.8s var(--ease-shutter) infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
@@ -1181,11 +1184,19 @@ table { border-collapse: collapse; width: 100%; }
 <p><a class="btn btn--secondary" href="/">Torna al sito</a></p>
 </main>
 <footer class="foot">
-  <div class="wrap-wide foot__bottom">
-    <p class="meta">© 2026 Flux AI. Tutti i diritti riservati.</p>
-    <nav class="foot__legal" aria-label="Note legali">
-      <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
-    </nav>
+  <div class="wrap-wide">
+    <p class="foot__addr meta">
+      Flux AI — <span data-fill="ragione-sociale">ragione sociale da inserire</span><br>
+      P.IVA <span data-fill="piva">da inserire</span> · <span data-fill="sede">sede da inserire</span> ·
+      <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>
+    </p>
+    <div class="foot__bottom">
+      <p class="meta">© 2026 Flux AI. Tutti i diritti riservati.</p>
+      <nav class="foot__legal" aria-label="Note legali">
+        <a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="/termini">Termini</a>
+        <a href="/termini#rischio">Avvertenza sul rischio</a>
+      </nav>
+    </div>
   </div>
 </footer>
 </body>
