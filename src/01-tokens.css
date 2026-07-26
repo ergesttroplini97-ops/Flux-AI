@@ -48,7 +48,7 @@
   --font-mono:      'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Scala fluida 390px -> 1512px. Il tracking decresce al crescere del corpo. */
-  --fs-display: clamp(2.75rem,  1.19rem + 6.42vw, 7.25rem);   /*  44 -> 116 */
+  --fs-display: clamp(2.375rem, 1.44rem + 3.83vw, 5.25rem);   /*  38 ->  84 */
   --fs-h1:      clamp(2.25rem,  1.38rem + 3.56vw, 4.75rem);   /*  36 ->  76 */
   --fs-h2:      clamp(1.75rem,  1.40rem + 1.43vw, 2.75rem);   /*  28 ->  44 */
   --fs-h3:      clamp(1.25rem,  1.12rem + 0.53vw, 1.625rem);  /*  20 ->  26 */

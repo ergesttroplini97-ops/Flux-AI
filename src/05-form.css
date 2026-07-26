@@ -1,0 +1,41 @@
+/* ============================================================================
+   FORM LEAD
+   ========================================================================= */
+
+.lead-form { display: grid; gap: var(--sp-5); padding: var(--sp-6); }
+@media (min-width: 560px) { .lead-form { padding: var(--sp-7); } }
+.lead-form__title { color: var(--flux-cyan); }
+.lead-form__grid { display: grid; gap: var(--sp-5); }
+@media (min-width: 620px) { .lead-form__grid { grid-template-columns: 1fr 1fr; } }
+
+.field-hint { font-size: var(--fs-micro); color: var(--text-tertiary); text-align: right; }
+.field-error svg { width: 14px; height: 14px; flex: none; margin-top: .15em; }
+
+.consents { display: grid; gap: var(--sp-4); border: 0; padding-top: var(--sp-2); }
+
+.lead-form__submit { justify-content: center; width: 100%; }
+.lead-form__status {
+  display: flex; gap: var(--sp-3); align-items: flex-start;
+  padding: var(--sp-4); border-radius: var(--r-md); font-size: var(--fs-small); line-height: 1.5;
+}
+.lead-form__status[data-state='error'] {
+  color: var(--state-error);
+  background: color-mix(in oklab, var(--state-error) 9%, transparent);
+  border: 1px solid color-mix(in oklab, var(--state-error) 28%, transparent);
+}
+.lead-form__status[data-state='ok'] {
+  color: var(--state-ok);
+  background: color-mix(in oklab, var(--state-ok) 9%, transparent);
+  border: 1px solid color-mix(in oklab, var(--state-ok) 28%, transparent);
+}
+.lead-form__legal { font-size: var(--fs-micro); line-height: 1.6; }
+
+.form-done { display: grid; gap: var(--sp-4); justify-items: start; padding: var(--sp-6) 0; }
+.form-done:focus { outline: none; }
+.form-done svg {
+  width: 40px; height: 40px; padding: 9px; box-sizing: content-box;
+  color: var(--on-accent); background: var(--flux-lime); border-radius: var(--r-full);
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.form-done p { max-width: 46ch; }
+.form-done a { color: var(--flux-cyan); text-decoration: underline; text-underline-offset: 2px; }

@@ -1,0 +1,105 @@
+<form class="card card--pad lead-form" id="leadForm" novalidate>
+  <p class="eyebrow lead-form__title">Richiesta di analisi</p>
+
+  <div class="lead-form__grid">
+    <div class="field" data-field="nome">
+      <label for="f-nome">Nome e cognome <span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id="f-nome" name="nome" type="text" autocomplete="name"
+             required aria-describedby="e-nome" maxlength="80">
+      <p class="field-error" id="e-nome"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+    </div>
+
+    <div class="field" data-field="azienda">
+      <label for="f-azienda">Studio o azienda</label>
+      <input class="input" id="f-azienda" name="azienda" type="text" autocomplete="organization" maxlength="120">
+    </div>
+
+    <div class="field" data-field="email">
+      <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id="f-email" name="email" type="email" inputmode="email"
+             autocomplete="email" required aria-describedby="e-email" maxlength="160">
+      <p class="field-error" id="e-email"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+    </div>
+
+    <div class="field" data-field="telefono">
+      <label for="f-telefono">Telefono <span class="meta">(facoltativo)</span></label>
+      <input class="input" id="f-telefono" name="telefono" type="tel" inputmode="tel"
+             autocomplete="tel" aria-describedby="e-telefono" maxlength="25">
+      <p class="field-error" id="e-telefono"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+    </div>
+
+    <div class="field" data-field="interesse">
+      <label for="f-interesse">Di cosa avete bisogno <span class="req" aria-hidden="true">*</span></label>
+      <select class="select" id="f-interesse" name="interesse" required aria-describedby="e-interesse">
+        <option value="">Scegliete un'area…</option>
+        <option value="workflow">Workflow Automation</option>
+        <option value="agenti-ai">Agenti AI su misura</option>
+        <option value="app-web">Applicazione web su misura</option>
+        <option value="trading">Trading automatizzato</option>
+        <option value="startup-ecommerce">Start-up &amp; E-commerce</option>
+        <option value="prodotti">Un prodotto (POUFF, Pips.AI, Nexa, ProntoClip)</option>
+        <option value="corsi">Un corso di formazione</option>
+        <option value="altro">Altro / non lo so ancora</option>
+      </select>
+      <p class="field-error" id="e-interesse"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+    </div>
+
+    <div class="field" data-field="budget">
+      <label for="f-budget">Budget indicativo <span class="meta">(facoltativo)</span></label>
+      <select class="select" id="f-budget" name="budget">
+        <option value="">Preferisco non indicarlo</option>
+        <option value="&lt;2k">Sotto 2.000 €</option>
+        <option value="2k-5k">2.000 – 5.000 €</option>
+        <option value="5k-15k">5.000 – 15.000 €</option>
+        <option value="&gt;15k">Oltre 15.000 €</option>
+        <option value="da-definire">Da definire insieme</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field" data-field="messaggio">
+    <label for="f-messaggio">Cosa vorreste automatizzare? <span class="req" aria-hidden="true">*</span></label>
+    <textarea class="textarea" id="f-messaggio" name="messaggio" required minlength="20" maxlength="2000"
+              aria-describedby="e-messaggio msgCount"
+              placeholder="Anche solo due righe: qual è l'attività che vi porta via più tempo ogni settimana."></textarea>
+    <p class="field-hint"><span class="num" id="msgCount">0 / 2000</span></p>
+    <p class="field-error" id="e-messaggio"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+  </div>
+
+  <fieldset class="consents">
+    <legend class="sr-only">Consensi al trattamento dei dati</legend>
+
+    <div class="field" data-field="consenso_privacy">
+      <label class="checkbox">
+        <input type="checkbox" id="f-privacy" name="consenso_privacy" required aria-describedby="e-consenso_privacy">
+        <span>Ho letto l'<a href="/privacy">informativa privacy</a> e acconsento al trattamento dei
+          miei dati per essere ricontattato in merito a questa richiesta. <span class="req" aria-hidden="true">*</span></span>
+      </label>
+      <p class="field-error" id="e-consenso_privacy"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+    </div>
+
+    <label class="checkbox">
+      <input type="checkbox" id="f-marketing" name="consenso_marketing">
+      <span>Facoltativo: voglio ricevere via email casi studio e novità su automazione e AI
+        applicata agli studi professionali. Posso disiscrivermi con un click, in qualsiasi momento.</span>
+    </label>
+  </fieldset>
+
+  <!-- Honeypot: fuori schermo, non display:none (i bot moderni saltano il display:none). -->
+  <div class="hp" aria-hidden="true">
+    <label for="f-website">Non compilare questo campo</label>
+    <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+  </div>
+
+  <button class="btn btn--primary btn--lg lead-form__submit" id="formSubmit" type="submit">
+    Richiedi l'analisi gratuita<svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+  </button>
+
+  <p class="lead-form__status" id="formStatus" role="status" aria-live="polite" hidden></p>
+
+  <p class="lead-form__legal meta">
+    Titolare del trattamento: Flux AI — <span data-fill="ragione-sociale">ragione sociale da inserire</span>,
+    P.IVA <span data-fill="piva">da inserire</span>. I dati servono solo a rispondervi e non
+    vengono ceduti a terzi.
+  </p>
+</form>
