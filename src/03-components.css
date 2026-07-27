@@ -24,20 +24,18 @@
 /* Primaria: ciano. Il lime resta il fuoco e vale UNA volta per pagina —
    con la CTA sticky in navbar, un primario lime lo rendeva onnipresente. */
 .btn--primary { --btn-bg: var(--flux-cyan); --btn-fg: var(--on-accent); --btn-bd: var(--flux-cyan); font-weight: 700; }
-.btn--primary:hover { --btn-bg: #3FE3DD; --btn-bd: #3FE3DD; box-shadow: var(--glow-cyan); }
+.btn--primary:hover { --btn-bg: var(--flux-cyan-hi); --btn-bd: var(--flux-cyan-hi); box-shadow: var(--glow-cyan); }
 .btn--primary:active { --btn-bg: var(--flux-cyan-deep); --btn-bd: var(--flux-cyan-deep); }
 
 /* L'unica eccezione ammessa: la CTA primaria della hero. */
 .btn--focal { --btn-bg: var(--flux-lime); --btn-fg: var(--on-accent); --btn-bd: var(--flux-lime); }
-.btn--focal:hover { --btn-bg: #D6F865; --btn-bd: #D6F865; box-shadow: var(--glow-lime); }
+.btn--focal:hover { --btn-bg: var(--flux-lime-hi); --btn-bd: var(--flux-lime-hi); box-shadow: var(--glow-lime); }
 .btn--focal:active { --btn-bg: var(--flux-lime-deep); --btn-bd: var(--flux-lime-deep); }
 
 /* Secondaria: il ciano e l'unico colore interattivo. */
 .btn--secondary:hover { --btn-bd: var(--flux-cyan); --btn-fg: var(--flux-cyan); background: color-mix(in oklab, var(--flux-cyan) 8%, transparent); }
 .btn--secondary:active { background: color-mix(in oklab, var(--flux-cyan) 14%, transparent); }
 
-.btn--ghost { --btn-bd: transparent; color: var(--text-secondary); padding-inline: var(--sp-3); }
-.btn--ghost:hover { color: var(--text-primary); background: var(--bg-elevated); }
 
 .btn--lg { padding: 1rem var(--sp-6); font-size: var(--fs-body); }
 .btn[disabled], .btn[aria-disabled='true'] { opacity: .45; pointer-events: none; }
@@ -58,7 +56,6 @@
 }
 .chip--cyan { color: var(--flux-cyan); border-color: color-mix(in oklab, var(--flux-cyan) 30%, transparent); }
 .chip--lime { color: var(--flux-lime); border-color: color-mix(in oklab, var(--flux-lime) 32%, transparent); }
-.chip--blue { color: #7BA2FF; border-color: color-mix(in oklab, var(--flux-blue) 40%, transparent); }
 
 .dot { width: 6px; height: 6px; border-radius: var(--r-full); background: currentColor; flex: none; }
 
@@ -145,14 +142,3 @@
   animation: spin .7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ------------------------------------------------------ CONTATORE MECCANICO */
-/* Ogni cifra vive in uno slot; la colonna trasla come un contatore meccanico. */
-.odo { display: inline-flex; align-items: baseline; }
-.odo__slot { display: inline-block; height: 1em; overflow: hidden; vertical-align: baseline; }
-.odo__col {
-  display: flex; flex-direction: column;
-  transition: transform 700ms var(--ease-lens);
-  transition-delay: var(--slot-delay, 0ms);
-}
-.odo__col > span { height: 1em; line-height: 1; }

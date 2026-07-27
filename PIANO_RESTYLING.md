@@ -14,15 +14,17 @@
 | URL indicizzabili | 1 | 1 pagina + 13 ancore condivisibili (fase 2: pagine separate) |
 | Modo di contattare | 2 `mailto:` nel footer | Form completo + endpoint serverless + email |
 | Peso librerie esterne | ~600 KB (Three.js + Vanta) | **0 KB** |
-| Richieste a terze parti | 4 domini (2 CDN + 2 Google Fonts) | **0** |
+| Richieste a terze parti | 4 domini (2 CDN + 2 Google Fonts) | **0** — 4 richieste in tutto |
 | Logo | PNG 1,8 MB | SVG 4,7 KB |
-| Font | 9 file da Google Fonts | 7 file auto-ospitati e sottoinsiemizzati, 128 KB |
-| Peso pagina | 57 KB + 600 KB di CDN | 176 KB totali, **46 KB gzip** |
+| Font | 9 file da Google Fonts | **3 file** auto-ospitati e sottoinsiemizzati, 49 KB |
+| Peso pagina | 57 KB + 600 KB di CDN | 191 KB, **51 KB gzip / 42 KB brotli** |
 | Palette | Emerald Tailwind (assente nel logo) | Blu/ciano/lime, estratti dal logo |
 | Metriche in home | 4 numeri dichiarati "demo" | 4 impegni verificabili |
 | Cursore custom | Sì (`cursor:none`, rompe il touch) | Rimosso |
 | `prefers-reduced-motion` | Non gestito | Gestito su 3 livelli |
-| Avvertenza rischio trading | Assente | Presente e collegata da ogni prodotto |
+| Avvertenza rischio trading | Assente | Presente, aperta, collegata da ogni prodotto |
+| Accessibilità | 5 criteri WCAG 2.2 AA falliti | **0 violazioni axe** su 6 pagine × 4 viewport |
+| Pagine | 1 | 6 (home + privacy, cookie, termini, grazie, errore) |
 
 ---
 
@@ -128,7 +130,9 @@ Il sito non caricava cookie, ma chiamava `fonts.googleapis.com`, `fonts.gstatic.
 a soggetti terzi extra-SEE, ed è esattamente lo scenario delle condanne sui Google Fonts.
 
 I font sono ora auto-ospitati e sottoinsiemizzati ai caratteri realmente usati (latino +
-accenti italiani + simboli tipografici e valuta): da 287 KB a **128 KB**, sette file.
+accenti italiani + simboli tipografici e valuta): da 287 KB a **49 KB in tre file**. Geist e
+Geist Mono sono variabili, quindi un solo file copre tutti i pesi — dichiararli quattro volte
+faceva scaricare lo stesso file quattro volte.
 Le librerie non ci sono più. Risultato: nessuna richiesta a terze parti, CSP `default-src
 'self'` che regge davvero, e **nessun banner cookie dovuto** — serve comunque una cookie
 policy che dichiari "solo cookie tecnici, nessuna profilazione".
@@ -243,6 +247,32 @@ il contenitore.
 
 Memoria dopo 60 secondi: +36 KB di rumore GC, nodi e listener invariati. Venti aperture
 del drawer e dieci scroll completi: **0 listener accumulati, 0 observer in più**.
+
+### Giro 3 — la passata che ha ripagato
+
+Il terzo giro serviva a trovare ciò che si era rotto *correggendo*, ed è esattamente quello
+che ha trovato:
+
+- **Una regressione introdotta dal giro 2.** Spostando i marcatori di capitolo fuori dallo
+  slider per chiudere `nested-interactive`, i bottoni erano rimasti larghi quanto il loro
+  capitolo e coprivano l'intera barra: **lo scrubbing col mouse era morto** — `elementFromPoint`
+  non restituiva più lo slider in nessun punto — e si era aperta una nuova violazione
+  `target-size`. Ora sono tacche da 24px e la barra è raggiungibile su 89 punti su 99.
+- **Un ciclo di animazione orfano.** Il loop si ripianificava come prima istruzione, quindi un
+  `cancelAnimationFrame` fuori tempo lasciava un ciclo che nessuno poteva più fermare:
+  **39,7 rAF/s a riposo in fondo alla pagina**, cioè batteria consumata per niente su tutto
+  il sito. Il flag ora si controlla *dentro* il frame: 0 rAF/s, misurato.
+- **"capirese"** — un `<br class="br-lg">` senza spazio ai lati: sotto i 900px i due nodi di
+  testo si saldavano e il titolo della sezione di conversione recitava *"Trenta minuti per
+  capirese abbiamo qualcosa da automatizzare"*. Un carattere, su metà del traffico.
+- L'etichetta del pulsante di invio **cambiava da sola** dopo un errore ("Richiedi" nel
+  markup, "Richiedete" nel JS di ripristino), e il pulsante di invio aveva **l'anello di focus
+  più debole della pagina** perché il suo `box-shadow` cancellava quello del focus.
+- 1024px non era mai stato guardato: due select disallineati di 25px, la maschera della
+  tabella corsi che cancellava una colonna di testo dove non c'era nulla da scorrere, e il
+  titolo della hero che passava sopra l'iride.
+- Pulizia: 7 token dichiarati e mai usati, un componente odometro completo (8 righe) senza
+  una sola occorrenza nel markup, quattro regole morte, tre colori hard-coded.
 
 ---
 

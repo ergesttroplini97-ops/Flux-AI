@@ -50,9 +50,10 @@
   --flux-blue:      #2F6BFF;  /* STRUTTURALE: bordi, tratti, dati. Mai fill di bottone. */
   --flux-cyan:      #19D6D0;  /* PRIMARIO interattivo — 10.8:1 */
   --flux-lime:      #C8F04A;  /* FOCUS — max 1 per viewport — 14.9:1 */
-  --flux-blue-deep: #0B3FA8;
   --flux-cyan-deep: #0E8F8B;
+  --flux-cyan-hi:   #3FE3DD;   /* hover del primario */
   --flux-lime-deep: #6C8F14;
+  --flux-lime-hi:   #D6F865;   /* hover della CTA focale */
 
   /* --- STATI: semantici, deliberatamente fuori dal range di brand --- */
   --state-ok:       #2FD98A;
@@ -61,8 +62,9 @@
 
   --on-accent:      #05060A;
 
-  /* --- UNICA istanza del gradiente-logo ammessa per pagina --- */
-  --grad-logo: linear-gradient(100deg, #2F6BFF 0%, #19D6D0 45%, #C8F04A 100%);
+  /* Il gradiente del logo NON esiste come token CSS, ed e voluto: vive solo
+     nello shader della hero e nell'SVG del marchio. Averlo qui invitava a
+     riusarlo su bordi e bottoni, che e cio che rende un gradiente economico. */
 
   /* ------------------------------------------------------------------ TYPE */
   --font-display:   'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -99,8 +101,6 @@
   --r-full: 999px;  /* riservato: solo status dot e avatar */
 
   /* ---------------------------------------------------------------- SHADOW */
-  --shadow-1: 0 1px 2px rgb(0 0 0 / .40);
-  --shadow-2: 0 4px 12px rgb(0 0 0 / .45), 0 1px 2px rgb(0 0 0 / .35);
   --shadow-3: 0 16px 40px rgb(0 0 0 / .55), 0 4px 10px rgb(0 0 0 / .40);
   --shadow-inset: inset 0 1px 0 rgb(255 255 255 / .045);
 
@@ -118,13 +118,10 @@
   --ease-lens:    cubic-bezier(.16, 1, .30, 1);
   --ease-shutter: cubic-bezier(.65, 0, .35, 1);
   --ease-snap:    cubic-bezier(.34, 1.40, .64, 1);  /* un solo uso: focus ring + tab */
-  --ease-exit:    cubic-bezier(.40, 0, 1, 1);
 
   --dur-micro:   120ms;
   --dur-ui:      220ms;
   --dur-enter:   640ms;
-  --dur-exit:    280ms;
-  --dur-page:    480ms;
 
   --nav-h: 64px;
 }
@@ -164,7 +161,6 @@ html {
    500px di errore, misurato). Con JS lo gestiamo noi ricalcolando il bersaglio
    a ogni frame; senza JS torna il comportamento nativo. */
 @media (scripting: none) { html { scroll-behavior: smooth; } }
-html.no-js { scroll-behavior: smooth; }
 @media (max-width: 759px) { html { scroll-padding-bottom: 6rem; } }
 
 body {
@@ -181,8 +177,7 @@ body {
   /* NIENTE overflow-x:hidden: i bug di layout si correggono, non si nascondono. */
 }
 
-img, svg, video, canvas { display: block; max-width: 100%; }
-img, video { height: auto; }
+svg, canvas { display: block; max-width: 100%; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: none; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
@@ -207,12 +202,13 @@ table { border-collapse: collapse; width: 100%; }
 /* L'anello di focus da tastiera e un momento di brand, non un ripiego. */
 :focus { outline: none; }
 :focus-visible {
-  outline: 1px solid var(--flux-cyan);
+  /* Solo outline: un box-shadow viene cancellato da qualunque elemento che ne
+     dichiari uno proprio, ed e cosi che il bottone di invio — l'unico punto di
+     conversione — aveva l'indicatore piu debole di tutta la pagina. */
+  outline: 2px solid var(--flux-cyan);
   outline-offset: 3px;
-  box-shadow: var(--ring-focus);
   border-radius: var(--r-sm);
-  transition: outline-offset var(--dur-ui) var(--ease-snap),
-              box-shadow    var(--dur-ui) var(--ease-snap);
+  transition: outline-offset var(--dur-ui) var(--ease-snap);
 }
 :focus-visible:active { outline-offset: 1px; }
 
@@ -257,7 +253,6 @@ table { border-collapse: collapse; width: 100%; }
   text-wrap: pretty;
 }
 .t-body   { font-size: var(--fs-body); max-width: var(--max-prose); text-wrap: pretty; }
-.t-small  { font-size: var(--fs-small); font-weight: 500; letter-spacing: .004em; line-height: 1.5; }
 .t-micro, .eyebrow {
   font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500;
   letter-spacing: .14em; line-height: 1.4; text-transform: uppercase;
@@ -315,11 +310,13 @@ table { border-collapse: collapse; width: 100%; }
 .scroll-x {
   overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
-  -webkit-mask-image: linear-gradient(90deg, #000 0 90%, transparent 100%);
-          mask-image: linear-gradient(90deg, #000 0 90%, transparent 100%);
+  /* Sfumatura stretta: al 10% cancellava un'intera colonna di testo anche dove
+     non c'era nulla da scorrere. E si applica solo dove serve davvero. */
+  -webkit-mask-image: linear-gradient(90deg, #000 0 calc(100% - 28px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0 calc(100% - 28px), transparent 100%);
 }
 .scroll-x:hover, .scroll-x:focus-within { -webkit-mask-image: none; mask-image: none; }
-@media (min-width: 1100px) { .scroll-x { -webkit-mask-image: none; mask-image: none; } }
+@media (min-width: 760px) { .scroll-x { -webkit-mask-image: none; mask-image: none; } }
 
 /* ---------------------------------------------- REVEAL: "racking focus" */
 /* Arriva sfocato e leggermente piu grande, poi si risolve. Nessun translateY. */
@@ -379,20 +376,18 @@ table { border-collapse: collapse; width: 100%; }
 /* Primaria: ciano. Il lime resta il fuoco e vale UNA volta per pagina —
    con la CTA sticky in navbar, un primario lime lo rendeva onnipresente. */
 .btn--primary { --btn-bg: var(--flux-cyan); --btn-fg: var(--on-accent); --btn-bd: var(--flux-cyan); font-weight: 700; }
-.btn--primary:hover { --btn-bg: #3FE3DD; --btn-bd: #3FE3DD; box-shadow: var(--glow-cyan); }
+.btn--primary:hover { --btn-bg: var(--flux-cyan-hi); --btn-bd: var(--flux-cyan-hi); box-shadow: var(--glow-cyan); }
 .btn--primary:active { --btn-bg: var(--flux-cyan-deep); --btn-bd: var(--flux-cyan-deep); }
 
 /* L'unica eccezione ammessa: la CTA primaria della hero. */
 .btn--focal { --btn-bg: var(--flux-lime); --btn-fg: var(--on-accent); --btn-bd: var(--flux-lime); }
-.btn--focal:hover { --btn-bg: #D6F865; --btn-bd: #D6F865; box-shadow: var(--glow-lime); }
+.btn--focal:hover { --btn-bg: var(--flux-lime-hi); --btn-bd: var(--flux-lime-hi); box-shadow: var(--glow-lime); }
 .btn--focal:active { --btn-bg: var(--flux-lime-deep); --btn-bd: var(--flux-lime-deep); }
 
 /* Secondaria: il ciano e l'unico colore interattivo. */
 .btn--secondary:hover { --btn-bd: var(--flux-cyan); --btn-fg: var(--flux-cyan); background: color-mix(in oklab, var(--flux-cyan) 8%, transparent); }
 .btn--secondary:active { background: color-mix(in oklab, var(--flux-cyan) 14%, transparent); }
 
-.btn--ghost { --btn-bd: transparent; color: var(--text-secondary); padding-inline: var(--sp-3); }
-.btn--ghost:hover { color: var(--text-primary); background: var(--bg-elevated); }
 
 .btn--lg { padding: 1rem var(--sp-6); font-size: var(--fs-body); }
 .btn[disabled], .btn[aria-disabled='true'] { opacity: .45; pointer-events: none; }
@@ -413,7 +408,6 @@ table { border-collapse: collapse; width: 100%; }
 }
 .chip--cyan { color: var(--flux-cyan); border-color: color-mix(in oklab, var(--flux-cyan) 30%, transparent); }
 .chip--lime { color: var(--flux-lime); border-color: color-mix(in oklab, var(--flux-lime) 32%, transparent); }
-.chip--blue { color: #7BA2FF; border-color: color-mix(in oklab, var(--flux-blue) 40%, transparent); }
 
 .dot { width: 6px; height: 6px; border-radius: var(--r-full); background: currentColor; flex: none; }
 
@@ -500,17 +494,6 @@ table { border-collapse: collapse; width: 100%; }
   animation: spin .7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ------------------------------------------------------ CONTATORE MECCANICO */
-/* Ogni cifra vive in uno slot; la colonna trasla come un contatore meccanico. */
-.odo { display: inline-flex; align-items: baseline; }
-.odo__slot { display: inline-block; height: 1em; overflow: hidden; vertical-align: baseline; }
-.odo__col {
-  display: flex; flex-direction: column;
-  transition: transform 700ms var(--ease-lens);
-  transition-delay: var(--slot-delay, 0ms);
-}
-.odo__col > span { height: 1em; line-height: 1; }
 
 /* ============================================================================
    SEZIONI
@@ -719,7 +702,7 @@ table { border-collapse: collapse; width: 100%; }
 @media (hover: hover) and (pointer: fine) { .svc__row:hover { background: var(--bg-elevated); } }
 @media (min-width: 900px) {
   .svc__row { grid-template-columns: auto auto minmax(0,1fr) minmax(200px, 260px);
-              grid-template-areas: 'idx ico main side'; align-items: center; gap: var(--sp-6); }
+              grid-template-areas: 'idx ico main side'; align-items: start; gap: var(--sp-6); }
 }
 .svc__idx  { grid-area: idx; font-size: var(--fs-micro); letter-spacing: .14em; color: var(--text-tertiary); padding-top: .35rem; }
 .svc__ico  { grid-area: ico; display: grid; place-items: center; width: 44px; height: 44px;
@@ -750,10 +733,9 @@ table { border-collapse: collapse; width: 100%; }
 .svc__price b { display: block; font-size: 1.5rem; font-weight: 500; color: var(--text-primary); letter-spacing: -.02em; }
 .svc__warn {
   display: flex; gap: var(--sp-2); align-items: flex-start; margin-top: var(--sp-4);
-  font-size: var(--fs-small); color: var(--text-tertiary); max-width: 62ch;
+  font-size: var(--fs-small); color: var(--text-secondary); max-width: 62ch;
 }
 .svc__warn svg { width: 15px; height: 15px; flex: none; margin-top: .2em; color: var(--state-warn); }
-.svc__warn { color: var(--text-secondary); }
 .svc__warn a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
 .svc__warn a:hover { color: var(--flux-cyan); }
 
@@ -908,9 +890,13 @@ table { border-collapse: collapse; width: 100%; }
   box-shadow: 0 0 10px color-mix(in oklab, var(--flux-cyan) 70%, transparent);
 }
 .fr-chapters { position: absolute; inset: 0; pointer-events: none; }
+/* Marcatori stretti, non fasce a piena larghezza: coprendo tutta la barra
+   avevano ucciso lo scrubbing col mouse (elementFromPoint non restituiva mai
+   lo slider) e aperto una violazione target-size. 24x28 resta sopra il minimo. */
 .fr-chap {
-  position: absolute; top: -8px; height: 44px; border-left: 1px solid var(--border-strong);
-  pointer-events: auto; padding: 0;
+  position: absolute; top: 0; width: 24px; height: 28px;
+  border-left: 1px solid var(--border-strong);
+  pointer-events: auto; padding: 0; background: none;
 }
 .fr-chap:first-child { border-left: 0; }
 .fr-chap i {
@@ -920,7 +906,7 @@ table { border-collapse: collapse; width: 100%; }
   color: var(--text-secondary); opacity: 0; pointer-events: none;
   transition: opacity var(--dur-micro) var(--ease-shutter);
 }
-.fr-chap:hover i, .fr-chap[aria-current='true'] i { opacity: 1; color: var(--text-primary); }
+.fr-chap:hover i, .fr-chap:focus i { opacity: 1; color: var(--text-primary); }
 @media (max-width: 760px) { .fr-chap i { display: none; } }
 .fr-time { flex: none; font-size: var(--fs-micro); color: var(--text-tertiary); }
 
@@ -958,7 +944,7 @@ table { border-collapse: collapse; width: 100%; }
   font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .04em;
   color: var(--text-tertiary); transition: color var(--dur-micro) var(--ease-shutter);
 }
-.rail__node[aria-selected='true'] .rail__label { color: var(--flux-lime); }
+.rail__node[aria-selected='true'] .rail__label { color: var(--text-primary); }
 .rail__node:hover .rail__label { color: var(--text-secondary); }
 /* i due nodi agli estremi devono restare dentro la colonna */
 .rail__node:first-child  .rail__label { transform: translateX(-38%); }
@@ -1004,7 +990,7 @@ table { border-collapse: collapse; width: 100%; }
 
 /* --------------------------------------------------------- TABELLA CORSI */
 .ctab { min-width: 700px; font-size: var(--fs-small); }
-.ctab th, .ctab td { scroll-snap-align: start; }
+.ctab th { scroll-snap-align: start; }
 /* Scorrendo in orizzontale si perdeva di vista la riga che si sta leggendo:
    la colonna delle etichette resta ancorata. */
 .ctab tbody th, .ctab thead th:first-child {
@@ -1145,7 +1131,12 @@ table { border-collapse: collapse; width: 100%; }
 @media (min-width: 560px) { .lead-form { padding: var(--sp-7); } }
 .lead-form__title { color: var(--flux-cyan); }
 .lead-form__grid { display: grid; gap: var(--sp-5); }
-@media (min-width: 620px) { .lead-form__grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 620px) {
+  .lead-form__grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, auto); }
+  /* subgrid allinea label, controllo ed errore fra le due colonne: senza, una
+     label che va a capo sfalsa il controllo accanto (misurato: 25px a 1024). */
+  .lead-form__grid > .field { grid-row: span 3; display: grid; grid-template-rows: subgrid; align-content: start; }
+}
 
 .field-hint { font-size: var(--fs-micro); color: var(--text-tertiary); text-align: right; }
 .field-error svg { width: 14px; height: 14px; flex: none; margin-top: .15em; }

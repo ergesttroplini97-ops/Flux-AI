@@ -205,7 +205,7 @@
 @media (hover: hover) and (pointer: fine) { .svc__row:hover { background: var(--bg-elevated); } }
 @media (min-width: 900px) {
   .svc__row { grid-template-columns: auto auto minmax(0,1fr) minmax(200px, 260px);
-              grid-template-areas: 'idx ico main side'; align-items: center; gap: var(--sp-6); }
+              grid-template-areas: 'idx ico main side'; align-items: start; gap: var(--sp-6); }
 }
 .svc__idx  { grid-area: idx; font-size: var(--fs-micro); letter-spacing: .14em; color: var(--text-tertiary); padding-top: .35rem; }
 .svc__ico  { grid-area: ico; display: grid; place-items: center; width: 44px; height: 44px;
@@ -236,10 +236,9 @@
 .svc__price b { display: block; font-size: 1.5rem; font-weight: 500; color: var(--text-primary); letter-spacing: -.02em; }
 .svc__warn {
   display: flex; gap: var(--sp-2); align-items: flex-start; margin-top: var(--sp-4);
-  font-size: var(--fs-small); color: var(--text-tertiary); max-width: 62ch;
+  font-size: var(--fs-small); color: var(--text-secondary); max-width: 62ch;
 }
 .svc__warn svg { width: 15px; height: 15px; flex: none; margin-top: .2em; color: var(--state-warn); }
-.svc__warn { color: var(--text-secondary); }
 .svc__warn a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
 .svc__warn a:hover { color: var(--flux-cyan); }
 
@@ -394,9 +393,13 @@
   box-shadow: 0 0 10px color-mix(in oklab, var(--flux-cyan) 70%, transparent);
 }
 .fr-chapters { position: absolute; inset: 0; pointer-events: none; }
+/* Marcatori stretti, non fasce a piena larghezza: coprendo tutta la barra
+   avevano ucciso lo scrubbing col mouse (elementFromPoint non restituiva mai
+   lo slider) e aperto una violazione target-size. 24x28 resta sopra il minimo. */
 .fr-chap {
-  position: absolute; top: -8px; height: 44px; border-left: 1px solid var(--border-strong);
-  pointer-events: auto; padding: 0;
+  position: absolute; top: 0; width: 24px; height: 28px;
+  border-left: 1px solid var(--border-strong);
+  pointer-events: auto; padding: 0; background: none;
 }
 .fr-chap:first-child { border-left: 0; }
 .fr-chap i {
@@ -406,7 +409,7 @@
   color: var(--text-secondary); opacity: 0; pointer-events: none;
   transition: opacity var(--dur-micro) var(--ease-shutter);
 }
-.fr-chap:hover i, .fr-chap[aria-current='true'] i { opacity: 1; color: var(--text-primary); }
+.fr-chap:hover i, .fr-chap:focus i { opacity: 1; color: var(--text-primary); }
 @media (max-width: 760px) { .fr-chap i { display: none; } }
 .fr-time { flex: none; font-size: var(--fs-micro); color: var(--text-tertiary); }
 
@@ -444,7 +447,7 @@
   font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .04em;
   color: var(--text-tertiary); transition: color var(--dur-micro) var(--ease-shutter);
 }
-.rail__node[aria-selected='true'] .rail__label { color: var(--flux-lime); }
+.rail__node[aria-selected='true'] .rail__label { color: var(--text-primary); }
 .rail__node:hover .rail__label { color: var(--text-secondary); }
 /* i due nodi agli estremi devono restare dentro la colonna */
 .rail__node:first-child  .rail__label { transform: translateX(-38%); }
@@ -490,7 +493,7 @@
 
 /* --------------------------------------------------------- TABELLA CORSI */
 .ctab { min-width: 700px; font-size: var(--fs-small); }
-.ctab th, .ctab td { scroll-snap-align: start; }
+.ctab th { scroll-snap-align: start; }
 /* Scorrendo in orizzontale si perdeva di vista la riga che si sta leggendo:
    la colonna delle etichette resta ancorata. */
 .ctab tbody th, .ctab thead th:first-child {

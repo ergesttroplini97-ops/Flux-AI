@@ -283,11 +283,12 @@
       gl.uniform1f(U.uIntensity, intensity);
       /* su desktop l'occhio sta a destra, accanto al testo; su mobile e centrato
          e passa dietro, con il velo a garantire il contrasto */
-      gl.uniform1f(U.uShift, canvas.clientWidth >= 1000 ? 0.40 : 0.0);
+      gl.uniform1f(U.uShift, canvas.clientWidth >= 1200 ? 0.40 : 0.0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 
     function frame(now) {
+      if (!running) { raf = 0; return; }   /* unica condizione di uscita affidabile */
       raf = requestAnimationFrame(frame);
       if (!t0) t0 = now;
       var dt = Math.min((now - tPrev) / 1000, 0.05) || 0.016;
@@ -393,7 +394,7 @@
     var ctx = canvas.getContext('2d', { alpha: opts.alpha !== false, desynchronized: true });
     var st = { w: 0, h: 0, dpr: 1, t: 0 };
     var frameMs = 1000 / (opts.fps || (CAP.weak ? 30 : 60));
-    var raf = 0, last = 0, inView = false, ready = false, started = false;
+    var raf = 0, last = 0, inView = false, ready = false, started = false, playing = false;
     var api;
 
     function resize() {
@@ -410,6 +411,7 @@
     }
 
     function loop(now) {
+      if (!playing) { raf = 0; return; }
       raf = requestAnimationFrame(loop);
       if (!ready) { pause(); return; }
       /* Primo frame: fissa l'origine dei tempi e disegna. Senza questo ramo,
@@ -424,8 +426,8 @@
       scene.draw(ctx, st, step);
     }
 
-    function play()  { if (raf) return; last = 0; raf = requestAnimationFrame(loop); }
-    function pause() { cancelAnimationFrame(raf); raf = 0; }
+    function play()  { if (raf) return; playing = true; last = 0; raf = requestAnimationFrame(loop); }
+    function pause() { playing = false; cancelAnimationFrame(raf); raf = 0; }
     function sync() {
       var on = inView && !document.hidden && api.gate() && (!CAP.reduce || api.userDriven);
       if (on) play();
@@ -534,7 +536,8 @@
     document.addEventListener('visibilitychange', syncTimer);
 
     var io = new IntersectionObserver(function (e) {
-      if (e[0].isIntersecting && !inView) push();
+      /* Quattro righe subito: con una sola il riquadro restava vuoto per 10 secondi. */
+      if (e[0].isIntersecting && !inView) { for (var k = 0; k < 4; k++) push(); }
       inView = e[0].isIntersecting;
       syncTimer();
     }, { threshold: 0.25 });
@@ -785,8 +788,9 @@
     var TOTAL = CLIPS.reduce(function (s, c) { return s + c.dur; }, 0);
     var STARTS = []; CLIPS.reduce(function (s, c, i) { STARTS[i] = s; return s + c.dur; }, 0);
     /* 1.2s: dentro la prima clip, oltre la dissolvenza d'apertura.
-   A tempo 0 il fade-in dipinge il frame di nero e il poster sparisce. */
-    var reel = { time: 1.2, playing: false };
+   A tempo 0 il fade-in dipinge il frame di nero; a 1,2s si vede solo
+   pulviscolo. A 4,2s la lente e formata e c'e la scritta. */
+    var reel = { time: 4.2, playing: false };
     var lastChap = -1, lastSec = -1;
 
     function fmt(s) { return Math.floor(s / 60) + ':' + ('0' + Math.floor(s % 60)).slice(-2); }
@@ -879,7 +883,6 @@
       var b = document.createElement('button');
       b.className = 'fr-chap'; b.type = 'button';
       b.style.left = (STARTS[i] / TOTAL * 100) + '%';
-      b.style.width = (c.dur / TOTAL * 100) + '%';
       b.setAttribute('aria-label', 'Capitolo ' + (i + 1) + ': ' + c.name);
       b.innerHTML = '<i>' + (i + 1) + '. ' + c.name + '</i>';
       b.addEventListener('click', function (e) { e.stopPropagation(); seek(STARTS[i] + .02); if (!reel.playing) play(); });

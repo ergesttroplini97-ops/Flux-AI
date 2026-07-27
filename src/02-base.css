@@ -19,7 +19,6 @@ html {
    500px di errore, misurato). Con JS lo gestiamo noi ricalcolando il bersaglio
    a ogni frame; senza JS torna il comportamento nativo. */
 @media (scripting: none) { html { scroll-behavior: smooth; } }
-html.no-js { scroll-behavior: smooth; }
 @media (max-width: 759px) { html { scroll-padding-bottom: 6rem; } }
 
 body {
@@ -36,8 +35,7 @@ body {
   /* NIENTE overflow-x:hidden: i bug di layout si correggono, non si nascondono. */
 }
 
-img, svg, video, canvas { display: block; max-width: 100%; }
-img, video { height: auto; }
+svg, canvas { display: block; max-width: 100%; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: none; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
@@ -62,12 +60,13 @@ table { border-collapse: collapse; width: 100%; }
 /* L'anello di focus da tastiera e un momento di brand, non un ripiego. */
 :focus { outline: none; }
 :focus-visible {
-  outline: 1px solid var(--flux-cyan);
+  /* Solo outline: un box-shadow viene cancellato da qualunque elemento che ne
+     dichiari uno proprio, ed e cosi che il bottone di invio — l'unico punto di
+     conversione — aveva l'indicatore piu debole di tutta la pagina. */
+  outline: 2px solid var(--flux-cyan);
   outline-offset: 3px;
-  box-shadow: var(--ring-focus);
   border-radius: var(--r-sm);
-  transition: outline-offset var(--dur-ui) var(--ease-snap),
-              box-shadow    var(--dur-ui) var(--ease-snap);
+  transition: outline-offset var(--dur-ui) var(--ease-snap);
 }
 :focus-visible:active { outline-offset: 1px; }
 
@@ -112,7 +111,6 @@ table { border-collapse: collapse; width: 100%; }
   text-wrap: pretty;
 }
 .t-body   { font-size: var(--fs-body); max-width: var(--max-prose); text-wrap: pretty; }
-.t-small  { font-size: var(--fs-small); font-weight: 500; letter-spacing: .004em; line-height: 1.5; }
 .t-micro, .eyebrow {
   font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500;
   letter-spacing: .14em; line-height: 1.4; text-transform: uppercase;
@@ -170,11 +168,13 @@ table { border-collapse: collapse; width: 100%; }
 .scroll-x {
   overflow-x: auto; overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
-  -webkit-mask-image: linear-gradient(90deg, #000 0 90%, transparent 100%);
-          mask-image: linear-gradient(90deg, #000 0 90%, transparent 100%);
+  /* Sfumatura stretta: al 10% cancellava un'intera colonna di testo anche dove
+     non c'era nulla da scorrere. E si applica solo dove serve davvero. */
+  -webkit-mask-image: linear-gradient(90deg, #000 0 calc(100% - 28px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0 calc(100% - 28px), transparent 100%);
 }
 .scroll-x:hover, .scroll-x:focus-within { -webkit-mask-image: none; mask-image: none; }
-@media (min-width: 1100px) { .scroll-x { -webkit-mask-image: none; mask-image: none; } }
+@media (min-width: 760px) { .scroll-x { -webkit-mask-image: none; mask-image: none; } }
 
 /* ---------------------------------------------- REVEAL: "racking focus" */
 /* Arriva sfocato e leggermente piu grande, poi si risolve. Nessun translateY. */
