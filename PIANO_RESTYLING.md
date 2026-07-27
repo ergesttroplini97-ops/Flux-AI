@@ -167,6 +167,85 @@ pubblicherete veri video generati da AI, vanno etichettati come tali.
 
 ---
 
+## 2.8. Cosa hanno trovato i tre giri di revisione
+
+I numeri qui sotto sono **misurati**, non stimati: ogni difetto è stato riprodotto
+con uno script prima di essere corretto, e riverificato dopo.
+
+### Giro 1 — design e correttezza del codice
+
+Il rilievo di design più importante era concettuale: **il lime era il colore di ogni
+bottone primario**, e con la CTA fissa in navbar risultava presente su 13 schermate su 13.
+Il "fuoco" non era un fuoco. Ora il primario è ciano e il lime compare **una sola volta in
+tutta la pagina**. Insieme: il gradiente del logo da 6 istanze a 1, il rapporto 3:1 sui
+titoli (era 6,7:1), due sezioni passate a header su due colonne — prima dieci sezioni
+avevano lo stesso stampo con metà destra vuota.
+
+Sul codice, **19 bug confermati**, tre dei quali perdevano lead in silenzio:
+
+| Bug | Effetto reale |
+|---|---|
+| `budget` vuoto violava il vincolo del database | L'inserimento falliva, la notifica non partiva: il lead spariva. Ed era il caso maggioritario, visto che il campo è facoltativo |
+| La regex email escludeva il punto dal dominio | Rifiutava `info@pec.aruba.it` — la PEC standard in Italia — e ogni indirizzo con più di due etichette |
+| Il time-trap confrontava due orologi diversi | Con pochi secondi di scarto il server rispondeva 200, l'utente leggeva "Richiesta ricevuta", il lead veniva scartato |
+| Un observer senza guardia interrompeva l'avvio | Dove l'API manca, il form non veniva mai inizializzato |
+| Senza JavaScript il form faceva GET su se stesso | Nome, email, messaggio e consenso finivano nella URL, e il lead non arrivava a nessuno |
+| Il rate limit contava anche gli errori di validazione | Tre errori di battitura chiudevano il form per 15 minuti; 60 richieste spazzatura lo chiudevano a tutti |
+| Il primo frame del loop canvas non fissava l'origine dei tempi | Con il cap a 30fps **tutte** le animazioni canvas restavano congelate sui dispositivi a ≤4 core |
+
+E le ancore: lo scroll morbido nativo litigava con `content-visibility`, il documento cambiava
+altezza durante l'animazione e il bersaglio si spostava fino a **500 px**. Risolto con uno
+scroll in JS che rilegge il bersaglio a ogni frame — errore ora **0 px**.
+
+### Giro 2 — contenuti, conformità, accessibilità
+
+**Il rilievo più grave dell'intero lavoro** è emerso qui: alcuni dettagli di prodotto
+**erano inventati** rispetto a `contesto.md`. Il peggiore era una **commissione dell'8%**
+su ProntoClip che non esiste — un termine economico contrattuale comparso dal nulla.
+Insieme: quattro coppie di trading su POUFF Adaptive, app iOS/Android su Pips.AI, tre
+funzioni di POUFF Continuous, la struttura di prezzo di Nexa, e tre "risultati dichiarati
+dai partecipanti" per corsi che non hanno ancora avuto partecipanti. Tutto riallineato
+voce per voce.
+
+Il sito affermava inoltre *"dati condivisi con l'autorizzazione dello studio"* sui casi
+studio: quell'autorizzazione **non è stata ottenuta**. Con uno studio legale come soggetto
+citato, era il rischio con il costo atteso più alto della pagina.
+
+Altre due cose che non tornavano: le "tre settimane" non reggevano all'aritmetica del
+metodo (2 giorni + 5 giorni + 2-3 settimane), e il "70%" compariva in tre formulazioni
+diverse, una delle quali — *"riduzione media"* — implica una misurazione su un campione
+di clienti che non esiste.
+
+Sull'accessibilità, l'audit ha misurato **cinque criteri WCAG 2.2 AA falliti**. Ora
+axe-core riporta **0 violazioni su 6 pagine × 2 viewport**:
+
+| Criterio | Cosa succedeva | Ora |
+|---|---|---|
+| 1.4.10 Reflow | 45 px di contenuto tagliato a 390 px, 115 px a 320 px, senza scroll possibile | 0 px di overflow da 320 px in su |
+| 1.4.3 Contrast | 76 elementi di contenuto fra 2,88:1 e 3,43:1, inclusi i disclaimer legali | peggior caso 5,01:1 |
+| 2.1.1 Keyboard | I capitoli dello showreel funzionavano col mouse e non da tastiera | operabili |
+| 4.1.2 Name, Role, Value | Bottoni annidati dentro uno `slider`; `tabpanel` su `<article>` | corretti |
+| 1.4.11 Non-text Contrast | Bordo dei campi a 1,44:1, checkbox a 1,95:1: controlli invisibili | 3,40:1 e 4,36:1 |
+
+La causa di quasi tutto il reflow era una sola: i figli di una griglia hanno
+`min-width: auto`, e il minimo intrinseco di un bottone `nowrap` — o di una `<select>`,
+la cui larghezza minima è dettata dall'opzione più lunga — allargava la colonna oltre
+il contenitore.
+
+### Prestazioni, misurate
+
+| | Desktop 1440 | Mobile 390 | Mobile CPU 6× |
+|---|---|---|---|
+| LCP | 176 ms | 164 ms | 220 ms |
+| CLS | 0,0006 | 0,0005 | 0,0005 |
+| Richieste | **4** | 4 | 4 |
+| rAF/s a riposo a metà pagina | **0** | **0** | — |
+
+Memoria dopo 60 secondi: +36 KB di rumore GC, nodi e listener invariati. Venti aperture
+del drawer e dieci scroll completi: **0 listener accumulati, 0 observer in più**.
+
+---
+
 ## 3. Il sistema di design
 
 Tutto in `src/01-tokens.css`, niente valori sparsi nel codice.
