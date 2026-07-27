@@ -1,0 +1,296 @@
+<!-- ============================================================================
+     FLUX AI — BLOCCO <head> COMPLETO
+     Incollare al posto delle righe 4-13 di index.html.
+     Sostituire i segnaposto ###...### con i dati reali prima del deploy.
+     ============================================================================ -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0E">
+<meta name="color-scheme" content="dark">
+
+<!-- ── Identità pagina ─────────────────────────────────────────────────── -->
+<title>Flux AI — Automazioni e agenti AI per studi professionali e PMI</title>
+<meta name="description" content="Progettiamo automazioni, agenti AI e app web per commercialisti, avvocati e PMI italiane. Primo workflow attivo in 3 settimane, da €1.200. Analisi gratuita in 30 minuti.">
+<link rel="canonical" href="https://www.flux-ai.it/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="author" content="Flux AI — Ergest Troplini, Daniel Bottini">
+<meta name="geo.region" content="IT-LO">
+<meta name="geo.placename" content="###CITTÀ###">
+<!-- NB: <meta name="keywords"> è ignorato da Google dal 2009. Rimosso di proposito. -->
+
+<!-- ── Open Graph ──────────────────────────────────────────────────────── -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Flux AI">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://www.flux-ai.it/">
+<meta property="og:title" content="Flux AI — Automazioni e agenti AI per studi professionali e PMI">
+<meta property="og:description" content="Automazioni, agenti AI e app web per commercialisti, avvocati e PMI. Primo workflow attivo in 3 settimane, da €1.200.">
+<meta property="og:image" content="https://www.flux-ai.it/assets/og-flux-ai-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="Flux AI — l'intelligenza che trasforma il tuo business">
+
+<!-- ── Twitter / X ─────────────────────────────────────────────────────── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Flux AI — Automazioni e agenti AI per studi professionali e PMI">
+<meta name="twitter:description" content="Automazioni, agenti AI e app web per commercialisti, avvocati e PMI. Primo workflow attivo in 3 settimane, da €1.200.">
+<meta name="twitter:image" content="https://www.flux-ai.it/assets/og-flux-ai-1200x630.png">
+<meta name="twitter:image:alt" content="Flux AI — l'intelligenza che trasforma il tuo business">
+
+<!-- ── Icone / PWA ─────────────────────────────────────────────────────── -->
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- ── Font self-hosted (niente Google Fonts: evita il trasferimento IP
+       verso gli USA e quindi l'obbligo di banner cookie) ───────────────── -->
+<link rel="preload" href="/assets/fonts/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+
+
+<!-- ============================================================================
+     JSON-LD — un unico @graph: Organization + ProfessionalService(LocalBusiness)
+     + WebSite + Service ×5 + FAQPage. Un solo blocco = zero entità duplicate.
+     ============================================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+
+    {
+      "@type": "Organization",
+      "@id": "https://www.flux-ai.it/#organization",
+      "name": "Flux AI",
+      "alternateName": "Flux AI — soluzioni di intelligenza artificiale",
+      "url": "https://www.flux-ai.it/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.flux-ai.it/assets/logo-flux-ai-512.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://www.flux-ai.it/assets/og-flux-ai-1200x630.png",
+      "slogan": "L'intelligenza che trasforma il tuo business",
+      "description": "Flux AI progetta automazioni, agenti AI, applicazioni web e percorsi di formazione per studi professionali e PMI italiane.",
+      "email": "ergest@flux-ai.it",
+      "telephone": "###+39 XXX XXXXXXX###",
+      "vatID": "###IT01234567890###",
+      "taxID": "###01234567890###",
+      "foundingDate": "2025",
+      "founder": [
+        {
+          "@type": "Person",
+          "@id": "https://www.flux-ai.it/#ergest-troplini",
+          "name": "Ergest Troplini",
+          "jobTitle": "AI Engineer & Progettista Digitale",
+          "worksFor": { "@id": "https://www.flux-ai.it/#organization" },
+          "email": "ergest@flux-ai.it",
+          "sameAs": ["###https://www.linkedin.com/in/...###", "###https://github.com/...###"]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://www.flux-ai.it/#daniel-bottini",
+          "name": "Daniel Bottini",
+          "jobTitle": "Design Strategist & Innovation Lead",
+          "worksFor": { "@id": "https://www.flux-ai.it/#organization" },
+          "email": "daniel@flux-ai.it",
+          "sameAs": ["###https://www.linkedin.com/in/...###", "###https://www.behance.net/...###"]
+        }
+      ],
+      "sameAs": [
+        "###https://www.youtube.com/@fluxai###",
+        "###https://www.instagram.com/fluxai###",
+        "###https://t.me/fluxai###",
+        "###https://www.tiktok.com/@fluxai###"
+      ],
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "ergest@flux-ai.it",
+        "availableLanguage": ["it", "en"],
+        "areaServed": "IT"
+      }]
+    },
+
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.flux-ai.it/#localbusiness",
+      "name": "Flux AI",
+      "parentOrganization": { "@id": "https://www.flux-ai.it/#organization" },
+      "url": "https://www.flux-ai.it/",
+      "image": "https://www.flux-ai.it/assets/og-flux-ai-1200x630.png",
+      "priceRange": "€€",
+      "currenciesAccepted": "EUR",
+      "paymentAccepted": "Bonifico bancario, Carta di credito",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "###Via e numero civico###",
+        "addressLocality": "###Città###",
+        "addressRegion": "###Provincia (es. VA)###",
+        "postalCode": "###CAP###",
+        "addressCountry": "IT"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": "###45.0000###", "longitude": "###8.0000###" },
+      "areaServed": [
+        { "@type": "Country", "name": "Italia" },
+        { "@type": "AdministrativeArea", "name": "Lombardia" }
+      ],
+      "openingHoursSpecification": [{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00", "closes": "18:00"
+      }],
+      "hasOfferCatalog": { "@id": "https://www.flux-ai.it/#catalogo" }
+    },
+
+    {
+      "@type": "WebSite",
+      "@id": "https://www.flux-ai.it/#website",
+      "url": "https://www.flux-ai.it/",
+      "name": "Flux AI",
+      "inLanguage": "it-IT",
+      "publisher": { "@id": "https://www.flux-ai.it/#organization" }
+    },
+
+    {
+      "@type": "OfferCatalog",
+      "@id": "https://www.flux-ai.it/#catalogo",
+      "name": "Servizi Flux AI",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@id": "https://www.flux-ai.it/#svc-workflow" } },
+        { "@type": "Offer", "itemOffered": { "@id": "https://www.flux-ai.it/#svc-agenti" } },
+        { "@type": "Offer", "itemOffered": { "@id": "https://www.flux-ai.it/#svc-appweb" } },
+        { "@type": "Offer", "itemOffered": { "@id": "https://www.flux-ai.it/#svc-trading" } },
+        { "@type": "Offer", "itemOffered": { "@id": "https://www.flux-ai.it/#svc-startup" } }
+      ]
+    },
+
+    {
+      "@type": "Service",
+      "@id": "https://www.flux-ai.it/#svc-workflow",
+      "serviceType": "Automazione dei processi aziendali con AI",
+      "name": "Workflow Automation",
+      "description": "Automazione end-to-end di processi ripetitivi (email, CRM, documenti, onboarding) con n8n, Make e Zapier integrati con modelli linguistici.",
+      "provider": { "@id": "https://www.flux-ai.it/#organization" },
+      "areaServed": { "@type": "Country", "name": "Italia" },
+      "audience": { "@type": "BusinessAudience", "name": "Studi professionali e PMI" },
+      "offers": {
+        "@type": "Offer",
+        "price": "1200",
+        "priceCurrency": "EUR",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "minPrice": "1200",
+          "priceCurrency": "EUR",
+          "valueAddedTaxIncluded": false
+        },
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.flux-ai.it/#contatti"
+      }
+    },
+
+    {
+      "@type": "Service",
+      "@id": "https://www.flux-ai.it/#svc-agenti",
+      "serviceType": "Sviluppo di agenti conversazionali AI",
+      "name": "Agenti AI su misura",
+      "description": "Agenti addestrati sui documenti e sulle procedure dello studio: rispondono ai clienti, qualificano richieste e recuperano informazioni dalla knowledge base. Su web, WhatsApp, Telegram e Slack.",
+      "provider": { "@id": "https://www.flux-ai.it/#organization" },
+      "areaServed": { "@type": "Country", "name": "Italia" },
+      "offers": {
+        "@type": "Offer", "price": "1800", "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.flux-ai.it/#contatti"
+      }
+    },
+
+    {
+      "@type": "Service",
+      "@id": "https://www.flux-ai.it/#svc-appweb",
+      "serviceType": "Sviluppo di applicazioni web con AI",
+      "name": "Applicazioni web su misura",
+      "description": "Gestionali, dashboard e portali clienti costruiti sul processo reale dell'azienda, con AI integrata. React, Node.js, Python, Claude API.",
+      "provider": { "@id": "https://www.flux-ai.it/#organization" },
+      "areaServed": { "@type": "Country", "name": "Italia" },
+      "offers": {
+        "@type": "Offer", "price": "3500", "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.flux-ai.it/#contatti"
+      }
+    },
+
+    {
+      "@type": "Service",
+      "@id": "https://www.flux-ai.it/#svc-trading",
+      "serviceType": "Sviluppo di sistemi di trading automatizzato",
+      "name": "Trading automatizzato e analisi quantitativa",
+      "description": "Progettazione, backtest e messa in opera di sistemi di trading algoritmico su MetaTrader e Interactive Brokers. Servizio tecnico di sviluppo software: non costituisce consulenza finanziaria né gestione di portafogli.",
+      "provider": { "@id": "https://www.flux-ai.it/#organization" },
+      "areaServed": { "@type": "Country", "name": "Italia" },
+      "offers": {
+        "@type": "Offer", "price": "2000", "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.flux-ai.it/#contatti"
+      }
+    },
+
+    {
+      "@type": "Service",
+      "@id": "https://www.flux-ai.it/#svc-startup",
+      "serviceType": "Lancio di start-up digitali ed e-commerce",
+      "name": "Start-up & E-commerce",
+      "description": "Pacchetto di lancio completo: setup Shopify, integrazioni, marketing automation e chatbot di conversione.",
+      "provider": { "@id": "https://www.flux-ai.it/#organization" },
+      "areaServed": { "@type": "Country", "name": "Italia" },
+      "offers": {
+        "@type": "Offer", "price": "4500", "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.flux-ai.it/#contatti"
+      }
+    },
+
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.flux-ai.it/#faq",
+      "inLanguage": "it-IT",
+      "isPartOf": { "@id": "https://www.flux-ai.it/#website" },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Devo cambiare i gestionali che uso già?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Lavoriamo sopra gli strumenti che avete già: caselle di posta, gestionale, PEC, Drive, Excel, CRM. Le automazioni li collegano tramite API o cartelle condivise. Se un software non espone API, interveniamo sui file che produce. Sostituiamo un gestionale solo se siete voi a chiederlo." }
+        },
+        {
+          "@type": "Question",
+          "name": "I dati dei miei clienti finiscono dentro ChatGPT?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No, se non lo decidete voi. Usiamo API business (Anthropic, OpenAI) i cui contratti escludono l'uso dei dati per l'addestramento dei modelli. Per i dati più sensibili proponiamo pseudonimizzazione prima dell'invio o modelli eseguiti su server europei. Ogni progetto è accompagnato da un elenco scritto di quali dati escono, verso chi e per quanto tempo restano — materiale che potete allegare al vostro registro dei trattamenti." }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto tempo devo dedicarci io?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Circa 4 ore in tutto su un progetto standard: un'ora di analisi iniziale, un'ora a metà percorso per validare il flusso, due ore di formazione finale sul team. Il resto lo facciamo noi. Se un progetto richiede più tempo del vostro, è progettato male." }
+        },
+        {
+          "@type": "Question",
+          "name": "Cosa succede se l'AI sbaglia?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Nei processi che hanno conseguenze verso l'esterno l'AI non ha l'ultima parola: prepara, voi approvate con un click. Ogni automazione registra un log di cosa ha fatto e perché, e ha una procedura di stop immediato. Nelle prime due settimane il sistema gira in parallelo al processo manuale, così potete confrontare i risultati prima di fidarvi." }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto costa davvero e cosa comprende il prezzo?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Un'automazione parte da 1.200 €, un agente AI da 1.800 €, un'applicazione web da 3.500 €, IVA esclusa. Il preventivo è a corpo, non a ore, e comprende analisi, sviluppo, messa in opera, formazione e 30 giorni di correzioni. Restano a vostro carico gli abbonamenti dei servizi usati (in genere 20-80 € al mese) e l'eventuale manutenzione, che è facoltativa." }
+        },
+        {
+          "@type": "Question",
+          "name": "Siamo in tre persone: siamo troppo piccoli?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No, anzi. Negli studi piccoli il ritorno è più rapido perché non c'è una struttura da riorganizzare: il tempo liberato torna subito alla persona che fatturava meno ore. Il nostro cliente tipo ha da 1 a 20 addetti. Sotto i 1.200 € di progetto, però, conviene partire dal corso AI Foundations e farlo in autonomia: ve lo diciamo noi." }
+        }
+      ]
+    }
+
+  ]
+}
+</script>

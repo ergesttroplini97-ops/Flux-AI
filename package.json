@@ -1,0 +1,12 @@
+{
+  "name": "flux-ai-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sito Flux AI — statico single-file + Vercel Function /api/lead",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "icons": "npx --yes sharp-cli -i 'immagine logo.png' -o icons resize 192 192 --output icon-192.png && npx --yes sharp-cli -i 'immagine logo.png' -o icons resize 512 512 --output icon-512.png"
+  }
+}

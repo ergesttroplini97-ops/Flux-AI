@@ -1,0 +1,828 @@
+<noscript><style>.reveal{opacity:1!important;filter:none!important;transform:none!important}[data-needs-js]{display:none}</style></noscript>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<!-- ══════════════════════════════════════════════════════════════ NAVBAR ══ -->
+<header class="nav" id="nav">
+  <div class="nav__inner wrap-wide">
+    <a class="nav__brand" href="#top" aria-label="Flux AI — torna all'inizio">
+      <span class="nav__mark" aria-hidden="true">__LOGO_SVG__</span>
+      <span class="nav__name">Flux<span class="nav__name-ai">AI</span></span>
+    </a>
+
+    <nav class="nav__links" aria-label="Navigazione principale">
+      <a href="#servizi">Servizi</a>
+      <a href="#metodo">Metodo</a>
+      <a href="#risultati">Risultati</a>
+      <a href="#prodotti">Prodotti</a>
+      <a href="#corsi">Corsi</a>
+      <a href="#studio">Studio</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a class="btn btn--primary nav__cta" href="#contatti">Parliamone</a>
+      <button class="nav__burger" id="burger" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="drawer">
+        <svg aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav__progress" id="navProgress" aria-hidden="true"></div>
+</header>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true"
+     aria-label="Menu di navigazione" hidden>
+  <nav class="drawer__nav" aria-label="Navigazione mobile">
+    <a href="#servizi"><span class="num">01</span> Servizi</a>
+    <a href="#metodo"><span class="num">02</span> Metodo</a>
+    <a href="#risultati"><span class="num">03</span> Risultati</a>
+    <a href="#prodotti"><span class="num">04</span> Prodotti</a>
+    <a href="#corsi"><span class="num">05</span> Corsi</a>
+    <a href="#studio"><span class="num">06</span> Studio</a>
+    <a href="#faq"><span class="num">07</span> FAQ</a>
+    <a class="btn btn--primary btn--lg drawer__cta" href="#contatti">Richiedete l'analisi gratuita</a>
+  </nav>
+</div>
+
+<main id="main">
+
+<!-- ════════════════════════════════════════════════════════════════ HERO ══ -->
+<section class="hero" id="top">
+  <canvas class="hero__canvas" id="diaphragm" aria-hidden="true"></canvas>
+  <div class="hero__veil" aria-hidden="true"></div>
+
+  <div class="hero__inner wrap-wide">
+    <div class="hero__copy">
+      <p class="eyebrow hero__eyebrow">Flux AI · Automazione &amp; agenti AI</p>
+
+      <h1 class="t-display hero__title">
+        L'intelligenza artificiale che fa il lavoro<br class="br-lg">
+        che <span class="t-serif">voi</span> non dovreste più fare.
+      </h1>
+
+      <p class="t-lead hero__sub">
+        Automazioni, agenti AI e applicazioni su misura per studi professionali e PMI.
+        Il primo processo va in produzione in tre settimane dall'approvazione del preventivo,
+        a partire da 1.200&nbsp;€.
+      </p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary btn--focal btn--lg" href="#contatti">
+          <span>Richiedete l'analisi gratuita <span class="nowrap">— 30 minuti</span></span>
+          <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+        <a class="btn btn--secondary btn--lg" href="#servizi">Guardate cosa automatizziamo</a>
+      </div>
+
+    </div>
+  </div>
+
+  <a class="hero__scroll" href="#settori" aria-label="Scorri">
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ IMPEGNI ══ -->
+<section class="band band--facts" aria-label="I nostri impegni">
+  <div class="wrap-wide">
+    <!-- Impegni verificabili, non metriche inventate. Un numero che potete
+         difendere in call vale piu di quattro che non potete dimostrare. -->
+    <dl class="facts">
+      <div><dt>Dal preventivo alla produzione</dt><dd class="num">3 settimane</dd></div>
+      <div><dt>Tempo richiesto a voi</dt><dd class="num">~4 ore</dd></div>
+      <div><dt>Riduzione tempi sul processo</dt><dd class="num">fino al 70%</dd></div>
+      <div><dt>Correzioni incluse</dt><dd class="num">30 giorni</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ SETTORI ══ -->
+<section class="band" id="settori" aria-label="Settori serviti">
+  <div class="wrap-wide band__inner">
+    <p class="eyebrow band__label">Lavoriamo con</p>
+    <ul class="band__list">
+      <li>Studi commercialisti</li>
+      <li>Studi legali</li>
+      <li>PMI manifatturiere</li>
+      <li>Imprese edili</li>
+      <li>Agenzie e studi di progettazione</li>
+      <li>E-commerce</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ PROBLEMA ══ -->
+<section class="section" id="problema">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Il punto di partenza</span>
+      <h2 class="t-h1">In ogni studio ci sono tre ore di lavoro al giorno che nessuno dovrebbe più fare a <span class="t-serif">mano</span>.</h2>
+      <p class="t-lead">Non è una questione di pigrizia o di organizzazione. È che certe attività
+        sono nate prima degli strumenti che oggi le renderebbero inutili.</p>
+    </header>
+
+    <ol class="pains">
+      <li class="pain reveal">
+        <span class="pain__idx num">01</span>
+        <h3 class="t-h3">Ricopiare dati da un posto all'altro</h3>
+        <p class="muted">Fatture dalla PEC al gestionale, anagrafiche dal form al CRM, allegati
+          dalla mail alla cartella giusta. Ogni passaggio è un'occasione di errore pagata in manodopera.</p>
+      </li>
+      <li class="pain reveal">
+        <span class="pain__idx num">02</span>
+        <h3 class="t-h3">Rispondere alle stesse domande</h3>
+        <p class="muted">Scadenze, documenti da portare, stato della pratica. Le stesse venti domande,
+          ogni settimana, sottratte al lavoro che i clienti pagano davvero.</p>
+      </li>
+      <li class="pain reveal">
+        <span class="pain__idx num">03</span>
+        <h3 class="t-h3">Cercare qualcosa che c'è già</h3>
+        <p class="muted">La circolare, quel contratto simile, la mail di due anni fa. Il sapere dello
+          studio esiste, ma non è interrogabile — quindi in pratica non esiste.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ SERVIZI ══ -->
+<!-- Lista a piena larghezza, non griglia: cinque servizi con prezzo sono un
+     elenco comparabile, e la griglia distrugge il confronto. -->
+<section class="section section--surface" id="servizi">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Servizi</span>
+      <h2 class="t-h1">Cinque modi di togliervi lavoro dalle mani.</h2>
+      <p class="t-lead">Prezzi indicativi, IVA esclusa. Il preventivo è a corpo e arriva
+        entro cinque giorni dall'analisi.</p>
+    </header>
+
+    <ul class="svc">
+      <li class="svc__row reveal lit" data-svc="workflow">
+        <span class="svc__idx num" aria-hidden="true">01</span>
+        <span class="svc__ico" aria-hidden="true"><svg><use href="#i-flow"/></svg></span>
+        <div class="svc__main">
+          <h3 class="t-h3">Workflow Automation</h3>
+          <p class="svc__claim">Il processo che rifate ogni settimana, fatto da solo.</p>
+          <ul class="svc__points">
+            <li>200 fatture fornitore lette dalla PEC e inserite nel gestionale senza digitare una riga</li>
+            <li>Ogni richiesta dal sito qualificata, schedata nel CRM e ricontattata entro dieci minuti</li>
+            <li>Sul processo automatizzato la riduzione dei tempi arriva fino al 70%: quanto esattamente ve lo quantifichiamo in preventivo</li>
+          </ul>
+          <p class="svc__stack"><span class="chip">n8n</span><span class="chip">Make</span><span class="chip">Zapier</span><span class="chip">Gmail / PEC</span><span class="chip">Slack</span></p>
+        </div>
+        <div class="svc__side">
+          <p class="svc__price"><span class="meta">da</span> <b class="num">1.200 €</b></p>
+          <a class="btn btn--secondary" href="#contatti" data-interesse="workflow">Portateci un processo</a>
+        </div>
+      </li>
+
+      <li class="svc__row reveal lit" data-svc="agenti-ai">
+        <span class="svc__idx num" aria-hidden="true">02</span>
+        <span class="svc__ico" aria-hidden="true"><svg><use href="#i-agent"/></svg></span>
+        <div class="svc__main">
+          <h3 class="t-h3">Agenti AI su misura</h3>
+          <p class="svc__claim">Un collaboratore che ha letto tutti i vostri documenti.</p>
+          <ul class="svc__points">
+            <li>Attivo 24 ore su 24 su sito, WhatsApp, Telegram e Slack, con il tono di voce dello studio</li>
+            <li>Qualifica le richieste in entrata e vi passa solo quelle che valgono una telefonata</li>
+            <li>Ogni risposta cita il documento da cui proviene: verificabile in dieci secondi</li>
+          </ul>
+          <p class="svc__stack"><span class="chip">Claude</span><span class="chip">GPT</span><span class="chip">Knowledge base</span><span class="chip">RAG</span></p>
+        </div>
+        <div class="svc__side">
+          <p class="svc__price"><span class="meta">da</span> <b class="num">1.800 €</b></p>
+          <a class="btn btn--secondary" href="#contatti" data-interesse="agenti-ai">Vediamo se serve al vostro studio</a>
+        </div>
+      </li>
+
+      <li class="svc__row reveal lit" data-svc="app-web">
+        <span class="svc__idx num" aria-hidden="true">03</span>
+        <span class="svc__ico" aria-hidden="true"><svg><use href="#i-app"/></svg></span>
+        <div class="svc__main">
+          <h3 class="t-h3">Applicazioni web su misura</h3>
+          <p class="svc__claim">Il gestionale che vi serve, non quello che vi hanno venduto.</p>
+          <ul class="svc__points">
+            <li>Dashboard, portali clienti e gestionali proprietari, con AI dove serve capire un testo</li>
+            <li>I dati restano vostri: database dedicato, export completo, nessun lock-in contrattuale</li>
+            <li>Consegna a moduli — la prima versione realmente utilizzabile in 4-6 settimane</li>
+          </ul>
+          <p class="svc__stack"><span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">Claude API</span><span class="chip">Postgres</span></p>
+        </div>
+        <div class="svc__side">
+          <p class="svc__price"><span class="meta">da</span> <b class="num">3.500 €</b></p>
+          <a class="btn btn--secondary" href="#contatti" data-interesse="app-web">Chiedete un preventivo</a>
+        </div>
+      </li>
+
+      <li class="svc__row reveal lit" data-svc="trading">
+        <span class="svc__idx num" aria-hidden="true">04</span>
+        <span class="svc__ico" aria-hidden="true"><svg><use href="#i-trading"/></svg></span>
+        <div class="svc__main">
+          <h3 class="t-h3">Trading automatizzato</h3>
+          <p class="svc__claim">Strategie eseguite senza esitazione umana.</p>
+          <ul class="svc__points">
+            <li>Backtest storico e walk-forward prima di ogni euro reale, con report dei drawdown massimi</li>
+            <li>Collegamento diretto al vostro broker con le vostre credenziali: i fondi non transitano mai da noi</li>
+            <li>Limiti di esposizione e stop di emergenza configurati insieme a voi</li>
+          </ul>
+          <p class="svc__stack"><span class="chip">MetaTrader</span><span class="chip">cTrader</span><span class="chip">Interactive Brokers</span><span class="chip">DeepSeek</span></p>
+          <p class="svc__warn">
+            <svg aria-hidden="true"><use href="#i-alert"/></svg>
+            Flux AI sviluppa software, non presta servizi di investimento.
+            <a href="/termini#rischio">Avvertenza sul rischio</a>
+          </p>
+        </div>
+        <div class="svc__side">
+          <p class="svc__price"><span class="meta">consulenza</span> <b class="num">2.000&nbsp;€</b><span class="meta"> – 5.000&nbsp;€</span></p>
+          <a class="btn btn--secondary" href="#contatti" data-interesse="trading">Prenotate una consulenza tecnica</a>
+        </div>
+      </li>
+
+      <li class="svc__row reveal lit" data-svc="startup-ecommerce">
+        <span class="svc__idx num" aria-hidden="true">05</span>
+        <span class="svc__ico" aria-hidden="true"><svg><use href="#i-cart"/></svg></span>
+        <div class="svc__main">
+          <h3 class="t-h3">Start-up &amp; E-commerce</h3>
+          <p class="svc__claim">Dallo zero al primo ordine, con l'infrastruttura già automatizzata.</p>
+          <ul class="svc__points">
+            <li>Setup completo con pagamenti, spedizioni e fatturazione elettronica collegata al commercialista</li>
+            <li>Ricerca prodotti assistita dall'AI e sequenze email/retargeting che partono da sole</li>
+            <li>Chatbot di conversione e dashboard analytics attivi dal primo giorno</li>
+          </ul>
+          <p class="svc__stack"><span class="chip">Shopify</span><span class="chip">Stripe</span><span class="chip">Email marketing</span><span class="chip">Analytics</span></p>
+        </div>
+        <div class="svc__side">
+          <p class="svc__price"><span class="meta">pacchetto da</span> <b class="num">4.500 €</b></p>
+          <a class="btn btn--secondary" href="#contatti" data-interesse="startup-ecommerce">Parliamo del lancio</a>
+        </div>
+      </li>
+    </ul>
+
+    <p class="fineprint">Prezzi IVA esclusa. Importi indicativi: il preventivo definitivo viene formulato dopo l'analisi.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ METODO ══ -->
+<section class="section" id="metodo">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Come lavoriamo</span>
+      <h2 class="t-h1">Quattro passaggi, e sapete sempre a che punto siamo.</h2>
+      <p class="t-lead">La paura numero uno di chi ci chiama è finire dentro un progetto che non
+        finisce mai. Ecco perché diciamo prima quanto dura e quanto costa il vostro tempo.</p>
+    </header>
+
+    <div class="method">
+      <ol class="method__steps">
+        <li class="method__step reveal" data-step="0">
+          <div class="method__head">
+            <span class="method__idx num">01</span>
+            <h3 class="t-h3">Analisi</h3>
+            <span class="chip chip--cyan">30 minuti · gratis</span>
+          </div>
+          <p class="muted">Ci raccontate una giornata tipo. Noi individuiamo il processo con il
+            rapporto risparmio/sforzo migliore. Se non ne troviamo uno che valga la spesa, ve lo diciamo.</p>
+          <p class="method__who"><b>Voi:</b> 1 ora · <b>Noi:</b> 2 giorni</p>
+        </li>
+        <li class="method__step reveal" data-step="1">
+          <div class="method__head">
+            <span class="method__idx num">02</span>
+            <h3 class="t-h3">Preventivo a corpo</h3>
+            <span class="chip">entro 5 giorni</span>
+          </div>
+          <p class="muted">Un prezzo, un perimetro, una data. Non a ore: a corpo. Comprende analisi,
+            sviluppo, messa in opera, formazione e trenta giorni di correzioni.</p>
+          <p class="method__who"><b>Voi:</b> 0 ore · <b>Noi:</b> 5 giorni</p>
+        </li>
+        <li class="method__step reveal" data-step="2">
+          <div class="method__head">
+            <span class="method__idx num">03</span>
+            <h3 class="t-h3">Costruzione</h3>
+            <span class="chip">2-3 settimane</span>
+          </div>
+          <p class="muted">Costruiamo e vi mostriamo il flusso a metà percorso, quando cambiare
+            idea costa ancora poco. Le prime due settimane il sistema gira in parallelo al processo manuale.</p>
+          <p class="method__who"><b>Voi:</b> 1 ora · <b>Noi:</b> 2-3 settimane</p>
+        </li>
+        <li class="method__step reveal" data-step="3">
+          <div class="method__head">
+            <span class="method__idx num">04</span>
+            <h3 class="t-h3">Consegna e formazione</h3>
+            <span class="chip">2 ore + 30 giorni</span>
+          </div>
+          <p class="muted">Formiamo il team, lasciamo la documentazione e restiamo raggiungibili per
+            trenta giorni: le correzioni sono incluse. La manutenzione successiva è facoltativa.</p>
+          <p class="method__who"><b>Voi:</b> 2 ore · <b>Noi:</b> 30 giorni di presidio</p>
+        </li>
+      </ol>
+
+      <!-- Dashboard viva: si anima da sola, come lo screen recording di un
+           prodotto reale. Nessun file video, tutto generato a runtime. -->
+      <aside class="console reveal" id="console" aria-label="Esempio di automazione in esecuzione">
+        <div class="console__bar">
+          <span class="console__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="console__title num">flux · pipeline fatture-pec · esempio</span>
+          <span class="console__live console__live--demo"><span class="dot"></span>demo</span>
+        </div>
+        <div class="console__body">
+          <div class="console__stats">
+            <div><span class="meta">Documenti oggi</span><b class="num" data-cnt="184">0</b></div>
+            <div><span class="meta">Tempo risparmiato</span><b class="num" data-cnt="6.2" data-suffix=" h">0</b></div>
+            <div><span class="meta">Accuratezza</span><b class="num is-focal" data-cnt="99.4" data-suffix="%">0</b></div>
+          </div>
+          <canvas class="console__chart" id="consoleChart" aria-hidden="true"></canvas>
+          <ul class="console__log" id="consoleLog" aria-hidden="true"></ul>
+        </div>
+      </aside>
+    </div>
+    <p class="fineprint">Il riquadro qui sopra è un esempio dimostrativo con dati fittizi,
+      generato dal vostro browser. Non rappresenta dati di clienti reali né l'attività
+      corrente di Flux AI.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════ RISULTATI ══ -->
+<section class="section section--surface" id="risultati">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Risultati</span>
+      <h2 class="t-h1">Due progetti, raccontati per intero.</h2>
+      <p class="t-lead">Preferiamo due casi che possiamo documentare a dieci loghi che non
+        dicono niente.</p>
+    </header>
+
+    <div class="cases">
+      <article class="case card lit reveal">
+        <p class="eyebrow case__tag">Studio legale · Gestione clienti</p>
+        <h3 class="t-h2">Studio Legale Abbiati</h3>
+        <p class="t-body muted">Ogni nuova pratica richiedeva l'apertura manuale del fascicolo, la
+          creazione delle cartelle, l'inserimento in agenda e una mail di conferma al cliente.
+          Quattro strumenti diversi, sempre le stesse informazioni.</p>
+        <ul class="case__facts">
+          <li><span class="meta">Cosa abbiamo automatizzato</span><b>Apertura pratica end-to-end</b></li>
+          <li><span class="meta">Passaggi manuali eliminati</span><b class="num">7 su 9</b></li>
+          <li><span class="meta">In produzione da</span><b class="num">3 settimane</b></li>
+        </ul>
+        <p class="case__note meta">Da pubblicare solo con liberatoria scritta del cliente: finché non c'è, il nome va sostituito con «Studio legale, nome su richiesta».</p>
+      </article>
+
+      <article class="case card lit reveal">
+        <p class="eyebrow case__tag">Edilizia · Preventivazione</p>
+        <h3 class="t-h2">Costruzioni Troplini</h3>
+        <p class="t-body muted">I preventivi nascevano da foto di cantiere e appunti a mano,
+          e passavano giorni prima di diventare un documento inviabile al cliente.</p>
+        <ul class="case__facts">
+          <li><span class="meta">Cosa abbiamo costruito</span><b>Preventivatore da immagini</b></li>
+          <li><span class="meta">Da sopralluogo a preventivo</span><b class="num">giorni → ore</b></li>
+          <li><span class="meta">Input richiesto</span><b>Foto + due campi</b></li>
+        </ul>
+        <p class="case__note meta">Da pubblicare solo con liberatoria scritta del committente.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ SHOWREEL ══ -->
+<!-- Le clip NON sono file video: sono scene generate dal browser a runtime.
+     Il markup <flux-media> accetta anche veri video AI (src-av1/vp9/h264):
+     se ci sono li usa, altrimenti cade sul generativo. Stessa API. -->
+<section class="section" id="showreel-sec">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Showreel</span>
+      <h2 class="t-h1">Quattro scene, zero file <span class="t-serif">video</span>.</h2>
+      <p class="t-lead">Non è un mp4 in streaming: è generato dal vostro browser mentre lo guardate,
+        fotogramma per fotogramma. Zero byte scaricati, nitido a qualsiasi risoluzione. Un piccolo
+        esempio di cosa intendiamo per «generativo».</p>
+    </header>
+
+    <div class="showreel reveal" id="showreel" tabindex="0" role="group" aria-label="Showreel generativo Flux AI">
+      <div class="fr-screen">
+        <canvas class="fr-canvas" aria-hidden="true"></canvas>
+        <p class="fr-badge"><span class="dot"></span>Generato in tempo reale</p>
+        <p class="fr-caption" aria-live="off"></p>
+        <button class="fr-big" type="button" aria-label="Riproduci lo showreel">
+          <span aria-hidden="true"><svg><use href="#i-play"/></svg></span>
+        </button>
+      </div>
+      <div class="fr-bar">
+        <button class="fr-play" type="button" aria-label="Riproduci">
+          <svg class="fr-ico-play" aria-hidden="true"><use href="#i-play"/></svg>
+          <svg class="fr-ico-pause" aria-hidden="true"><use href="#i-pause"/></svg>
+        </button>
+        <div class="fr-scrub">
+          <div class="fr-track" id="frTrack" role="slider" tabindex="0"
+               aria-label="Posizione nello showreel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="fr-rail"></span>
+            <span class="fr-fill"></span>
+            <span class="fr-knob"></span>
+          </div>
+          <span class="fr-chapters"></span>
+        </div>
+        <p class="fr-time num">0:00 / 0:00</p>
+      </div>
+    </div>
+    <p class="fineprint">Contenuto sintetico generato via canvas dal browser. Nessun modello
+      text-to-video è coinvolto e nessun contenuto è spacciato per ripresa reale.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ PRODOTTI ══ -->
+<!-- Rail di maturita: il colore codifica un'informazione vera (lo stadio del
+     prodotto), non un badge decorativo. -->
+<section class="section" id="prodotti">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Prodotti</span>
+      <h2 class="t-h1">Cinque prodotti, cinque stadi di maturità.</h2>
+      <p class="t-lead">Uno è acquistabile oggi. Gli altri sono a stadi diversi e ve lo diciamo
+        senza girarci intorno: sulla linea qui sotto, la posizione è l'informazione.</p>
+    </header>
+
+    <div class="rail reveal" data-needs-js>
+      <div class="rail__track" aria-hidden="true"><span class="rail__fill"></span></div>
+      <div class="rail__scale" aria-hidden="true">
+        <span>Idea</span><span>Sviluppo</span><span>Beta</span><span>Disponibile</span>
+      </div>
+      <div class="rail__nodes" role="tablist" aria-label="Prodotti Flux AI">
+        <button class="rail__node" type="button" role="tab" id="tab-pouff-a" aria-controls="p-pouff-a" aria-selected="true"  style="--pos:93%"><span class="rail__pin"></span><span class="rail__label">POUFF Adaptive</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-pouff-c" aria-controls="p-pouff-c" aria-selected="false" style="--pos:74%"><span class="rail__pin"></span><span class="rail__label">POUFF Continuous</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-pips"    aria-controls="p-pips"    aria-selected="false" style="--pos:56%"><span class="rail__pin"></span><span class="rail__label">Pips.AI</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-nexa"    aria-controls="p-nexa"    aria-selected="false" style="--pos:33%"><span class="rail__pin"></span><span class="rail__label">Nexa</span></button>
+        <button class="rail__node" type="button" role="tab" id="tab-clip"    aria-controls="p-clip"    aria-selected="false" style="--pos:9%"><span class="rail__pin"></span><span class="rail__label">ProntoClip</span></button>
+      </div>
+    </div>
+
+    <div class="panels" id="panels">
+      <section class="panel card" id="p-pouff-a" role="tabpanel" aria-labelledby="tab-pouff-a">
+        <div class="panel__head">
+          <div>
+            <span class="chip chip--lime"><span class="dot"></span>Disponibile</span>
+            <h3 class="t-h2">POUFF Adaptive</h3>
+            <p class="t-lead">Il bot di trading che legge il contesto di mercato prima di eseguire, non soltanto la regola.</p>
+          </div>
+          <p class="panel__price"><b class="num">1.499 €</b><span class="meta">/anno</span><br><span class="meta num">oppure 149 €/mese</span></p>
+        </div>
+        <ul class="panel__list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Analisi contestuale del mercato in tempo reale tramite DeepSeek, prima di eseguire la regola</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Gestione del rischio con limiti di esposizione e stop automatico, configurati insieme a voi</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Gira sulle vostre credenziali broker. I fondi non passano mai da noi</li>
+        </ul>
+        <div class="panel__cta">
+          <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Attivate la licenza</a>
+          <a class="btn btn--secondary" href="#contatti" data-interesse="prodotti">Chiedete una demo</a>
+        </div>
+        <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg><a href="/termini#rischio">Avvertenza sul rischio: il trading può comportare la perdita del capitale.</a></p>
+      </section>
+
+      <section class="panel card" id="p-pouff-c" role="tabpanel" aria-labelledby="tab-pouff-c">
+        <div class="panel__head">
+          <div>
+            <span class="chip chip--cyan"><span class="dot"></span>Early bird</span>
+            <h3 class="t-h2">POUFF Continuous</h3>
+            <p class="t-lead">La versione che impara dai propri trade, invece di aspettare che siate voi a riottimizzarla.</p>
+          </div>
+          <p class="panel__price"><b class="num">2.499 €</b><span class="meta">/anno</span><br><span class="meta num">oppure 249 €/mese</span></p>
+        </div>
+        <ul class="panel__list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Reinforcement learning sui risultati reali dei trade eseguiti</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Riottimizzazione continua dei parametri, senza che dobbiate intervenire voi</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Report periodico in chiaro: curva di apprendimento e parametri modificati, con il perché</li>
+        </ul>
+        <p class="panel__diff"><b>Adaptive</b> ragiona sul mercato di oggi. <b>Continuous</b> riscrive sé stesso in base ai mercati di ieri.</p>
+        <div class="panel__cta">
+          <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Entrate in early bird</a>
+        </div>
+        <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg><a href="/termini#rischio">Avvertenza sul rischio: il trading può comportare la perdita del capitale.</a></p>
+      </section>
+
+      <section class="panel card" id="p-pips" role="tabpanel" aria-labelledby="tab-pips">
+        <div class="panel__head">
+          <div>
+            <span class="chip chip--cyan"><span class="dot"></span>Beta pubblica</span>
+            <h3 class="t-h2">Pips.AI</h3>
+            <p class="t-lead">Non un aggregatore di notizie: uno strumento che vi dice cosa è cambiato davvero stamattina.</p>
+          </div>
+          <p class="panel__price"><b class="num">49 €</b><span class="meta">/mese</span><br><span class="meta num">oppure 490 €/anno</span></p>
+        </div>
+        <ul class="panel__list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Sentiment analysis su fonti multiple e correlazioni cross-asset non ovvie</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Alert sulle anomalie con punteggio di affidabilità, non una notifica a ogni movimento</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Web app con esportazione dei dati. Applicazioni mobile in sviluppo</li>
+        </ul>
+        <div class="panel__cta">
+          <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Entrate nella beta</a>
+        </div>
+        <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg><a href="/termini#rischio">Strumento informativo. Non costituisce consulenza finanziaria.</a></p>
+      </section>
+
+      <section class="panel card" id="p-nexa" role="tabpanel" aria-labelledby="tab-nexa">
+        <div class="panel__head">
+          <div>
+            <span class="chip"><span class="dot"></span>In sviluppo · waitlist aperta</span>
+            <h3 class="t-h2">Nexa</h3>
+            <p class="t-lead">Il vostro assistente di direzione digitale: coordina posta, calendario, Drive, CRM e Slack senza che copiate niente a mano.</p>
+          </div>
+          <p class="panel__price"><b class="num">79&nbsp;€</b><span class="meta">/mese</span><br><span class="meta num">oppure 199&nbsp;€/mese · piano superiore</span></p>
+        </div>
+        <ul class="panel__list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Agenti proattivi: recap dopo la riunione, follow-up, prioritizzazione della posta</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Automazioni senza codice, con template pronti per studio legale, commercialista e agenzia</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Knowledge base aziendale interrogabile in italiano corrente</li>
+        </ul>
+        <div class="panel__cta">
+          <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Mettetevi in lista</a>
+        </div>
+        <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg>Prodotto in sviluppo. Iscriversi alla lista non costituisce ordine né dà diritto a una data di rilascio.</p>
+      </section>
+
+      <section class="panel card" id="p-clip" role="tabpanel" aria-labelledby="tab-clip">
+        <div class="panel__head">
+          <div>
+            <span class="chip"><span class="dot"></span>MVP · preregistrazioni</span>
+            <h3 class="t-h2">ProntoClip</h3>
+            <p class="t-lead">Trenta secondi di video al posto di tre giorni fra sopralluoghi e telefonate.</p>
+          </div>
+          <p class="panel__price"><b class="num">Gratis</b><span class="meta">per chi cerca</span><br><span class="meta num">29&nbsp;€/mese per i professionisti</span></p>
+        </div>
+        <ul class="panel__list">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Il cliente filma il problema, l'AI lo classifica e ne stima la complessità</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Il professionista riceve clip e analisi, e manda il preventivo senza muoversi dall'ufficio</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Categorie previste al lancio: casa, legale, fiscale, IT</li>
+        </ul>
+        <div class="panel__cta">
+          <a class="btn btn--primary" href="#contatti" data-interesse="prodotti">Preregistratevi</a>
+        </div>
+        <p class="panel__warn"><svg aria-hidden="true"><use href="#i-alert"/></svg>Prodotto in sviluppo. La preregistrazione non costituisce ordine né dà diritto a una data di rilascio.</p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════ CORSI ══ -->
+<!-- Tre corsi sono una scala, non tre pari: quindi una tabella, non tre card. -->
+<section class="section section--surface" id="corsi">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Formazione</span>
+      <h2 class="t-h1">Se preferite imparare a farlo <span class="t-serif">voi</span>.</h2>
+      <p class="t-lead">Tre percorsi in scala. Si esce con qualcosa che funziona, non con
+        gli appunti su come si farebbe.</p>
+    </header>
+
+    <div class="scroll-x reveal" role="region" aria-label="Confronto fra i tre corsi" tabindex="0">
+      <table class="ctab">
+        <caption class="sr-only">Confronto fra i tre corsi di formazione Flux AI</caption>
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">Caratteristica</span></th>
+            <th scope="col"><span class="chip">Principiante</span><span class="ctab__name">AI Foundations<br>Smart Workflow</span></th>
+            <th scope="col" class="ctab__pick"><span class="chip">Intermedio</span> <span class="chip chip--lime">Consigliato</span><span class="ctab__name">Content &amp; Vision<br>Masterclass</span></th>
+            <th scope="col"><span class="chip">Avanzato</span><span class="ctab__name">Automation<br>Architect</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Cosa vi portate a casa</th>
+            <td>Tre attività della vostra settimana già automatizzate e funzionanti</td>
+            <td>Un flusso di produzione contenuti che fa in un'ora quello che oggi vi porta via un pomeriggio</td>
+            <td>Un'architettura in produzione che collega CRM, pagamenti e assistenza senza intervento manuale</td></tr>
+          <tr><th scope="row">Durata</th>
+            <td class="num">12 ore · 4 sessioni · 5 moduli</td><td class="num">20 ore · 5 sessioni</td><td class="num">40 ore · 1 mese</td></tr>
+          <tr><th scope="row">Formato</th>
+            <td>Live + pratica guidata</td><td>Workshop creativi sui vostri materiali</td><td>Percorso intensivo con progetto reale</td></tr>
+          <tr><th scope="row">Mentoring individuale</th>
+            <td>Incluso</td><td>Incluso</td><td>Incluso + 3 mesi di supporto</td></tr>
+          <tr><th scope="row">Obiettivo del percorso</th>
+            <td>Automatizzare tre attività ricorrenti della vostra settimana</td><td>Dimezzare i tempi di produzione dei contenuti</td><td>Portare in produzione un'architettura senza intervento manuale</td></tr>
+          <tr><th scope="row">Libero professionista</th>
+            <td class="num ctab__price">450 €</td><td class="num ctab__price">750 €</td><td class="num ctab__price">1.200 €</td></tr>
+          <tr><th scope="row">Aziende <span class="meta">(a persona)</span></th>
+            <td class="num ctab__price">250 €</td><td class="num ctab__price">400 €</td><td class="num ctab__price">650 €</td></tr>
+          <tr><th scope="row"><span class="sr-only">Iscrizione</span></th>
+            <td><a class="btn btn--secondary" href="#contatti" data-interesse="corsi">Iscrivetevi</a></td>
+            <td><a class="btn btn--primary" href="#contatti" data-interesse="corsi">Iscrivetevi</a></td>
+            <td><a class="btn btn--secondary" href="#contatti" data-interesse="corsi">Richiedete un colloquio</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fineprint">Prezzi IVA esclusa. Il certificato attesta la frequenza e non costituisce titolo abilitante
+      né qualifica professionale riconosciuta. Gli obiettivi indicati descrivono il risultato a cui è finalizzato il percorso e non
+      costituiscono un risultato garantito: dipendono dai vostri processi e dall'impegno dei partecipanti.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ STUDIO ══ -->
+<section class="section" id="studio">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Chi siamo</span>
+      <h2 class="t-h1">Due persone. Parlate <span class="t-serif">sempre</span> con noi.</h2>
+    </header>
+
+    <div class="founders">
+      <article class="founder reveal">
+        <div class="founder__portrait" data-initials="ET">
+          <canvas class="founder__canvas" aria-hidden="true"></canvas>
+          <span class="founder__ph" aria-hidden="true">ET</span>
+        </div>
+        <h3 class="t-h3">Ergest Troplini</h3>
+        <p class="eyebrow muted">AI Engineer &amp; Progettista Digitale</p>
+        <p class="t-body muted">Cinque anni a integrare AI in contesti dove un errore costa: studi legali,
+          PMI manifatturiere, imprese edili. Ha automatizzato la gestione clienti dello Studio Legale
+          Abbiati e costruito un preventivatore da immagini per Costruzioni Troplini.
+          Scrive il codice che consegniamo.</p>
+        <p class="founder__links">
+          <a href="mailto:ergest@flux-ai.it"><svg aria-hidden="true"><use href="#i-mail"/></svg>ergest@flux-ai.it</a>
+        </p>
+      </article>
+
+      <p class="founders__quote reveal">
+        <span class="t-serif">Vediamo ciò che gli altri non vedono</span> — e poi lo automatizziamo.
+      </p>
+
+      <article class="founder reveal">
+        <div class="founder__portrait" data-initials="DB">
+          <canvas class="founder__canvas" aria-hidden="true"></canvas>
+          <span class="founder__ph" aria-hidden="true">DB</span>
+        </div>
+        <h3 class="t-h3">Daniel Bottini</h3>
+        <p class="eyebrow muted">Design Strategist &amp; Innovation Lead</p>
+        <p class="t-body muted">Master in progettazione d'interni e design computazionale: pensiero
+          progettuale applicato al software. Traduce processi confusi in prodotti usabili, dalle piattaforme SaaS
+          agli e-commerce. È la persona che decide se una funzione serve davvero
+          o è solo interessante.</p>
+        <p class="founder__links">
+          <a href="mailto:daniel@flux-ai.it"><svg aria-hidden="true"><use href="#i-mail"/></svg>daniel@flux-ai.it</a>
+        </p>
+      </article>
+    </div>
+    <p class="fineprint">I ritratti fotografici sono in arrivo: al loro posto, per ora, un segnaposto
+      generativo. Preferiamo un segnaposto dichiarato a una foto stock.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════ FAQ ══ -->
+<section class="section section--surface" id="faq">
+  <div class="wrap faq__wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Domande</span>
+      <h2 class="t-h1">Quello che ci chiedono prima di firmare.</h2>
+    </header>
+
+    <div class="faq reveal">
+      <details class="faq__item" name="faq">
+        <summary><span>Devo cambiare i gestionali che uso già?</span><svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq__body"><p>No. Lavoriamo sopra gli strumenti che avete: posta, gestionale, PEC, Drive,
+          Excel, CRM. Le automazioni li collegano via API o cartelle condivise. Se un software non espone API,
+          interveniamo sui file che produce. Sostituiamo un gestionale solo se siete voi a chiederlo.</p></div>
+      </details>
+      <details class="faq__item" name="faq">
+        <summary><span>I dati dei miei clienti finiscono dentro ChatGPT?</span><svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq__body"><p>No, se non lo decidete voi. Usiamo API business i cui contratti escludono
+          l'uso dei dati per addestrare i modelli. Per i dati più sensibili proponiamo la pseudonimizzazione
+          prima dell'invio, oppure modelli eseguiti su server europei. Ogni progetto include un elenco scritto
+          di quali dati escono, verso chi e per quanto tempo restano: materiale che potete allegare al vostro
+          registro dei trattamenti.</p></div>
+      </details>
+      <details class="faq__item" name="faq">
+        <summary><span>Quanto tempo devo dedicarci io?</span><svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq__body"><p>Circa quattro ore in tutto, su un progetto standard: un'ora di analisi
+          iniziale, un'ora a metà percorso per validare il flusso, due ore di formazione finale al team.
+          Il resto lo facciamo noi. Se un progetto richiede più tempo del vostro, è progettato male.</p></div>
+      </details>
+      <details class="faq__item" name="faq">
+        <summary><span>E se l'AI sbaglia?</span><svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq__body"><p>Nei processi con conseguenze verso l'esterno l'AI non ha l'ultima parola:
+          prepara, voi approvate con un click. Ogni automazione tiene un registro di cosa ha fatto e perché,
+          e ha una procedura di stop immediato. Nelle prime due settimane il sistema gira in parallelo al
+          processo manuale, così confrontate i risultati prima di fidarvi.</p></div>
+      </details>
+      <details class="faq__item" name="faq">
+        <summary><span>Quanto costa davvero, e cosa comprende il prezzo?</span><svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq__body"><p>Un'automazione parte da 1.200 €, un agente AI da 1.800 €, un'applicazione
+          web da 3.500 €, IVA esclusa. Il preventivo è a corpo, non a ore, e comprende analisi, sviluppo,
+          messa in opera, formazione e trenta giorni di correzioni. Restano a vostro carico gli abbonamenti
+          dei servizi usati — in genere fra 20 e 80 € al mese — e l'eventuale manutenzione, che è facoltativa.</p></div>
+      </details>
+      <details class="faq__item" name="faq">
+        <summary><span>Siamo in tre: siamo troppo piccoli?</span><svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+        <div class="faq__body"><p>No, anzi. Negli studi piccoli il ritorno arriva prima, perché non c'è una
+          struttura da riorganizzare: il tempo liberato torna subito alla persona che fatturava meno ore.
+          Il nostro cliente tipo ha fra 1 e 20 addetti. Sotto i 1.200 € di progetto però conviene partire
+          dal corso AI Foundations e farlo in autonomia — e ve lo diciamo noi, in call.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ CONTATTI ══ -->
+<section class="section" id="contatti">
+  <div class="wrap contact">
+    <div class="contact__intro reveal">
+      <span class="eyebrow">Parliamone</span>
+      <h2 class="t-h1">Trenta minuti per capire <br class="br-lg">se abbiamo qualcosa da <span class="t-serif">automatizzare</span>.</h2>
+      <p class="t-lead">Ci raccontate una giornata tipo. Vi diciamo cosa si può togliere di mezzo,
+        quanto costa e quanto ci vuole. Se non troviamo niente che valga la spesa, ve lo diciamo:
+        è già successo.</p>
+      <ul class="contact__points">
+        <li><svg aria-hidden="true"><use href="#i-clock"/></svg>Rispondiamo entro un giorno lavorativo</li>
+        <li><svg aria-hidden="true"><use href="#i-shield"/></svg>Nessuna sequenza automatica di email commerciali</li>
+        <li><svg aria-hidden="true"><use href="#i-mail"/></svg>Preferite scrivere? <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a></li>
+      </ul>
+    </div>
+
+    <div class="contact__form-wrap reveal">__CONTACT_FORM__</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ AVVERTENZA ══ -->
+<section class="section section--tight" id="rischio">
+  <div class="wrap">
+    <details class="legal reveal" open>
+      <summary>
+        <svg aria-hidden="true"><use href="#i-alert"/></svg>
+        <span>Avvertenza sul rischio — prodotti e servizi di trading. Leggere prima di procedere.</span>
+      </summary>
+      <div class="legal__body">
+        <p>Flux AI sviluppa e concede in licenza software. <b>Non è un intermediario finanziario, non è
+          autorizzata da CONSOB o da Banca d'Italia e non presta servizi di investimento, consulenza
+          finanziaria, gestione di portafogli o raccolta di ordini</b> ai sensi del D.Lgs. 58/1998 (TUF)
+          e della direttiva 2014/65/UE (MiFID II).</p>
+        <p>I contenuti di questo sito e i risultati prodotti dai nostri software hanno finalità
+          esclusivamente informativa e tecnica e <b>non costituiscono in alcun caso una raccomandazione
+          di investimento</b> né un invito ad acquistare, vendere o detenere strumenti finanziari.</p>
+        <p>Il trading su Forex, criptovalute, azioni, derivati e materie prime comporta un <b>elevato
+          rischio di perdita, che può superare il capitale versato</b> in presenza di leva finanziaria.
+          Le performance passate, i risultati dei backtest e le simulazioni storiche — che si basano su
+          ipotesi e non riflettono i costi reali di esecuzione, slippage e liquidità — <b>non sono
+          indicativi dei risultati futuri</b>. Nessun rendimento è garantito, promesso o prevedibile.</p>
+        <p>I nostri software operano sui conti aperti dall'utente presso broker terzi, tramite credenziali
+          fornite dall'utente stesso. <b>Flux AI non detiene, non movimenta e non custodisce in alcun
+          momento fondi o strumenti finanziari dei clienti.</b> Ogni decisione operativa, ogni parametro
+          di configurazione e ogni conseguenza economica restano di esclusiva responsabilità dell'utente,
+          che è tenuto a valutare la propria situazione finanziaria, la propria esperienza e la propria
+          tolleranza al rischio, eventualmente con l'assistenza di un consulente abilitato.</p>
+        <p>Software fornito «così com'è»: Flux AI non risponde di perdite derivanti da malfunzionamenti
+          del broker, interruzioni di connettività, condizioni di mercato anomale o configurazioni errate.</p>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════ FOOTER ══ -->
+<footer class="foot">
+  <div class="wrap-wide">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <span class="foot__mark" aria-hidden="true">__LOGO_SVG__</span>
+        <p class="foot__tag">L'intelligenza che trasforma il vostro business.</p>
+        <p class="foot__addr meta">
+          Flux AI — <span data-fill="ragione-sociale">ragione sociale da inserire</span><br>
+          P.IVA <span data-fill="piva">da inserire</span> · <span data-fill="sede">sede da inserire</span>
+        </p>
+      </div>
+      <nav class="foot__col" aria-label="Servizi">
+        <p class="eyebrow">Servizi</p>
+        <a href="#servizi">Workflow Automation</a>
+        <a href="#servizi">Agenti AI</a>
+        <a href="#servizi">Applicazioni web</a>
+        <a href="#servizi">Trading automatizzato</a>
+        <a href="#servizi">Start-up &amp; E-commerce</a>
+      </nav>
+      <nav class="foot__col" aria-label="Prodotti">
+        <p class="eyebrow">Prodotti</p>
+        <a href="#prodotti">POUFF Adaptive</a>
+        <a href="#prodotti">POUFF Continuous</a>
+        <a href="#prodotti">Pips.AI</a>
+        <a href="#prodotti">Nexa</a>
+        <a href="#prodotti">ProntoClip</a>
+      </nav>
+      <nav class="foot__col" aria-label="Studio e contatti">
+        <p class="eyebrow">Studio</p>
+        <a href="#studio">Chi siamo</a>
+        <a href="#corsi">Corsi</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contatti">Contatti</a>
+        <a href="mailto:ergest@flux-ai.it">ergest@flux-ai.it</a>
+      </nav>
+    </div>
+
+    <div class="foot__bottom">
+      <p class="meta">© <span id="year">2026</span> Flux AI. Tutti i diritti riservati.</p>
+      <nav class="foot__legal" aria-label="Note legali">
+        <a href="/privacy">Privacy</a>
+        <a href="/cookie-policy">Cookie</a>
+        <a href="/termini">Termini</a>
+        <a href="/termini#rischio">Avvertenza sul rischio</a>
+      </nav>
+      <p class="meta foot__tech">Sito senza cookie di profilazione e senza risorse di terze parti.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Sticky mobile: appare dopo il 30% di scroll. Su mobile e il singolo
+     intervento con piu impatto sulla conversione. -->
+<div class="sticky-cta" id="stickyCta" hidden>
+  <a class="btn btn--primary btn--lg" href="#contatti">30 minuti, gratis
+    <svg class="arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</div>

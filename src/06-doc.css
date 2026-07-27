@@ -1,0 +1,38 @@
+/* ============================================================================
+   PAGINE DOCUMENTO (privacy, cookie, termini, grazie)
+   ========================================================================= */
+.doc .nav { position: sticky; }
+.doc__main { padding-block: calc(var(--nav-h) + var(--sp-8)) var(--sp-10); max-width: 820px; margin-inline: auto; }
+.doc__main > * + * { margin-top: var(--sp-5); }
+.doc__main h1 { margin-bottom: var(--sp-5); }
+.doc__main h2 { margin-top: var(--sp-8); }
+.doc__main p, .doc__main li { color: var(--text-secondary); max-width: 68ch; }
+.doc__main strong { color: var(--text-primary); font-weight: 500; }
+.doc__main a { color: var(--flux-cyan); text-decoration: underline; text-underline-offset: 2px; }
+.doc__main code {
+  font-family: var(--font-mono); font-size: .9em; color: var(--flux-lime);
+  background: var(--bg-inset); border: 1px solid var(--border-subtle);
+  border-radius: var(--r-xs); padding: .1em .4em;
+}
+.doc__list { display: grid; gap: var(--sp-3); }
+.doc__list li { position: relative; padding-left: var(--sp-5); }
+.doc__list li::before { content: ''; position: absolute; left: 0; top: .68em;
+                        width: 8px; height: 1px; background: var(--flux-cyan); opacity: .8; }
+/* display:block su <table> puo far perdere il ruolo tabella su alcuni motori:
+   lo scroll va sul wrapper, la tabella resta una tabella. */
+.doc__scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+.doc__scroll:focus-visible { outline-offset: 2px; }
+.doc__table { font-size: var(--fs-small); }
+.doc__table th, .doc__table td { padding: var(--sp-3) var(--sp-4); text-align: left;
+                                 vertical-align: top; border-bottom: 1px solid var(--border-subtle); }
+.doc__table thead th { color: var(--text-tertiary); font-family: var(--font-mono);
+                       font-size: var(--fs-micro); letter-spacing: .08em; text-transform: uppercase; }
+.doc__table td { color: var(--text-secondary); }
+.doc__alert, .doc__warn {
+  padding: var(--sp-5); border-radius: var(--r-lg); background: var(--bg-inset);
+  border: 1px solid var(--border-default); border-left-width: 2px;
+}
+.doc__alert { border-left-color: var(--state-warn); }
+.doc__warn  { border-left-color: var(--state-error); display: grid; gap: var(--sp-4); }
+.doc__warn p { max-width: none; font-size: var(--fs-small); }
+.doc .foot { margin-top: var(--sp-9); }

@@ -1,0 +1,10 @@
+# Flux AI — https://www.flux-ai.it
+User-agent: *
+Allow: /
+Disallow: /api/
+# /grazie e /errore usano <meta robots noindex>: bloccarle qui impedirebbe
+# al crawler di leggerlo, e l'URL comparirebbe comunque in SERP senza descrizione.
+
+# Preview Vercel: non indicizzare (Vercel invia già X-Robots-Tag su *.vercel.app)
+
+Sitemap: https://www.flux-ai.it/sitemap.xml

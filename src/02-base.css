@@ -1,0 +1,209 @@
+/* ============================================================================
+   RESET + BASE + TIPOGRAFIA
+   ========================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + var(--sp-5));
+  /* senza questo, tabulando su mobile il campo a fuoco finisce sotto la
+     CTA fissa: misurato fino al 96% di area coperta */
+  scroll-padding-bottom: var(--sp-5);
+  color-scheme: dark;
+}
+/* Lo scroll morbido nativo litiga con content-visibility: mentre l'animazione
+   e in corso le sezioni attraversate vengono materializzate, l'altezza del
+   documento cambia sotto i piedi e l'ancora atterra fuori bersaglio (fino a
+   500px di errore, misurato). Con JS lo gestiamo noi ricalcolando il bersaglio
+   a ogni frame; senza JS torna il comportamento nativo. */
+@media (scripting: none) { html { scroll-behavior: smooth; } }
+@media (max-width: 759px) { html { scroll-padding-bottom: 6rem; } }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  font-weight: 400;
+  color: var(--text-primary);
+  background: var(--bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  /* NIENTE overflow-x:hidden: i bug di layout si correggono, non si nascondono. */
+}
+
+svg, canvas { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: none; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+table { border-collapse: collapse; width: 100%; }
+
+/* --------------------------------------------------------------- SELECTION */
+::selection { background: color-mix(in oklab, var(--flux-cyan) 30%, transparent); color: var(--text-primary); }
+
+/* --------------------------------------------------------------- SCROLLBAR */
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border: 3px solid var(--bg-base);
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ------------------------------------------------------- FOCUS = DIAFRAMMA */
+/* L'anello di focus da tastiera e un momento di brand, non un ripiego. */
+:focus { outline: none; }
+:focus-visible {
+  /* Solo outline: un box-shadow viene cancellato da qualunque elemento che ne
+     dichiari uno proprio, ed e cosi che il bottone di invio — l'unico punto di
+     conversione — aveva l'indicatore piu debole di tutta la pagina. */
+  outline: 2px solid var(--flux-cyan);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+  transition: outline-offset var(--dur-ui) var(--ease-snap);
+}
+:focus-visible:active { outline-offset: 1px; }
+
+.skip-link {
+  position: fixed; top: var(--sp-3); left: var(--sp-3); z-index: 200;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--flux-lime); color: var(--on-accent);
+  font-weight: 700; border-radius: var(--r-md);
+  transform: translateY(-200%);
+  transition: transform var(--dur-ui) var(--ease-lens);
+}
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* ------------------------------------------------------------- TIPOGRAFIA */
+/* Le parole lunghe dell'italiano (automatizzare, professionali) sfondano i
+   viewport stretti ai corpi display: sillabazione come rete di sicurezza. */
+.t-display, .t-h1, .t-h2, .t-h3 {
+  font-family: var(--font-display);
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.t-display {
+  font-size: var(--fs-display); font-weight: 900;
+  letter-spacing: -.045em; line-height: .94; text-wrap: balance;
+}
+.t-h1 {
+  font-size: var(--fs-h1); font-weight: 700;
+  letter-spacing: -.032em; line-height: 1.02; text-wrap: balance;
+}
+.t-h2 {
+  font-size: var(--fs-h2); font-weight: 700;
+  letter-spacing: -.022em; line-height: 1.12; text-wrap: balance;
+}
+.t-h3 {
+  font-size: var(--fs-h3); font-weight: 500;
+  letter-spacing: -.012em; line-height: 1.25;
+}
+.t-lead {
+  font-size: var(--fs-lead); letter-spacing: -.006em;
+  line-height: 1.55; color: var(--text-secondary); max-width: var(--max-lead);
+  text-wrap: pretty;
+}
+.t-body   { font-size: var(--fs-body); max-width: var(--max-prose); text-wrap: pretty; }
+.t-micro, .eyebrow {
+  font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500;
+  letter-spacing: .14em; line-height: 1.4; text-transform: uppercase;
+}
+
+/* L'accento editoriale: UNA sola parola per sezione, +8% di corpo ottico. */
+.t-serif {
+  font-family: var(--font-editorial); font-style: italic; font-weight: 400;
+  letter-spacing: -.01em; font-size: 1.08em;
+}
+
+/* Numeri in slot tabellari — leggono come la lettura di uno strumento. */
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining-nums; }
+
+.muted  { color: var(--text-secondary); }
+.meta   { color: var(--text-tertiary); }
+
+/* Il lime e il fuoco: max UN elemento .is-focal visibile per viewport. */
+.is-focal { color: var(--flux-lime); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ------------------------------------------------------------------ LAYOUT */
+.wrap      { width: 100%; max-width: var(--max-content); margin-inline: auto; padding-inline: var(--gutter); }
+.wrap-wide { width: 100%; max-width: var(--max-wide);    margin-inline: auto; padding-inline: var(--gutter); }
+.section   { padding-block: var(--section-y); position: relative; }
+
+/* Rapporto 3:1 — lo spazio sopra un titolo e ~3x quello sotto. */
+.section-head { margin-bottom: var(--sp-8); max-width: 62ch; }
+.section-head .eyebrow { color: var(--flux-cyan); display: block; margin-bottom: var(--sp-4); }
+/* Rapporto 3:1 reale: sopra il blocco ci sono ~160px, sotto ne servono ~54.
+   Con 24px il titolo restava incollato al contenuto che segue. */
+.section-head .t-h1    { margin-bottom: 3.375rem; }
+
+/* Dieci sezioni con lo stesso header a sinistra e meta destra vuota facevano
+   sembrare la pagina un documento. Tre di esse passano a due colonne. */
+@media (min-width: 1100px) {
+  #problema .section-head, #corsi .section-head {
+    max-width: none; display: grid; align-items: end;
+    grid-template-columns: minmax(0, 620px) minmax(0, 460px); column-gap: var(--sp-9);
+  }
+  #problema .section-head .eyebrow,
+  #corsi    .section-head .eyebrow { grid-column: 1 / -1; }
+  #problema .section-head .t-h1,
+  #corsi    .section-head .t-h1 { margin-bottom: 0; }
+  #problema .section-head .t-lead,
+  #corsi    .section-head .t-lead { margin: 0; padding-bottom: .4rem; }
+}
+
+/* Contenuto largo: scorre nel suo contenitore, mai il body. La sfumatura a
+   destra e l'affordance: senza, meta tabella e invisibile e nessuno lo sa. */
+.scroll-x {
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  /* Sfumatura stretta: al 10% cancellava un'intera colonna di testo anche dove
+     non c'era nulla da scorrere. E si applica solo dove serve davvero. */
+  -webkit-mask-image: linear-gradient(90deg, #000 0 calc(100% - 28px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0 calc(100% - 28px), transparent 100%);
+}
+.scroll-x:hover, .scroll-x:focus-within { -webkit-mask-image: none; mask-image: none; }
+@media (min-width: 760px) { .scroll-x { -webkit-mask-image: none; mask-image: none; } }
+
+/* ---------------------------------------------- REVEAL: "racking focus" */
+/* Arriva sfocato e leggermente piu grande, poi si risolve. Nessun translateY. */
+.reveal {
+  opacity: 0;
+  filter: blur(6px);
+  transform: scale(1.012);
+  transition: opacity var(--dur-enter) var(--ease-lens),
+              filter  var(--dur-enter) var(--ease-lens),
+              transform var(--dur-enter) var(--ease-lens);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, filter, transform;
+}
+.reveal.is-revealed { opacity: 1; filter: blur(0); transform: none; will-change: auto; }
+
+/* Senza JS nessuno aggiunge .is-revealed: meta pagina resterebbe invisibile.
+   `scripting: none` copre i browser moderni; il <noscript> copre gli altri. */
+@media (scripting: none) {
+  .reveal { opacity: 1; filter: none; transform: none; }
+}
+
+/* --------------------------------------------------- PREFERS-REDUCED-MOTION */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto !important; }
+  .reveal { opacity: 1 !important; filter: none !important; transform: none !important; }
+}

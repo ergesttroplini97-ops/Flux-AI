@@ -1,0 +1,144 @@
+/* ============================================================================
+   COMPONENTI
+   ========================================================================= */
+
+/* ------------------------------------------------------------------ BUTTON */
+/* Un solo raggio per le CTA (--r-md). Tre pesi, non tredici primari. */
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--text-primary);
+  --btn-bd: var(--border-default);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-3);
+  padding: .8125rem var(--sp-5);
+  font-family: var(--font-display); font-size: var(--fs-small); font-weight: 500;
+  letter-spacing: -.004em; white-space: nowrap;
+  color: var(--btn-fg); background: var(--btn-bg);
+  border: 1px solid var(--btn-bd); border-radius: var(--r-md);
+  transition: background var(--dur-micro) var(--ease-shutter),
+              border-color var(--dur-micro) var(--ease-shutter),
+              color var(--dur-micro) var(--ease-shutter),
+              box-shadow var(--dur-ui) var(--ease-lens);
+}
+.btn svg { width: 1em; height: 1em; flex: none; }
+
+/* Primaria: ciano. Il lime resta il fuoco e vale UNA volta per pagina —
+   con la CTA sticky in navbar, un primario lime lo rendeva onnipresente. */
+.btn--primary { --btn-bg: var(--flux-cyan); --btn-fg: var(--on-accent); --btn-bd: var(--flux-cyan); font-weight: 700; }
+.btn--primary:hover { --btn-bg: var(--flux-cyan-hi); --btn-bd: var(--flux-cyan-hi); box-shadow: var(--glow-cyan); }
+.btn--primary:active { --btn-bg: var(--flux-cyan-deep); --btn-bd: var(--flux-cyan-deep); }
+
+/* L'unica eccezione ammessa: la CTA primaria della hero. */
+.btn--focal { --btn-bg: var(--flux-lime); --btn-fg: var(--on-accent); --btn-bd: var(--flux-lime); }
+.btn--focal:hover { --btn-bg: var(--flux-lime-hi); --btn-bd: var(--flux-lime-hi); box-shadow: var(--glow-lime); }
+.btn--focal:active { --btn-bg: var(--flux-lime-deep); --btn-bd: var(--flux-lime-deep); }
+
+/* Secondaria: il ciano e l'unico colore interattivo. */
+.btn--secondary:hover { --btn-bd: var(--flux-cyan); --btn-fg: var(--flux-cyan); background: color-mix(in oklab, var(--flux-cyan) 8%, transparent); }
+.btn--secondary:active { background: color-mix(in oklab, var(--flux-cyan) 14%, transparent); }
+
+
+.btn--lg { padding: 1rem var(--sp-6); font-size: var(--fs-body); }
+.btn[disabled], .btn[aria-disabled='true'] { opacity: .45; pointer-events: none; }
+
+/* La freccia della CTA scorre. Micro-dettaglio, non decorazione. */
+.btn .arrow { transition: transform var(--dur-ui) var(--ease-lens); }
+.btn:hover .arrow { transform: translateX(3px); }
+
+/* -------------------------------------------------------------------- CHIP */
+.chip {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: .3125rem var(--sp-3);
+  font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle); border-radius: var(--r-sm);
+}
+.chip--cyan { color: var(--flux-cyan); border-color: color-mix(in oklab, var(--flux-cyan) 30%, transparent); }
+.chip--lime { color: var(--flux-lime); border-color: color-mix(in oklab, var(--flux-lime) 32%, transparent); }
+
+.dot { width: 6px; height: 6px; border-radius: var(--r-full); background: currentColor; flex: none; }
+
+/* -------------------------------------------------------------------- CARD */
+.card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-inset);
+  transition: background var(--dur-ui) var(--ease-shutter),
+              border-color var(--dur-ui) var(--ease-shutter);
+}
+.card--pad { padding: var(--sp-6); }
+
+/* Bordo a luce radente: si accende dove passa il puntatore. */
+@media (hover: hover) and (pointer: fine) {
+  .lit { position: relative; isolation: isolate; }
+  .lit::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    padding: 1px; pointer-events: none; z-index: 1;
+    opacity: 0; transition: opacity var(--dur-ui) var(--ease-shutter);
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%),
+                color-mix(in oklab, var(--flux-cyan) 55%, transparent), transparent 65%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  .lit:hover::before, .lit:focus-within::before { opacity: 1; }
+  .card.lit:hover { background: var(--bg-elevated); }
+}
+
+/* -------------------------------------------------------------------- FORM */
+.field { display: flex; flex-direction: column; gap: var(--sp-2); }
+.field > label { font-size: var(--fs-small); font-weight: 500; color: var(--text-secondary); }
+.field .req { color: var(--flux-cyan); }
+
+.input, .textarea, .select {
+  width: 100%; padding: .8125rem var(--sp-4);
+  font-size: var(--fs-body); color: var(--text-primary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-control); border-radius: var(--r-sm);
+  transition: border-color var(--dur-micro) var(--ease-shutter),
+              background var(--dur-micro) var(--ease-shutter);
+}
+.input::placeholder, .textarea::placeholder { color: var(--text-tertiary); }
+.input:hover, .textarea:hover, .select:hover { border-color: var(--border-strong); }
+.input:focus-visible, .textarea:focus-visible, .select:focus-visible { border-color: var(--flux-cyan); }
+.textarea { resize: vertical; min-height: 7rem; line-height: 1.6; }
+.select {
+  appearance: none; cursor: pointer; padding-right: var(--sp-8);
+  min-width: 0; text-overflow: ellipsis;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%2398A1B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right var(--sp-4) center;
+}
+.field[data-invalid='true'] .input,
+.field[data-invalid='true'] .textarea,
+.field[data-invalid='true'] .select { border-color: var(--state-error); }
+.field-error {
+  font-size: var(--fs-small); color: var(--state-error);
+  display: none; align-items: center; gap: var(--sp-2);
+}
+.field[data-invalid='true'] .field-error { display: flex; }
+
+.checkbox { display: flex; gap: var(--sp-3); align-items: flex-start; cursor: pointer;
+            padding-block: var(--sp-2); min-height: 44px; }
+.checkbox input {
+  appearance: none; flex: none; width: 22px; height: 22px; margin-top: 1px;
+  background: var(--bg-inset); border: 1.5px solid var(--border-check); border-radius: var(--r-xs);
+  transition: background var(--dur-micro) var(--ease-shutter), border-color var(--dur-micro) var(--ease-shutter);
+}
+.checkbox input:checked {
+  background: var(--flux-cyan) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='10' fill='none'%3E%3Cpath d='M1 5l3.5 3.5L11 1.5' stroke='%2305060A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat;
+  border-color: var(--flux-cyan);
+}
+.checkbox span { font-size: var(--fs-small); color: var(--text-secondary); line-height: 1.5; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+/* ------------------------------------------------------------------ SPINNER */
+.spinner {
+  width: 1em; height: 1em; flex: none; border-radius: var(--r-full);
+  border: 2px solid color-mix(in oklab, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
