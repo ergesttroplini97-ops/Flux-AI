@@ -1,5 +1,8 @@
 # 🚀 Flux AI - Deployment & Credentials Management
 
+> **Fonte unica per l'URL pubblico — 4 agosto 2026:** https://flux-aqow7bail-ergesttroplini97-ops-projects.vercel.app/
+> Non usare vecchi deployment Vercel o GitHub Pages.
+
 ## 📋 Quick Setup
 
 Questo file documenta come Claude può aggiornare automaticamente il repository GitHub.
@@ -56,17 +59,19 @@ E Claude farà automaticamente:
 1. ✅ Legge le credenziali da `.env.local`
 2. ✅ Fa il commit con messaggio descrittivo
 3. ✅ Pusha su GitHub
-4. ✅ GitHub Pages si aggiorna automaticamente
+4. ✅ Il repository viene aggiornato; il sito ufficiale è servito da Vercel
 
 ---
 
-## 📱 GitHub Pages Deployment
+## 🌐 Deployment ufficiale Vercel
 
-**URL Live:** `https://ergesttroplini97-ops.github.io/Flux-AI`
+**URL ufficiale:** `https://flux-aqow7bail-ergesttroplini97-ops-projects.vercel.app/`
 
 Configurazione:
-- Source: `main` branch, root `/`
-- Auto-deploys on push
+- Progetto Vercel: `flux-ai`
+- Ultimo deployment: `READY`, target `production`
+- Gli URL precedenti e GitHub Pages non sono ufficiali
+- Nota: il deployment è attualmente protetto da Vercel Authentication
 
 ---
 
@@ -106,7 +111,7 @@ STRIPE_PUBLISHABLE_KEY=pk_live_xxxxxxxxxxxxxxxx
 - **Repo:** https://github.com/ergesttroplini97-ops/Flux-AI
 - **Branch:** main
 - **Status:** ✅ Online
-- **URL:** https://ergesttroplini97-ops.github.io/Flux-AI
+- **URL ufficiale:** https://flux-aqow7bail-ergesttroplini97-ops-projects.vercel.app/
 
 ---
 
