@@ -497,35 +497,80 @@
         <div>
           <h2>Contatti</h2>
           <p class="lead">
-            Scrivici che processo ti sta pesando. Rispondiamo con una stima di
-            tempi e costi, oppure con il motivo per cui non ha senso farlo.
+            Descrivi il processo che ti sta facendo perdere tempo. Valutiamo il
+            caso e ti ricontattiamo personalmente.
           </p>
         </div>
       </div>
 
-      <div class="contact-grid" data-reveal>
-        <div class="contact-list">
-          <a href="mailto:ergest@flux-ai.it">
-            <span class="who">Ergest Troplini<br><span class="label">Progetti e sviluppo</span></span>
-            <span class="addr">ergest@flux-ai.it</span>
-          </a>
-          <a href="mailto:daniel@flux-ai.it">
-            <span class="who">Daniel Bottini<br><span class="label">Design e strategia</span></span>
-            <span class="addr">daniel@flux-ai.it</span>
-          </a>
+      <div class="contact-grid contact-grid--lead" data-reveal>
+        <div>
+          <div class="contact-list">
+            <a href="mailto:ergest@flux-ai.it">
+              <span class="who">Ergest Troplini<br><span class="label">Progetti e sviluppo</span></span>
+              <span class="addr">ergest@flux-ai.it</span>
+            </a>
+            <a href="mailto:daniel@flux-ai.it">
+              <span class="who">Daniel Bottini<br><span class="label">Design e strategia</span></span>
+              <span class="addr">daniel@flux-ai.it</span>
+            </a>
+          </div>
+          <p class="contact-note">
+            Primo scambio senza impegno. I dati servono esclusivamente per
+            rispondere alla richiesta.
+          </p>
         </div>
 
-        <div>
-          <p class="label">Cosa scrivere</p>
-          <p style="margin-top:1rem; color:var(--ink-soft)">
-            Che lavoro fai, quale attività ti ruba più tempo e quante ore
-            all'incirca ti porta via a settimana. Bastano tre righe: da lì
-            capiamo subito se possiamo esserti utili.
-          </p>
-          <p style="margin-top:1.5rem; color:var(--ink-soft)">
-            Primo scambio senza impegno e senza costo.
-          </p>
-        </div>
+        <form class="lead-form" data-lead-form>
+          <div class="form-grid">
+            <label>
+              <span>Nome *</span>
+              <input name="nome" type="text" autocomplete="name" maxlength="120" required>
+            </label>
+            <label>
+              <span>Attività</span>
+              <input name="azienda" type="text" autocomplete="organization" maxlength="160">
+            </label>
+            <label>
+              <span>Email *</span>
+              <input name="email" type="email" autocomplete="email" maxlength="254" required>
+            </label>
+            <label>
+              <span>Telefono</span>
+              <input name="telefono" type="tel" autocomplete="tel" maxlength="40">
+            </label>
+            <label class="form-wide">
+              <span>Servizio di interesse *</span>
+              <select name="servizio" required>
+                <option value="">Seleziona</option>
+                <option value="Automazioni">Automazioni</option>
+                <option value="Sito o applicazione web">Sito o applicazione web</option>
+                <option value="Formazione AI">Formazione AI</option>
+                <option value="Consulenza">Consulenza</option>
+                <option value="Altro">Altro</option>
+              </select>
+            </label>
+            <label class="form-wide">
+              <span>Quale attività ti ruba tempo? *</span>
+              <textarea name="messaggio" rows="6" maxlength="1800" required></textarea>
+            </label>
+          </div>
+
+          <label class="form-trap" aria-hidden="true">
+            <span>Lascia vuoto</span>
+            <input name="website" type="text" tabindex="-1" autocomplete="off">
+          </label>
+
+          <label class="form-consent">
+            <input name="consenso" type="checkbox" required>
+            <span>Ho letto l’<a href="privacy.html">informativa privacy</a> e autorizzo il contatto. *</span>
+          </label>
+
+          <div class="form-actions">
+            <button class="btn" type="submit">Invia richiesta</button>
+            <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+          </div>
+        </form>
       </div>
     </div>
   </section>

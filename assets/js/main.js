@@ -218,6 +218,60 @@ const METRICHE = {
     tRidim = setTimeout(disegnaFlusso, 150);
   });
 
+
+  /* --- Modulo contatti --------------------------------------------------- */
+  const moduloLead = document.querySelector('[data-lead-form]');
+  if (moduloLead) {
+    const statoForm = moduloLead.querySelector('[data-form-status]');
+    const pulsante = moduloLead.querySelector('button[type="submit"]');
+
+    function mostraStato(testo, tipo) {
+      statoForm.textContent = testo;
+      if (tipo) statoForm.dataset.state = tipo;
+      else delete statoForm.dataset.state;
+    }
+
+    moduloLead.addEventListener('submit', async function (evento) {
+      evento.preventDefault();
+      if (!moduloLead.reportValidity()) return;
+
+      pulsante.disabled = true;
+      mostraStato('Invio in corso…');
+
+      const controller = new AbortController();
+      const timeout = setTimeout(function () { controller.abort(); }, 12000);
+
+      try {
+        const dati = new FormData(moduloLead);
+        const payload = Object.fromEntries(dati.entries());
+        payload.consenso = moduloLead.elements.consenso.checked;
+
+        const risposta = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        const risultato = await risposta.json().catch(function () { return {}; });
+
+        if (!risposta.ok || risultato.ok !== true) {
+          throw new Error(risultato.message || 'Invio non riuscito.');
+        }
+
+        moduloLead.reset();
+        mostraStato('Richiesta ricevuta. Ti ricontatteremo personalmente.', 'success');
+      } catch (errore) {
+        const messaggio = errore.name === 'AbortError'
+          ? 'Tempo scaduto. Riprova tra poco.'
+          : errore.message || 'Invio non riuscito. Scrivi a ergest@flux-ai.it.';
+        mostraStato(messaggio, 'error');
+      } finally {
+        clearTimeout(timeout);
+        pulsante.disabled = false;
+      }
+    });
+  }
+
   /* --- Anno nel footer ---------------------------------------------------- */
   const anno = document.querySelector('[data-anno]');
   if (anno) anno.textContent = new Date().getFullYear();
