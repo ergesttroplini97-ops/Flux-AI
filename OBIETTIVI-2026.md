@@ -71,12 +71,11 @@ sono giornate di lavoro effettivo.
 - [ ] **Modulo nella sezione Contatti:** nome, attività, posta, servizio di
       interesse, messaggio, casella di consenso con link all'informativa. Poche
       righe, coerenti con la direzione *Strumentazione*.
-- [ ] **Funzione `/api/lead` su Vercel** come unico punto di scrittura:
-      convalida lato server, campo trappola anti-robot, limite di frequenza,
-      scrittura nel database Leads. La chiave Notion sta nelle variabili
-      d'ambiente. *Chiamare l'API di Notion dal browser è escluso: metterebbe
-      un token con permessi di scrittura sull'intero CRM nel sorgente della
-      pagina.*
+- [ ] **Funzione `/api/lead` su Vercel** come unico ingresso pubblico:
+      convalida lato server, campo trappola anti-robot e limite di frequenza,
+      poi inoltra ad A1 tramite Header Auth. La chiave webhook sta nelle
+      variabili d'ambiente Vercel; Notion resta raggiungibile solo da n8n.
+      *Nessun token o URL protetto entra nel browser o nel repository pubblico.*
 - [ ] **Nuove proprietà nel database Leads:** Messaggio, Servizio di interesse,
       Consenso informativa, Data consenso, Origine tecnica.
 - [ ] **Allineare gli stati del SOP a quelli reali del database.** Oggi
@@ -125,9 +124,9 @@ sono giornate di lavoro effettivo.
 ```mermaid
 flowchart LR
   V["Visitatore<br>flux-ai.it"] -->|"invia il modulo"| F["/api/lead<br>funzione Vercel"]
-  F -->|"convalida, anti-spam,<br>limite di frequenza"| N[("Notion<br>Leads")]
-  F -->|"segnale"| W["n8n<br>flusso Nuovo Lead"]
-  W -->|"punteggio"| C["Claude<br>AI Score 1-10"]
+  F -->|"convalida, anti-spam,<br>Header Auth"| W["n8n<br>A1 Nuovo Lead"]
+  W -->|"scrive e rilegge"| N[("Notion<br>Leads")]
+  W -->|"punteggio futuro"| C["Claude<br>AI Score 1-10"]
   C --> N
   W -->|"avviso immediato"| T["Telegram / posta"]
   W -->|"3 · 7 · 14 giorni"| R["Promemoria<br>di richiamo"]
@@ -135,9 +134,10 @@ flowchart LR
   M -->|"casi reali + numeri veri"| S["Sito pubblico"]
 ```
 
-n8n **non è il portiere**: è l'orchestratore a valle. La funzione Vercel
-risponde in mezzo secondo e passa la mano. Punteggio, promemoria e notifiche
-possono richiedere secondi e fallire senza che il visitatore veda un errore.
+Vercel è il portiere pubblico: valida e protegge il segreto. A1 è il solo
+orchestratore che scrive e rilegge il lead in Notion e invia l’avviso Telegram.
+Il visitatore riceve conferma solo dopo il read-after-write; punteggio e
+promemoria restano passi separati.
 
 ---
 

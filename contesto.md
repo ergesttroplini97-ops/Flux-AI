@@ -395,3 +395,19 @@ Make every pixel intentional. The design should whisper "we built AI before it w
 ---
 
 *Ultimo aggiornamento: 29 Marzo 2026 — Prompt #5*
+
+
+---
+
+## 17 agosto 2026 — Preview modulo lead → A1
+
+Preparato sul branch `preview/modulo-lead-a1` il collegamento ad A1 senza
+toccare produzione: modulo coerente con la direzione Strumentazione, funzione
+Vercel `/api/lead`, validazione server, honeypot, limite best-effort e proxy
+Header Auth verso n8n. Nessun segreto nel repository.
+
+Il backend resta deliberatamente bloccato finché non esistono
+`N8N_A1_WEBHOOK_URL`, `N8N_A1_WEBHOOK_KEY` e
+`PRIVACY_NOTICE_VERSION` nelle variabili protette Vercel. L’informativa è una
+bozza tecnica non pubblicabile. A1 resta disattivato; nessun dato reale viene
+raccolto dalla preview.
